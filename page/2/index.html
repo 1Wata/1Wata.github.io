@@ -17,8 +17,8 @@
   <meta name="keywords" content="">
   
     <meta property="og:type" content="website">
-<meta property="og:title" content="归档">
-<meta property="og:url" content="http://example.com/archives/2023/index.html">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/page/2/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:author" content="John Doe">
@@ -26,7 +26,7 @@
   
   
   
-  <title>归档 - Hexo</title>
+  <title>Hexo</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -84,7 +84,7 @@
   <header>
     
 
-<div class="header-inner" style="height: 60vh;">
+<div class="header-inner" style="height: 100vh;">
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
@@ -190,13 +190,17 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="归档"></span>
+            <span id="subtitle" data-typed-text="类君子之有道，入暗室而不欺"></span>
           
         </div>
 
         
       </div>
 
+      
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
       
     </div>
   </div>
@@ -210,90 +214,89 @@
     
       <div class="container nopadding-x-md">
         <div id="board"
-          >
+          style="margin-top: 0">
           
           <div class="container">
             <div class="row">
               <div class="col-12 col-md-10 m-auto">
                 
 
-<div class="list-group">
-  <p class="h4">共计 11 篇文章</p>
-  <hr>
-  
-  
+
+  <div class="row mx-auto index-card">
     
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2023/11/17/CARAFE/" target="_self">
+          CARAFE上采样算子
+        </a>
+      </h2>
+
       
-      <p class="h5">2023</p>
-    
-    <a href="/2023/12/13/%E9%A1%B9%E7%9B%AE%E7%BB%8F%E9%AA%8C/" class="list-group-item list-group-item-action">
-      <time>12-13</time>
-      <div class="list-group-item-title">pytorch项目经验</div>
-    </a>
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/11/17/CARAFE/" target="_self">
+        <div>
+          CARAFE ​	在图像任务中，不同的部分图像对操作的要求不一样（比如图像边界需要提出边界信息，插值的方法就不如反最大值池化的操作；图像内部我们又需要邻域像素点的信息进行上采样的操作，这种情况下反最大值池化又不如插值方法），所以我们不能在图像中简单地用一个算子进行上采样，CARAFA是基于图像内容特征进行的上采样方式。   kernel Prediction Module ​	产生上采样算子的模
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-11-17 10:44" pubdate>
+              2023-11-17
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
   
     
-    <a href="/2023/12/13/yolo/" class="list-group-item list-group-item-action">
-      <time>12-13</time>
-      <div class="list-group-item-title">yolo</div>
-    </a>
+      <span class="category-chain">
+        
+  <a href="/categories/computer-vision/" class="category-chain-item">computer vision</a>
   
+  
+    <span>></span>
     
-    <a href="/2023/12/10/einops/" class="list-group-item list-group-item-action">
-      <time>12-10</time>
-      <div class="list-group-item-title">einops</div>
-    </a>
+  <a href="/categories/computer-vision/sampling-operation/" class="category-chain-item">sampling operation</a>
   
+  
+
+  
+
+      </span>
     
-    <a href="/2023/12/10/einsum/" class="list-group-item list-group-item-action">
-      <time>12-10</time>
-      <div class="list-group-item-title">einsum</div>
-    </a>
   
-    
-    <a href="/2023/12/05/%E4%B8%8A%E9%87%87%E6%A0%B7%E6%80%BB%E7%BB%93-2023/" class="list-group-item list-group-item-action">
-      <time>12-05</time>
-      <div class="list-group-item-title">上采样总结-2023</div>
-    </a>
-  
-    
-    <a href="/2023/12/04/dysample/" class="list-group-item list-group-item-action">
-      <time>12-04</time>
-      <div class="list-group-item-title">dysample</div>
-    </a>
-  
-    
-    <a href="/2023/12/02/SAPA/" class="list-group-item list-group-item-action">
-      <time>12-02</time>
-      <div class="list-group-item-title">SAPA</div>
-    </a>
-  
-    
-    <a href="/2023/12/02/FADE/" class="list-group-item list-group-item-action">
-      <time>12-02</time>
-      <div class="list-group-item-title">FADE</div>
-    </a>
-  
-    
-    <a href="/2023/12/01/A2U/" class="list-group-item list-group-item-action">
-      <time>12-01</time>
-      <div class="list-group-item-title">A2U for deep matting</div>
-    </a>
-  
-    
-    <a href="/2023/11/18/Indexed%20Network/" class="list-group-item list-group-item-action">
-      <time>11-18</time>
-      <div class="list-group-item-title">IndexNet</div>
-    </a>
-  
-</div>
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/scientific-research/">#scientific research</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
 
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <span class="page-number current">1</span><a class="page-number" href="/archives/2023/page/2/#board">2</a><a class="extend next" rel="next" href="/archives/2023/page/2/#board"><i class="iconfont icon-arrowright"></i></a>
+      <a class="extend prev" rel="prev" href="/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
     </span>
   </nav>
-
 
 
 

@@ -16,25 +16,22 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="FADE: fusing the assets of decoder and encoder for task-agnostic upsampling ​	对于不同的稠密预测任务，有些任务注重于语义信息（semantic information），它们对图像位置信息敏感（region-sensitive）而有的任务（图像分割）注重于细节（detail-sensitive）。原有的上采样算子都是用">
+    <meta name="description" content="YOLO网络  YOLOV3：">
 <meta property="og:type" content="article">
-<meta property="og:title" content="FADE">
-<meta property="og:url" content="http://example.com/2023/12/02/FADE/index.html">
+<meta property="og:title" content="yolo">
+<meta property="og:url" content="http://example.com/2023/12/13/yolo/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="FADE: fusing the assets of decoder and encoder for task-agnostic upsampling ​	对于不同的稠密预测任务，有些任务注重于语义信息（semantic information），它们对图像位置信息敏感（region-sensitive）而有的任务（图像分割）注重于细节（detail-sensitive）。原有的上采样算子都是用">
+<meta property="og:description" content="YOLO网络  YOLOV3：">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/2023/12/02/FADE/E:%5Cblog%5Csource_posts%5CFADE%5Cimage-20231202182653030.png">
-<meta property="og:image" content="http://example.com/2023/12/02/FADE/E:%5Cblog%5Csource_posts%5CFADE%5Cimage-20231202204153583.png">
-<meta property="article:published_time" content="2023-12-02T09:56:32.000Z">
-<meta property="article:modified_time" content="2023-12-13T07:32:38.005Z">
+<meta property="article:published_time" content="2023-12-13T07:26:22.000Z">
+<meta property="article:modified_time" content="2023-12-13T08:01:46.726Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="scientific research">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/2023/12/02/FADE/E:%5Cblog%5Csource_posts%5CFADE%5Cimage-20231202182653030.png">
   
   
   
-  <title>FADE - Hexo</title>
+  <title>yolo - Hexo</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -204,7 +201,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="FADE"></span>
+            <span id="subtitle" data-typed-text="yolo"></span>
           
         </div>
 
@@ -215,8 +212,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-12-02 17:56" pubdate>
-          2023年12月2日 下午
+        <time datetime="2023-12-13 15:26" pubdate>
+          2023年12月13日 下午
         </time>
       </span>
     
@@ -227,7 +224,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.9k 字
+          13 字
         
       </span>
     
@@ -238,7 +235,7 @@
         
         
         
-          19 分钟
+          1 分钟
         
       </span>
     
@@ -275,30 +272,13 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">FADE</h1>
+            <h1 id="seo-header">yolo</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="fade-fusing-the-assets-of-decoder-and-encoder-for-task-agnostic-upsampling"><a class="markdownIt-Anchor" href="#fade-fusing-the-assets-of-decoder-and-encoder-for-task-agnostic-upsampling"></a> FADE: fusing the assets of decoder and encoder for task-agnostic upsampling</h1>
-<p>​	对于不同的稠密预测任务，有些任务注重于语义信息（semantic information），它们对图像位置信息敏感（region-sensitive）而有的任务（图像分割）注重于细节（detail-sensitive）。原有的上采样算子都是用于特定任务而不是通用型，本篇文章主要从encoder与decoder两方面解释了为什么CARAFE在semantic segmentation上优于IndexNet；IndexNet在image matting上优于CARAFE，并且提出了一种新的通用任务的采样算子FADE，FADE的有效性在于1.同时使用encoder与decoder，2.granular?，3.在产生上采样算子前使用一个gating mechanism模块，设计成与decoder无关以增强上采样算子的细节增强能力。</p>
-<h2 id="encoderdecoder"><a class="markdownIt-Anchor" href="#encoderdecoder"></a> encoder&amp;decoder</h2>
-<p>​	我们先提出一个假设：<strong>一个理想的上采样算子需要能够很好地保留semantic information的同时也需要补偿下采样过程中失去的细节信息；对于前者，semantic information已经嵌入在了decoder中，对于后者则存在于encoder中</strong>。我们进一步假设：正是因为encoder或者decoder中的信息使用不够充分或者有偏向性才导致采样算子有着task-dependent的特性。</p>
-<p>​	下面通过采样算子的原理解释为什么现有的采样算子task-dependent：</p>
-<p><img src="/2023/12/02/FADE/E:%5Cblog%5Csource_posts%5CFADE%5Cimage-20231202182653030.png" srcset="/img/loading.gif" lazyload alt="image-20231202182653030"></p>
-<ul>
-<li>CARAFE的上采样算子通过下采样之后的特征图产生，即由decoder feature产生，这样就充分利用了decoder feature的信息而丢失了下采样前的图像细节信息。</li>
-<li>IndexNet和A2U的上采样核通过下采样前的feature map产生，这样就充分利用了原feature map中的细节信息，而没有利用采样后的semantic information</li>
-<li>于是我们提出了FADE：通过将encoder与decoder的信息融合生成采样算子</li>
-</ul>
-<h3 id="那么接下来的问题是如何将两个信息全部利用起来"><a class="markdownIt-Anchor" href="#那么接下来的问题是如何将两个信息全部利用起来"></a> 那么接下来的问题是如何将两个信息全部利用起来？</h3>
-<p>​	How to leverage both encoder and decoder features for task-agnostic upsampling?</p>
-<p>​	一个朴素的想法是将encoder与decoder所提供的信息concatenate起来，通过卷积进行特征提取（卷积核实质上就是一个滤波器）生成上采样算子，但是主要的问题是：encoder与decoder所提供的feature map大小不一样（mismatched resolution），考虑如果对decoder使用参数为2的临近插值（2NN）进行信息补全，同时上采样率为2，当我们使用 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn><mo>×</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">3 \times 3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">3</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">3</span></span></span></span> 大小的卷积核进行卷积时，本来是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn><mo>×</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">3 \times 3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">3</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">3</span></span></span></span> 大小的感受野就退化为只能感受到4个像素信息，同时实验也证明这种方法并不好。于是启发我们设计一个新的解决方案</p>
-<p><img src="/2023/12/02/FADE/E:%5Cblog%5Csource_posts%5CFADE%5Cimage-20231202204153583.png" srcset="/img/loading.gif" lazyload alt="image-20231202204153583"></p>
-<h3 id="semi-convolution"><a class="markdownIt-Anchor" href="#semi-convolution"></a> semi convolution:</h3>
-<p>​	decoder feature大小为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mo>×</mo><mi>W</mi><mo>×</mo><mi>C</mi></mrow><annotation encoding="application/x-tex">H \times W \times C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord mathnormal" style="margin-right:0.08125em;">H</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">W</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span></span></span></span>，encoder feature大小为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>H</mi><mo>×</mo><mn>2</mn><mi>W</mi><mo>×</mo><mi>C</mi></mrow><annotation encoding="application/x-tex">2 H \times 2 W \times  C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord">2</span><span class="mord mathnormal" style="margin-right:0.08125em;">H</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.76666em;vertical-align:-0.08333em;"></span><span class="mord">2</span><span class="mord mathnormal" style="margin-right:0.13889em;">W</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span></span></span></span>，下面讨论两种方案：朴素方案为：1.先进行插值操作使两个feature map大小相同。2.将两个feature map concatenate在一起。3.进行单通道卷积，生成合适通道数的feature map（压缩通道数）。4.进行<strong>普通</strong>卷积提取特征。5.使用softmax进行normalize。过程如上图所示。</p>
-<p>​	semi convolution操作如上图所示，在上图decoder feature的四个卷积窗口都对应encode feature中的一个卷积窗口（问题：这四个卷积核是一个核还是四个核）</p>
-<p>Q:we assume that all decoder layers have <strong>gradient-imposed distribution priors</strong> and can be encoded to inform the requisite of detail or semantic information. In this way fine details can be chosen from encoder features without hurting the semantic property of decoder features</p>
+                <h1 id="yolo网络"><a class="markdownIt-Anchor" href="#yolo网络"></a> YOLO网络</h1>
+<h2 id="yolov3"><a class="markdownIt-Anchor" href="#yolov3"></a> YOLOV3：</h2>
 
                 
               </div>
@@ -322,7 +302,7 @@
   
     <span>></span>
     
-  <a href="/categories/computer-vision/sampling-operation/" class="category-chain-item">sampling operation</a>
+  <a href="/categories/computer-vision/networks/" class="category-chain-item">networks</a>
   
   
 
@@ -351,8 +331,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>FADE</div>
-      <div>http://example.com/2023/12/02/FADE/</div>
+      <div>yolo</div>
+      <div>http://example.com/2023/12/13/yolo/</div>
     </div>
     <div class="license-meta">
       
@@ -364,7 +344,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2023年12月2日</div>
+          <div>2023年12月13日</div>
         </div>
       
       
@@ -396,9 +376,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/12/02/SAPA/" title="SAPA">
+                      <a href="/2023/12/13/%E9%A1%B9%E7%9B%AE%E7%BB%8F%E9%AA%8C/" title="pytorch项目经验">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">SAPA</span>
+                        <span class="hidden-mobile">pytorch项目经验</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -406,8 +386,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/12/01/A2U/" title="A2U for deep matting">
-                        <span class="hidden-mobile">A2U for deep matting</span>
+                      <a href="/2023/12/10/einops/" title="einops">
+                        <span class="hidden-mobile">einops</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
