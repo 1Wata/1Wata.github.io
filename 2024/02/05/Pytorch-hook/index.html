@@ -26,7 +26,7 @@
 <meta property="og:image" content="http://example.com/2024/02/05/Pytorch-hook/1.png">
 <meta property="og:image" content="http://example.com/2024/02/05/Pytorch-hook/2.png">
 <meta property="article:published_time" content="2024-02-05T13:06:58.000Z">
-<meta property="article:modified_time" content="2024-02-06T01:41:28.316Z">
+<meta property="article:modified_time" content="2024-02-06T01:50:06.138Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://example.com/2024/02/05/Pytorch-hook/1.png">
@@ -321,13 +321,21 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">tensor.grad_fn.register_hook(hook: <span class="hljs-type">Callable</span>[[Tensor], <span class="hljs-literal">None</span>]) -&gt; torch.utils.hooks.RemovableHandle<br></code></pre></td></tr></table></figure>
 <h3 id="参数说明"><a class="markdownIt-Anchor" href="#参数说明"></a> <strong>参数说明：</strong></h3>
 <ul>
-<li>
-<pre class="highlight"><code class>hook: Callable[[Tensor], None]
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><br>  - 这是一个接受一个张量作为输入的可调用对象（通常为函数）<br>  - 输入的张量是该操作在反向传播过程中产生的梯度，即当计算当前张量的上游梯度时，传递给`hook_function`的是当前张量的梯度<br>  - `hook`函数没有返回值要求，其目的是为了让你能够监控或者修改这个张量的梯度<br>  - 对于 `<span class="hljs-attribute">grad_fn</span>=<span class="hljs-literal">True</span>` 的 Tensor，**可以直接使用 `tensor.register_hook` 而不需要显式地先指向 `grad_fn` 属性**<br><br><span class="hljs-comment">### **返回值**：</span><br><br>- 无直接返回值，但会返回一个 `torch.utils.hooks.RemovableHandle` 对象。通过该对象加上 `.<span class="hljs-built_in">remove</span>()` 可以随时移除之前注册的钩子函数<br><br>注意：尽量**不要在动态图的中间节点的hook函数中使用某个节点的 grad_fn 的 inplace 操作**，比如 `<span class="hljs-attribute">c</span>=a+b` 如果在 b 的 hook 中原地改变 b 的梯度，则 a 的梯度也会一样改变，因为 Pytorch 的底层机制，反向传播过程中发现 a 和 b 的梯度相同，就直接将 b 的梯度信息复制过去了！<br><br>```python<br>import torch<br>a = torch.tensor(2.0, <span class="hljs-attribute">requires_grad</span>=<span class="hljs-literal">True</span>)<br>b = torch.tensor(3.0, <span class="hljs-attribute">requires_grad</span>=<span class="hljs-literal">True</span>)<br>c = a * b<br><br>def c_hook(grad):<br>    <span class="hljs-built_in">print</span>(grad)<br>    return grad + 2<br><br>c.register_hook(c_hook)<br>c.register_hook(lambda grad: <span class="hljs-built_in">print</span>(grad))<br>c.retain_grad()<br><br>d = torch.tensor(4.0, <span class="hljs-attribute">requires_grad</span>=<span class="hljs-literal">True</span>)<br>d.register_hook(lambda grad: grad + 100)<br><br>e = c * d<br>e.retain_grad()<br>e.register_hook(lambda grad: grad * 2)<br>e.retain_grad() # second-time retain_grad() is NOP (NOP:空操作)<br><br>e.backward()<br><span class="hljs-built_in">print</span>(f<span class="hljs-string">&#x27;a.grad &#123;a.grad&#125;&#x27;</span>)<br><span class="hljs-built_in">print</span>(f<span class="hljs-string">&#x27;b.grad &#123;b.grad&#125;&#x27;</span>)<br><span class="hljs-built_in">print</span>(f<span class="hljs-string">&#x27;c.grad &#123;c.grad&#125;&#x27;</span>)<br><span class="hljs-built_in">print</span>(f<span class="hljs-string">&#x27;d.grad &#123;d.grad&#125;&#x27;</span>)<br><span class="hljs-built_in">print</span>(f<span class="hljs-string">&#x27;e.grad &#123;e.grad&#125;&#x27;</span>)<br><span class="hljs-comment">#---------运行结果---------</span><br>tensor(8.)<br>tensor(10.)<br>a.grad 30.0<br>b.grad 20.0<br>c.grad 10.0<br>d.grad 112.0<br>e.grad 2.0<br></code></pre></td></tr></table></figure>
-
-</code></pre>
+<li><code>hook: Callable[[Tensor], None]</code>
+<ul>
+<li>这是一个接受一个张量作为输入的可调用对象（通常为函数）</li>
+<li>输入的张量是该操作在反向传播过程中产生的梯度，即当计算当前张量的上游梯度时，传递给<code>hook_function</code>的是当前张量的梯度</li>
+<li><code>hook</code>函数没有返回值要求，其目的是为了让你能够监控或者修改这个张量的梯度</li>
+<li>对于 <code>grad_fn=True</code> 的 Tensor，<strong>可以直接使用 <code>tensor.register_hook</code> 而不需要显式地先指向 <code>grad_fn</code> 属性</strong></li>
+</ul>
 </li>
 </ul>
+<h3 id="返回值"><a class="markdownIt-Anchor" href="#返回值"></a> <strong>返回值</strong>：</h3>
+<ul>
+<li>无直接返回值，但会返回一个 <code>torch.utils.hooks.RemovableHandle</code> 对象。通过该对象加上 <code>.remove()</code> 可以随时移除之前注册的钩子函数</li>
+</ul>
+<p>注意：尽量<strong>不要在动态图的中间节点的hook函数中使用某个节点的 grad_fn 的 inplace 操作</strong>，比如 <code>c=a+b</code> 如果在 b 的 hook 中原地改变 b 的梯度，则 a 的梯度也会一样改变，因为 Pytorch 的底层机制，反向传播过程中发现 a 和 b 的梯度相同，就直接将 b 的梯度信息复制过去了！</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> torch<br>a = torch.tensor(<span class="hljs-number">2.0</span>, requires_grad=<span class="hljs-literal">True</span>)<br>b = torch.tensor(<span class="hljs-number">3.0</span>, requires_grad=<span class="hljs-literal">True</span>)<br>c = a * b<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">c_hook</span>(<span class="hljs-params">grad</span>):<br>    <span class="hljs-built_in">print</span>(grad)<br>    <span class="hljs-keyword">return</span> grad + <span class="hljs-number">2</span><br><br>c.register_hook(c_hook)<br>c.register_hook(<span class="hljs-keyword">lambda</span> grad: <span class="hljs-built_in">print</span>(grad))<br>c.retain_grad()<br><br>d = torch.tensor(<span class="hljs-number">4.0</span>, requires_grad=<span class="hljs-literal">True</span>)<br>d.register_hook(<span class="hljs-keyword">lambda</span> grad: grad + <span class="hljs-number">100</span>)<br><br>e = c * d<br>e.retain_grad()<br>e.register_hook(<span class="hljs-keyword">lambda</span> grad: grad * <span class="hljs-number">2</span>)<br>e.retain_grad() <span class="hljs-comment"># second-time retain_grad() is NOP (NOP:空操作)</span><br><br>e.backward()<br><span class="hljs-built_in">print</span>(<span class="hljs-string">f&#x27;a.grad <span class="hljs-subst">&#123;a.grad&#125;</span>&#x27;</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">f&#x27;b.grad <span class="hljs-subst">&#123;b.grad&#125;</span>&#x27;</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">f&#x27;c.grad <span class="hljs-subst">&#123;c.grad&#125;</span>&#x27;</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">f&#x27;d.grad <span class="hljs-subst">&#123;d.grad&#125;</span>&#x27;</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">f&#x27;e.grad <span class="hljs-subst">&#123;e.grad&#125;</span>&#x27;</span>)<br><span class="hljs-comment">#---------运行结果---------</span><br>tensor(<span class="hljs-number">8.</span>)<br>tensor(<span class="hljs-number">10.</span>)<br>a.grad <span class="hljs-number">30.0</span><br>b.grad <span class="hljs-number">20.0</span><br>c.grad <span class="hljs-number">10.0</span><br>d.grad <span class="hljs-number">112.0</span><br>e.grad <span class="hljs-number">2.0</span><br></code></pre></td></tr></table></figure>
 <p><img src="/2024/02/05/Pytorch-hook/1.png" srcset="/img/loading.gif" lazyload alt="代码解释"></p>
 <h2 id="register_forward_hookhook_function-用法"><a class="markdownIt-Anchor" href="#register_forward_hookhook_function-用法"></a> <code>register_forward_hook(hook_function)</code> 用法：</h2>
 <h3 id="函数签名-2"><a class="markdownIt-Anchor" href="#函数签名-2"></a> <strong>函数签名</strong>：</h3>
@@ -342,7 +350,7 @@
 </ul>
 </li>
 </ul>
-<h3 id="返回值"><a class="markdownIt-Anchor" href="#返回值"></a> <strong>返回值</strong>：</h3>
+<h3 id="返回值-2"><a class="markdownIt-Anchor" href="#返回值-2"></a> <strong>返回值</strong>：</h3>
 <ul>
 <li>无直接返回值，但会返回一个 <code>torch.utils.hooks.RemovableHandle</code> 对象。通过该对象加上 <code>.remove()</code> 可以随时移除之前注册的钩子函数</li>
 </ul>
@@ -360,7 +368,7 @@
 </ul>
 </li>
 </ul>
-<h3 id="返回值-2"><a class="markdownIt-Anchor" href="#返回值-2"></a> <strong>返回值</strong>：</h3>
+<h3 id="返回值-3"><a class="markdownIt-Anchor" href="#返回值-3"></a> <strong>返回值</strong>：</h3>
 <ul>
 <li>无直接返回值，但会返回一个 <code>torch.utils.hooks.RemovableHandle</code> 对象。通过该对象加上 <code>.remove()</code> 可以随时移除之前注册的钩子函数</li>
 </ul>
