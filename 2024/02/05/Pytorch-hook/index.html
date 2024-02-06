@@ -23,13 +23,13 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="Pytorch 的 hook 机制：  简介： 在PyTorch中，hook机制是一种强大的工具，它允许开发者在不修改模型原始结构的情况下，插入自定义函数来访问、记录或修改模型运行过程中的中间层输出（forward pass）和梯度（backward pass）。 具体来说，在torch.nn.Module及其包含的torch.Tensor对象上可以注册hook。通过调用.register_fo">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/2024/02/05/Pytorch-hook/2.png">
+<meta property="og:image" content="http://example.com/2024/02/05/Pytorch-hook/1.png">
 <meta property="og:image" content="http://example.com/2024/02/05/Pytorch-hook/2.png">
 <meta property="article:published_time" content="2024-02-05T13:06:58.000Z">
-<meta property="article:modified_time" content="2024-02-05T16:54:15.691Z">
+<meta property="article:modified_time" content="2024-02-06T01:41:28.316Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/2024/02/05/Pytorch-hook/2.png">
+<meta name="twitter:image" content="http://example.com/2024/02/05/Pytorch-hook/1.png">
   
   
   
@@ -328,7 +328,7 @@
 </code></pre>
 </li>
 </ul>
-<p><img src="/2024/02/05/Pytorch-hook/2.png" srcset="/img/loading.gif" lazyload alt="代码解释"></p>
+<p><img src="/2024/02/05/Pytorch-hook/1.png" srcset="/img/loading.gif" lazyload alt="代码解释"></p>
 <h2 id="register_forward_hookhook_function-用法"><a class="markdownIt-Anchor" href="#register_forward_hookhook_function-用法"></a> <code>register_forward_hook(hook_function)</code> 用法：</h2>
 <h3 id="函数签名-2"><a class="markdownIt-Anchor" href="#函数签名-2"></a> <strong>函数签名</strong>：</h3>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">nn.Module.register_forward_hook(hook)<br></code></pre></td></tr></table></figure>
