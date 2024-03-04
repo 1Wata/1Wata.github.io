@@ -16,15 +16,15 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="MMCV核心组件学习(1)  MMCV 整体概述 MMCV 从一开始的定位就是提供底层通用组件，故在设计之初就已经考虑到了灵活性和可扩展性，其主要特性是：  统一可扩展的 io api 支持非常丰富的图像&#x2F;视频处理算子 图片&#x2F;视频的标注文件可视化 常用的工具类例如 timer 和 progress bar 等等 上层框架需要的 hook 机制以及可以直接使用的 runner 高度灵活的 conf">
+    <meta name="description" content="MMCV核心组件FileHandler  MMCV 整体概述 MMCV 从一开始的定位就是提供底层通用组件，故在设计之初就已经考虑到了灵活性和可扩展性，其主要特性是：  统一可扩展的 io api 支持非常丰富的图像&#x2F;视频处理算子 图片&#x2F;视频的标注文件可视化 常用的工具类例如 timer 和 progress bar 等等 上层框架需要的 hook 机制以及可以直接使用的 runner 高度灵活">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MMCV组件1">
 <meta property="og:url" content="http://example.com/2024/03/03/mmcv%E7%BB%84%E4%BB%B61/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="MMCV核心组件学习(1)  MMCV 整体概述 MMCV 从一开始的定位就是提供底层通用组件，故在设计之初就已经考虑到了灵活性和可扩展性，其主要特性是：  统一可扩展的 io api 支持非常丰富的图像&#x2F;视频处理算子 图片&#x2F;视频的标注文件可视化 常用的工具类例如 timer 和 progress bar 等等 上层框架需要的 hook 机制以及可以直接使用的 runner 高度灵活的 conf">
+<meta property="og:description" content="MMCV核心组件FileHandler  MMCV 整体概述 MMCV 从一开始的定位就是提供底层通用组件，故在设计之初就已经考虑到了灵活性和可扩展性，其主要特性是：  统一可扩展的 io api 支持非常丰富的图像&#x2F;视频处理算子 图片&#x2F;视频的标注文件可视化 常用的工具类例如 timer 和 progress bar 等等 上层框架需要的 hook 机制以及可以直接使用的 runner 高度灵活">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-03-03T07:03:33.000Z">
-<meta property="article:modified_time" content="2024-03-03T12:04:22.516Z">
+<meta property="article:modified_time" content="2024-03-04T13:24:34.467Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -211,7 +211,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          838 字
+          836 字
         
       </span>
     
@@ -264,7 +264,7 @@
             
               <div class="markdown-body">
                 
-                <h1 id="mmcv核心组件学习1"><a class="markdownIt-Anchor" href="#mmcv核心组件学习1"></a> MMCV核心组件学习(1)</h1>
+                <h1 id="mmcv核心组件filehandler"><a class="markdownIt-Anchor" href="#mmcv核心组件filehandler"></a> MMCV核心组件FileHandler</h1>
 <h2 id="mmcv-整体概述"><a class="markdownIt-Anchor" href="#mmcv-整体概述"></a> MMCV 整体概述</h2>
 <p>MMCV 从一开始的定位就是提供底层通用组件，故在设计之初就已经考虑到了灵活性和可扩展性，其主要特性是：</p>
 <ul>

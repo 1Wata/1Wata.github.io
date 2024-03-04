@@ -216,15 +216,81 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
+        <a href="/2024/03/04/mmcv4/" target="_self">
+          MMCV组件4
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/04/mmcv4/" target="_self">
+        <div>
+          MMCV核心组件Config  配置文件读取 配置类提供了统一的接口 Config.fromfile()，来读取和解析配置文件。 合法的配置文件应该定义一系列键值对，这里举几个不同格式配置文件的例子。 Python 格式： 123test_int = 1test_list = [1, 2, 3]test_dict = dict(key1=&#x27;value1&#x27;, key2=0.1)
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-03-04 20:43" pubdate>
+              2024-03-04
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/03/04/mmcv%E7%BB%84%E4%BB%B63/" target="_self">
+          MMCV组件3
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/04/mmcv%E7%BB%84%E4%BB%B63/" target="_self">
+        <div>
+          MMCV核心组件Registry ​	从2.0.0版本开始，config 和 registry 机制移动到了 mmengine 里面，本文是以mmengine模块中的registry讲解的，其实老版本的registry也差不多，调用的时候从mmcv.utils里面调用就行 ​	OpenMMLab 的算法库支持了丰富的算法和数据集，因此实现了很多功能相近的模块。例如 ResNet 和 SE-Res
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-03-04 18:17" pubdate>
+              2024-03-04
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
         <a href="/2024/03/03/mmcv%E7%BB%84%E4%BB%B62/" target="_self">
-          MMCV组件1
+          MMCV组件2
         </a>
       </h2>
 
       
       <a class="index-excerpt index-excerpt__noimg" href="/2024/03/03/mmcv%E7%BB%84%E4%BB%B62/" target="_self">
         <div>
-          MMCV核心组件学习(2)  MMCV 核心组件FileClient分析： ​	图片的读取一般包括两个步骤：  给定文件路径，读取文件内容（字节流） 对文件字节内容进行解码  ​	第2步文件解码非常简单，通过 mmcv.imfrombytes 函数即可实现，该函数会对不同图片格式进行相应解码。用户各种各样需求基本上都出现在第一步，例如：  给定图片名（或者图片路径），直接读取文件内容即可 利用
+          MMCV核心组件学习FileClient  FileClient源码分析： ​	图片的读取一般包括两个步骤：  给定文件路径，读取文件内容（字节流） 对文件字节内容进行解码  ​	第2步文件解码非常简单，通过 mmcv.imfrombytes 函数即可实现，该函数会对不同图片格式进行相应解码。用户各种各样需求基本上都出现在第一步，例如：  给定图片名（或者图片路径），直接读取文件内容即可 利用
         </div>
       </a>
 
@@ -290,7 +356,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2024/03/03/mmcv%E7%BB%84%E4%BB%B61/" target="_self">
         <div>
-          MMCV核心组件学习(1)  MMCV 整体概述 MMCV 从一开始的定位就是提供底层通用组件，故在设计之初就已经考虑到了灵活性和可扩展性，其主要特性是：  统一可扩展的 io api 支持非常丰富的图像/视频处理算子 图片/视频的标注文件可视化 常用的工具类例如 timer 和 progress bar 等等 上层框架需要的 hook 机制以及可以直接使用的 runner 高度灵活的 conf
+          MMCV核心组件FileHandler  MMCV 整体概述 MMCV 从一开始的定位就是提供底层通用组件，故在设计之初就已经考虑到了灵活性和可扩展性，其主要特性是：  统一可扩展的 io api 支持非常丰富的图像/视频处理算子 图片/视频的标注文件可视化 常用的工具类例如 timer 和 progress bar 等等 上层框架需要的 hook 机制以及可以直接使用的 runner 高度灵活
         </div>
       </a>
 
@@ -544,77 +610,11 @@
     </article>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/02/18/Segformer-2/" target="_self">
-          Segformer(2)
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/18/Segformer-2/" target="_self">
-        <div>
-          Segformer 论文详解： ​	在SegFormer提出时，transformer已经开始在图像领域展露头角。在此之前，SETR最早将transformer结构引入到了语义分割任务中。SETR采用ViT作为backbone，并结合多个CNN decoder来放大特征分辨率。但是SETR具有两个局限性：  没有利用 multi-scale 特征 具有非常高的计算消耗  为了解决上述问题，pyr
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-02-18 19:00" pubdate>
-              2024-02-18
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/02/17/segformer-1/" target="_self">
-          segformer(1)
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/17/segformer-1/" target="_self">
-        <div>
-          Segformer 代码结构分析  MMSegmentation 算法库的整体框架 ​	MMSegmentation 是 OpenMMLab 开源的基于 PyTorch 实现的功能强大的语义分割工具箱，MMSegmentation 的主要特性如下：  丰富的语义分割模型： 已支持 11 种主干网络和 34 种算法，例如常用模型 FCN， PSPNet 和 DeepLabV3；Transforme
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-02-17 10:50" pubdate>
-              2024-02-17
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
 
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/#board">2</a><a class="page-number" href="/page/3/#board">3</a><a class="extend next" rel="next" href="/page/2/#board"><i class="iconfont icon-arrowright"></i></a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/#board">2</a><a class="page-number" href="/page/3/#board">3</a><a class="page-number" href="/page/4/#board">4</a><a class="extend next" rel="next" href="/page/2/#board"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
 
