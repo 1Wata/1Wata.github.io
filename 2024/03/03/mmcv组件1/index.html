@@ -16,15 +16,15 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="MMCV核心组件FileHandler  MMCV 整体概述 MMCV 从一开始的定位就是提供底层通用组件，故在设计之初就已经考虑到了灵活性和可扩展性，其主要特性是：  统一可扩展的 io api 支持非常丰富的图像&#x2F;视频处理算子 图片&#x2F;视频的标注文件可视化 常用的工具类例如 timer 和 progress bar 等等 上层框架需要的 hook 机制以及可以直接使用的 runner 高度灵活">
+    <meta name="description" content="MMCV核心组件FileHandler ​	注意：在2.0.0版本以后，FileHandler和FileClient的功能已经转到mmengine中了(它们在mmengine.fileio模块中)，但是功能和用法大体不变，导入和使用方式如下： 123456789101112# 在2.0.0半本以后，mmcv.load 函数已经被移除。在新版本中，# 此功能已经被重新设计和整合到了 mmcv.co">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MMCV组件1">
 <meta property="og:url" content="http://example.com/2024/03/03/mmcv%E7%BB%84%E4%BB%B61/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="MMCV核心组件FileHandler  MMCV 整体概述 MMCV 从一开始的定位就是提供底层通用组件，故在设计之初就已经考虑到了灵活性和可扩展性，其主要特性是：  统一可扩展的 io api 支持非常丰富的图像&#x2F;视频处理算子 图片&#x2F;视频的标注文件可视化 常用的工具类例如 timer 和 progress bar 等等 上层框架需要的 hook 机制以及可以直接使用的 runner 高度灵活">
+<meta property="og:description" content="MMCV核心组件FileHandler ​	注意：在2.0.0版本以后，FileHandler和FileClient的功能已经转到mmengine中了(它们在mmengine.fileio模块中)，但是功能和用法大体不变，导入和使用方式如下： 123456789101112# 在2.0.0半本以后，mmcv.load 函数已经被移除。在新版本中，# 此功能已经被重新设计和整合到了 mmcv.co">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-03-03T07:03:33.000Z">
-<meta property="article:modified_time" content="2024-03-04T13:24:34.467Z">
+<meta property="article:modified_time" content="2024-03-05T08:05:54.223Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -211,7 +211,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          836 字
+          935 字
         
       </span>
     
@@ -222,7 +222,7 @@
         
         
         
-          9 分钟
+          10 分钟
         
       </span>
     
@@ -265,6 +265,8 @@
               <div class="markdown-body">
                 
                 <h1 id="mmcv核心组件filehandler"><a class="markdownIt-Anchor" href="#mmcv核心组件filehandler"></a> MMCV核心组件FileHandler</h1>
+<p>​	<strong>注意：在2.0.0版本以后，<code>FileHandler</code>和<code>FileClient</code>的功能已经转到mmengine中了(它们在<code>mmengine.fileio</code>模块中)，但是功能和用法大体不变，导入和使用方式如下：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 在2.0.0半本以后，mmcv.load 函数已经被移除。在新版本中，</span><br><span class="hljs-comment"># 此功能已经被重新设计和整合到了 mmcv.config 模块中</span><br><span class="hljs-keyword">from</span> mmengine <span class="hljs-keyword">import</span> Config<br>cfg = Config.fromfile(<span class="hljs-string">&quot;/path_to_your_file&quot;</span>)<br><br><span class="hljs-comment"># ，FileClient 类已经被迁移到了 MMEngine 项目中</span><br><span class="hljs-keyword">from</span> mmengine.fileio <span class="hljs-keyword">import</span> FileClient, FileHandler<br><br>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<br><span class="hljs-comment"># 在2.0.0版本以前，使用方式是：</span><br><span class="hljs-keyword">from</span> mmcv.fileio <span class="hljs-keyword">import</span> FileClient<br><span class="hljs-keyword">from</span> mmcv <span class="hljs-keyword">import</span> load<br></code></pre></td></tr></table></figure>
 <h2 id="mmcv-整体概述"><a class="markdownIt-Anchor" href="#mmcv-整体概述"></a> MMCV 整体概述</h2>
 <p>MMCV 从一开始的定位就是提供底层通用组件，故在设计之初就已经考虑到了灵活性和可扩展性，其主要特性是：</p>
 <ul>
