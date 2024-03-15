@@ -25,7 +25,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/2024/03/13/TensorBoard-1/1.png">
 <meta property="article:published_time" content="2024-03-13T10:27:20.000Z">
-<meta property="article:modified_time" content="2024-03-13T12:18:05.260Z">
+<meta property="article:modified_time" content="2024-03-14T08:41:04.069Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://example.com/2024/03/13/TensorBoard-1/1.png">
@@ -327,7 +327,7 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">SummaryWriter.add_histogram(tag, values, global_step=<span class="hljs-literal">None</span>, walltime=<span class="hljs-literal">None</span>, max_bins=<span class="hljs-literal">None</span>)<br></code></pre></td></tr></table></figure>
 <p>参数解释：</p>
 <ul>
-<li><code>values</code>：一个一维的 <code>tf.Tensor</code> 或 <code>numpy</code> 数组，表示要记录的直方图数据</li>
+<li><code>values</code>：一个的 <code>torch.Tensor</code> 或 <code>numpy</code> 数组，表示要记录的直方图数据</li>
 <li><code>max_bins</code>（可选）：一个整数，指定直方图中的最大桶（bin）数。默认情况下，TensorBoard 会根据数据范围自动选择桶数</li>
 </ul>
 <p><img src="/2024/03/13/TensorBoard-1/1.png" srcset="/img/loading.gif" lazyload alt="histogram示意图"></p>
@@ -337,7 +337,7 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">SummaryWriter.add_image(tag, img_tensor, global_step=<span class="hljs-literal">None</span>, walltime=<span class="hljs-literal">None</span>, max_images=<span class="hljs-number">1</span>)<br></code></pre></td></tr></table></figure>
 <p>参数解释：</p>
 <ul>
-<li><code>img_tensor</code>：一个四维的 <code>tf.Tensor</code>，表示要记录的图像数据。图像张量的形状应该是 <code>[batch_size, height, width, channels]</code>，其中 <code>channels</code> 是图像的通道数（例如，对于 RGB 图像，<code>channels</code> 应该是 3）。</li>
+<li><code>img_tensor</code>：一个四维的 <code>torch.Tensor</code>，表示要记录的图像数据。图像张量的形状应该是 <code>[batch_size, channels, height, width]</code>，其中 <code>channels</code> 是图像的通道数（例如，对于 RGB 图像，<code>channels</code> 应该是 3）。</li>
 <li><code>max_images</code>（可选）：一个整数，指定在 TensorBoard 中显示的最大图像数量。默认为 1</li>
 </ul>
 <p><strong>注：该函数与<code>torchvision.utils.make_grid</code> 同时使用会十分方便</strong></p>
@@ -368,8 +368,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/03/13/TensorBoard-2/" title="TensorBoardX教程(1)">
-                        <span class="hidden-mobile">TensorBoardX教程(1)</span>
+                      <a href="/2024/03/13/TensorBoard-2/" title="TensorBoardX教程(2)">
+                        <span class="hidden-mobile">TensorBoardX教程(2)</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
