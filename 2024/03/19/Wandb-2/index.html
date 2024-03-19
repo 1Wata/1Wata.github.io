@@ -16,23 +16,21 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Tensorboard的示例应用  Tensorboard进行中间特征图可视化： ​	采用了注册钩子函数，再钩子函数中记录特征图，并将其可视化下来的方案，代码如下： 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849import torchimport torch.nn">
+    <meta name="description" content="Wandb教程(2) ​	本篇文章用于介绍Wandb如何进行网格超参数搜索，主要使用了Wandb中的Sweep功能：  Sweep使用流程：  定义 Sweeps 配置 ​	Wandb的配置文件支持YAML和Python等多种文件格式，关于如何配置Sweep可见[官方文档](Define sweep configuration for hyperparameter tuning. (wandb.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="TensorBoardX教程(2)">
-<meta property="og:url" content="http://example.com/2024/03/13/TensorBoard-2/index.html">
+<meta property="og:title" content="Wandb教程(2)">
+<meta property="og:url" content="http://example.com/2024/03/19/Wandb-2/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Tensorboard的示例应用  Tensorboard进行中间特征图可视化： ​	采用了注册钩子函数，再钩子函数中记录特征图，并将其可视化下来的方案，代码如下： 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849import torchimport torch.nn">
+<meta property="og:description" content="Wandb教程(2) ​	本篇文章用于介绍Wandb如何进行网格超参数搜索，主要使用了Wandb中的Sweep功能：  Sweep使用流程：  定义 Sweeps 配置 ​	Wandb的配置文件支持YAML和Python等多种文件格式，关于如何配置Sweep可见[官方文档](Define sweep configuration for hyperparameter tuning. (wandb.">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/2024/03/13/TensorBoard-2/image-20240314163347425.png">
-<meta property="article:published_time" content="2024-03-13T12:37:50.000Z">
-<meta property="article:modified_time" content="2024-03-15T09:28:47.328Z">
+<meta property="article:published_time" content="2024-03-19T10:55:07.000Z">
+<meta property="article:modified_time" content="2024-03-19T11:21:24.289Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/2024/03/13/TensorBoard-2/image-20240314163347425.png">
   
   
   
-  <title>TensorBoardX教程(2) - Hexo</title>
+  <title>Wandb教程(2) - Hexo</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -190,7 +188,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="TensorBoardX教程(2)"></span>
+            <span id="subtitle" data-typed-text="Wandb教程(2)"></span>
           
         </div>
 
@@ -201,8 +199,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-03-13 20:37" pubdate>
-          2024年3月13日 晚上
+        <time datetime="2024-03-19 18:55" pubdate>
+          2024年3月19日 晚上
         </time>
       </span>
     
@@ -213,7 +211,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          178 字
+          367 字
         
       </span>
     
@@ -224,7 +222,7 @@
         
         
         
-          2 分钟
+          4 分钟
         
       </span>
     
@@ -261,22 +259,31 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">TensorBoardX教程(2)</h1>
+            <h1 id="seo-header">Wandb教程(2)</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="tensorboard的示例应用"><a class="markdownIt-Anchor" href="#tensorboard的示例应用"></a> Tensorboard的示例应用</h1>
-<h2 id="tensorboard进行中间特征图可视化"><a class="markdownIt-Anchor" href="#tensorboard进行中间特征图可视化"></a> Tensorboard进行中间特征图可视化：</h2>
-<p>​	采用了注册钩子函数，再钩子函数中记录特征图，并将其可视化下来的方案，代码如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> torch<br><span class="hljs-keyword">import</span> torch.nn <span class="hljs-keyword">as</span> nn<br><span class="hljs-keyword">import</span> torchvision.models <span class="hljs-keyword">as</span> models<br><span class="hljs-keyword">from</span> torchvision.transforms <span class="hljs-keyword">import</span> transforms<br><span class="hljs-keyword">import</span> torchvision.utils <span class="hljs-keyword">as</span> vutils<br><span class="hljs-keyword">from</span> tensorboardX <span class="hljs-keyword">import</span> SummaryWriter<br><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt<br><span class="hljs-keyword">from</span> PIL <span class="hljs-keyword">import</span> Image<br><br><br>vgg16_pretrained = models.vgg16(pretrained=<span class="hljs-literal">True</span>)<br>writer = SummaryWriter(<span class="hljs-string">&quot;./Visualize_featuremap&quot;</span>)<br><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyModel</span>(nn.Module):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-built_in">super</span>(MyModel, self).__init__()<br>        self.encoder1 = vgg16_pretrained.features[:<span class="hljs-number">5</span>]<br>        self.encoder2 = vgg16_pretrained.features[<span class="hljs-number">5</span>:<span class="hljs-number">10</span>]<br>        self.encoder3 = vgg16_pretrained.features[<span class="hljs-number">10</span>:<span class="hljs-number">17</span>]<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">forward</span>(<span class="hljs-params">self, x</span>):<br>        x = self.encoder1(x)<br>        x = self.encoder2(x)<br>        x = self.encoder3(x)<br>        <span class="hljs-keyword">return</span> x<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">visualize</span>(<span class="hljs-params">module, <span class="hljs-built_in">input</span>, output</span>):<br>    output = output.squeeze(<span class="hljs-number">0</span>).unsqueeze(<span class="hljs-number">1</span>)<br>    output_image = vutils.make_grid(output, nrow=<span class="hljs-number">8</span>, padding=<span class="hljs-number">2</span>, normalize=<span class="hljs-literal">True</span>)<br>    writer.add_image(<span class="hljs-string">&#x27;output:&#x27;</span>, img_tensor=output_image)<br><br>mymodel = MyModel()<br>mymodel.encoder1.register_forward_hook(<span class="hljs-keyword">lambda</span> module, <span class="hljs-built_in">input</span>, output: visualize(module, <span class="hljs-built_in">input</span>, output))<br>mymodel.encoder2.register_forward_hook(<span class="hljs-keyword">lambda</span> module, <span class="hljs-built_in">input</span>, output: visualize(module, <span class="hljs-built_in">input</span>, output))<br>mymodel.encoder3.register_forward_hook(<span class="hljs-keyword">lambda</span> module, <span class="hljs-built_in">input</span>, output: visualize(module, <span class="hljs-built_in">input</span>, output))<br><br>input_image = Image.<span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;./Lena.jpg&quot;</span>).convert(<span class="hljs-string">&quot;RGB&quot;</span>)<br>transforms = transforms.Compose([<br>    transforms.ToTensor(),<br>    transforms.Normalize([<span class="hljs-number">0.485</span>, <span class="hljs-number">0.456</span>, <span class="hljs-number">0.406</span>], [<span class="hljs-number">0.229</span>, <span class="hljs-number">0.224</span>, <span class="hljs-number">0.225</span>])<br>])<br><span class="hljs-comment"># writer.add_image(&#x27;original_image&#x27;, img_tensor=torch.Tensor(input_image).permute(2, 0, 1))</span><br>input_image = transforms(input_image).unsqueeze(<span class="hljs-number">0</span>)<br><br>writer.add_image(<span class="hljs-string">&#x27;original_image&#x27;</span>, img_tensor=input_image.squeeze(<span class="hljs-number">0</span>))<br>_ = mymodel(input_image)<br>writer.close()<br></code></pre></td></tr></table></figure>
-<h3 id="需要注意的小细节"><a class="markdownIt-Anchor" href="#需要注意的小细节"></a> 需要注意的小细节：</h3>
+                <h1 id="wandb教程2"><a class="markdownIt-Anchor" href="#wandb教程2"></a> Wandb教程(2)</h1>
+<p>​	本篇文章用于介绍Wandb如何进行网格超参数搜索，主要使用了Wandb中的Sweep功能：</p>
+<h2 id="sweep使用流程"><a class="markdownIt-Anchor" href="#sweep使用流程"></a> Sweep使用流程：</h2>
+<h3 id="定义-sweeps-配置"><a class="markdownIt-Anchor" href="#定义-sweeps-配置"></a> 定义 Sweeps 配置</h3>
+<p>​	Wandb的配置文件支持YAML和Python等多种文件格式，关于如何配置Sweep可见[官方文档](<a target="_blank" rel="noopener" href="https://docs.wandb.ai/guides/sweeps/define-sweep-configuration">Define sweep configuration for hyperparameter tuning. (wandb.ai)</a>)，下面是两种文件配置的例子：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">program:</span> <span class="hljs-string">train.py</span> <span class="hljs-comment"># 训练脚本文件名</span><br><span class="hljs-attr">method:</span> <span class="hljs-string">grid</span> <span class="hljs-comment"># 或 bayes, random 等其他搜索方法</span><br><span class="hljs-attr">parameters:</span><br>  <span class="hljs-attr">learning_rate:</span><br>    <span class="hljs-attr">distribution:</span> <span class="hljs-string">uniform</span><br>    <span class="hljs-attr">min:</span> <span class="hljs-number">0.0001</span><br>    <span class="hljs-attr">max:</span> <span class="hljs-number">0.01</span><br>  <span class="hljs-attr">batch_size:</span><br>    <span class="hljs-attr">values:</span> [<span class="hljs-number">32</span>, <span class="hljs-number">64</span>, <span class="hljs-number">128</span>]<br>  <span class="hljs-attr">dropout_rate:</span><br>    <span class="hljs-attr">distribution:</span> <span class="hljs-string">log_uniform</span><br>    <span class="hljs-attr">min:</span> <span class="hljs-number">0.001</span><br>    <span class="hljs-attr">max:</span> <span class="hljs-number">0.5</span><br><span class="hljs-attr">metric:</span><br>    <span class="hljs-attr">name:</span> <span class="hljs-string">val_accuracy</span> <span class="hljs-comment"># 监控的目标指标名称</span><br>    <span class="hljs-attr">goal:</span> <span class="hljs-string">maximize</span> <span class="hljs-comment"># 指标优化目标（maximize 或 minimize）</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> wandb<br><br>sweep_config = &#123;<br>    <span class="hljs-string">&quot;method&quot;</span>: <span class="hljs-string">&quot;grid&quot;</span>,<br>    <span class="hljs-string">&quot;metric&quot;</span>: &#123;<span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;val_loss&quot;</span>, <span class="hljs-string">&quot;goal&quot;</span>: <span class="hljs-string">&quot;minimize&quot;</span>&#125;,<br>    <span class="hljs-string">&quot;parameters&quot;</span>: &#123;<br>        <span class="hljs-string">&quot;learning_rate&quot;</span>: &#123;<span class="hljs-string">&quot;distribution&quot;</span>: <span class="hljs-string">&quot;uniform&quot;</span>, <span class="hljs-string">&quot;min&quot;</span>: <span class="hljs-number">1e-4</span>, <span class="hljs-string">&quot;max&quot;</span>: <span class="hljs-number">1e-2</span>&#125;,<br>        <span class="hljs-string">&quot;dropout_rate&quot;</span>: &#123;<span class="hljs-string">&quot;distribution&quot;</span>: <span class="hljs-string">&quot;categorical&quot;</span>, <span class="hljs-string">&quot;values&quot;</span>: [<span class="hljs-number">0.2</span>, <span class="hljs-number">0.3</span>, <span class="hljs-number">0.4</span>]&#125;,<br>    &#125;,<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="初始化-sweep"><a class="markdownIt-Anchor" href="#初始化-sweep"></a> 初始化 Sweep</h3>
+<p>​	对于YAML文件，初始化需要使用bash命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">wandb sweep sweep.yaml<br></code></pre></td></tr></table></figure>
+<p>​	对于Python文件，初始化则只需要使用<code>wandb.sweep</code>函数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> wandb<br><br><span class="hljs-comment"># 加载或创建 sweep 配置</span><br>sweep_id = wandb.sweep(sweep_config)<br><br><span class="hljs-comment"># 在训练函数中加入 sweep 调用</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">train</span>(<span class="hljs-params">hparams</span>):<br>    <span class="hljs-comment"># 使用 hparams 来设置训练过程中的超参数</span><br>    wandb.init(config=hparams)<br>    <span class="hljs-comment"># ... 实现你的训练逻辑 ...</span><br>    <br><span class="hljs-comment"># 启动 Sweep，用于启动和管理 Sweep 中的实验执行的一个函数</span><br>wandb.agent(sweep_id, function=train)<br></code></pre></td></tr></table></figure>
+<p><code>wandb.agent()</code> 是用于启动和管理 Sweep 中的实验执行的一个函数，接收两个主要参数：</p>
 <ul>
-<li><code>torchvision.utils.make_grid</code><strong>函数本质上是将batch沿着长与宽展开，他并不会改变通道数，如果需要将多通道数的特征图可视化，需要将通道数积累到batch维度上面去，并且保留通道维度（把他当成灰度图像可视化）</strong></li>
-<li><code>TensorBoard</code>本身是不能调整图像配色的，如果需要更加好看的图像配色，可以使用matplotlib将灰度像素映射到color bar中，再传入<code>Tensorboard</code></li>
+<li><code>sweep_id</code>：这是你之前创建或通过 API 获取到的 Sweep 的唯一标识符</li>
+<li><code>function</code>：这是一个可调用对象，通常是一个函数，这个函数负责执行实际的训练逻辑，并且可以访问当前 sweep 运行时传入的超参数</li>
 </ul>
-<p>效果如下图所示：</p>
-<p><img src="/2024/03/13/TensorBoard-2/image-20240314163347425.png" srcset="/img/loading.gif" lazyload alt="Lena图提取特征后的feature map"></p>
+<h3 id="修改训练脚本以接收超参数"><a class="markdownIt-Anchor" href="#修改训练脚本以接收超参数"></a> 修改训练脚本以接收超参数</h3>
+<p>确保训练脚本（例如上述的 <code>train.py</code>）能够从 <code>wandb.config</code> 中读取超参数值，并根据这些值来配置模型和训练过程</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> wandb<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">train</span>():<br>    <span class="hljs-comment"># 获取当前运行的配置（包含超参数）</span><br>    hparams = wandb.config<br>    learning_rate = hparams.learning_rate<br>    batch_size = hparams.batch_size<br>    dropout_rate = hparams.dropout_rate<br>    <span class="hljs-comment"># 使用这些超参数训练模型...</span><br></code></pre></td></tr></table></figure>
 
                 
               </div>
@@ -291,9 +298,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/03/17/Wandb-1/" title="Wandb教程(1)">
+                      <a href="/2024/03/19/Python%E5%AE%9E%E7%94%A8%E7%94%A8%E6%B3%95/" title="Python实用用法">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Wandb教程(1)</span>
+                        <span class="hidden-mobile">Python实用用法</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -301,8 +308,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/03/13/TensorBoard-1/" title="TensorBoardX教程(1)">
-                        <span class="hidden-mobile">TensorBoardX教程(1)</span>
+                      <a href="/2024/03/17/Wandb-1/" title="Wandb教程(1)">
+                        <span class="hidden-mobile">Wandb教程(1)</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

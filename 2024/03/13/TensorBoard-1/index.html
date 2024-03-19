@@ -25,7 +25,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/2024/03/13/TensorBoard-1/1.png">
 <meta property="article:published_time" content="2024-03-13T10:27:20.000Z">
-<meta property="article:modified_time" content="2024-03-14T08:41:04.069Z">
+<meta property="article:modified_time" content="2024-03-15T09:29:06.876Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://example.com/2024/03/13/TensorBoard-1/1.png">
@@ -280,7 +280,7 @@
 <p>​	<code>SummaryWriter</code> 是 TensorFlow 的一个类，用于将事件（如张量摘要、图像、音频、视频等）写入到一个事件文件中，以便后续使用 TensorBoard 进行可视化</p>
 <p>创建 <code>SummaryWriter</code> 实例时，你需要指定一个日志目录，TensorBoard 将在这个目录中创建事件文件。以下是创建和使用 <code>SummaryWriter</code> 的基本步骤：</p>
 <h3 id="创建-summarywriter-实例"><a class="markdownIt-Anchor" href="#创建-summarywriter-实例"></a> <strong>创建 <code>SummaryWriter</code> 实例</strong>：</h3>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> tensorflow.summary <span class="hljs-keyword">import</span> SummaryWriter<br>writer = SummaryWriter(<span class="hljs-string">&#x27;logs/&#x27;</span>)  <span class="hljs-comment"># 指定日志目录</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> tensorboardX <span class="hljs-keyword">import</span> SummaryWriter<br>writer = SummaryWriter(<span class="hljs-string">&#x27;logs/&#x27;</span>)  <span class="hljs-comment"># 指定日志目录</span><br></code></pre></td></tr></table></figure>
 <h3 id="使用-summarywriter-方法记录数据"><a class="markdownIt-Anchor" href="#使用-summarywriter-方法记录数据"></a> <strong>使用 <code>SummaryWriter</code> 方法记录数据</strong>：</h3>
 <ul>
 <li><code>add_scalar</code>：添加标量数据点</li>
@@ -364,12 +364,18 @@
                   <article class="post-prev col-6">
                     
                     
+                      <a href="/2024/03/13/TensorBoard-2/" title="TensorBoardX教程(2)">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">TensorBoardX教程(2)</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/03/13/TensorBoard-2/" title="TensorBoardX教程(2)">
-                        <span class="hidden-mobile">TensorBoardX教程(2)</span>
+                      <a href="/2024/03/12/%E5%A4%9A%E8%87%82%E8%80%81%E8%99%8E%E6%9C%BA/" title="多臂老虎机">
+                        <span class="hidden-mobile">多臂老虎机</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
