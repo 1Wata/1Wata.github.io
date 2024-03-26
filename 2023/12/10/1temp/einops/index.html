@@ -19,32 +19,32 @@
     <meta name="description" content="einops 和 einsum 的使用——einops ​	einops 库操作可以替代全部的张量形状变换操作，注：类似于 Pytorch 中 torch.nn 和 torch.nn.function 的关系，如果像把 rearrange 操作放在 __init__ 中就规定，可以使用 einops.layers.torch 模块中的 Rearrange 函数  einops.rearrange">
 <meta property="og:type" content="article">
 <meta property="og:title" content="einops">
-<meta property="og:url" content="http://example.com/2023/12/10/einops/index.html">
+<meta property="og:url" content="http://example.com/2023/12/10/1temp/einops/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="einops 和 einsum 的使用——einops ​	einops 库操作可以替代全部的张量形状变换操作，注：类似于 Pytorch 中 torch.nn 和 torch.nn.function 的关系，如果像把 rearrange 操作放在 __init__ 中就规定，可以使用 einops.layers.torch 模块中的 Rearrange 函数  einops.rearrange">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/2023/12/10/einops/1.png">
-<meta property="og:image" content="http://example.com/2023/12/10/einops/2.png">
-<meta property="og:image" content="http://example.com/2023/12/10/einops/3.png">
-<meta property="og:image" content="http://example.com/2023/12/10/einops/4.png">
-<meta property="og:image" content="http://example.com/2023/12/10/einops/5.png">
-<meta property="og:image" content="http://example.com/2023/12/10/einops/6.png">
-<meta property="og:image" content="http://example.com/2023/12/10/einops/7.png">
-<meta property="og:image" content="http://example.com/2023/12/10/einops/8.png">
-<meta property="og:image" content="http://example.com/2023/12/10/einops/9.png">
-<meta property="og:image" content="http://example.com/2023/12/10/einops/10.png">
-<meta property="og:image" content="http://example.com/2023/12/10/einops/11.png">
-<meta property="og:image" content="http://example.com/2023/12/10/einops/12.png">
-<meta property="og:image" content="http://example.com/2023/12/10/einops/13.png">
-<meta property="og:image" content="http://example.com/2023/12/10/einops/14.png">
-<meta property="og:image" content="http://example.com/2023/12/10/einops/15.png">
-<meta property="og:image" content="http://example.com/2023/12/10/einops/16.png">
+<meta property="og:image" content="http://example.com/2023/12/10/1temp/einops/1.png">
+<meta property="og:image" content="http://example.com/2023/12/10/1temp/einops/2.png">
+<meta property="og:image" content="http://example.com/2023/12/10/1temp/einops/3.png">
+<meta property="og:image" content="http://example.com/2023/12/10/1temp/einops/4.png">
+<meta property="og:image" content="http://example.com/2023/12/10/1temp/einops/5.png">
+<meta property="og:image" content="http://example.com/2023/12/10/1temp/einops/6.png">
+<meta property="og:image" content="http://example.com/2023/12/10/1temp/einops/7.png">
+<meta property="og:image" content="http://example.com/2023/12/10/1temp/einops/8.png">
+<meta property="og:image" content="http://example.com/2023/12/10/1temp/einops/9.png">
+<meta property="og:image" content="http://example.com/2023/12/10/1temp/einops/10.png">
+<meta property="og:image" content="http://example.com/2023/12/10/1temp/einops/11.png">
+<meta property="og:image" content="http://example.com/2023/12/10/1temp/einops/12.png">
+<meta property="og:image" content="http://example.com/2023/12/10/1temp/einops/13.png">
+<meta property="og:image" content="http://example.com/2023/12/10/1temp/einops/14.png">
+<meta property="og:image" content="http://example.com/2023/12/10/1temp/einops/15.png">
+<meta property="og:image" content="http://example.com/2023/12/10/1temp/einops/16.png">
 <meta property="article:published_time" content="2023-12-10T07:20:51.000Z">
 <meta property="article:modified_time" content="2024-03-14T07:26:06.372Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="Pytorch张量高效操作计算">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/2023/12/10/einops/1.png">
+<meta name="twitter:image" content="http://example.com/2023/12/10/1temp/einops/1.png">
   
   
   
@@ -288,11 +288,11 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python">ims = numpy.load(<span class="hljs-string">&#x27;./test_images.npy&#x27;</span>, allow_pickle=<span class="hljs-literal">False</span>)<br><span class="hljs-comment"># ims中有六张图片，分别为einops的RGB图像</span><br></code></pre></td></tr></table></figure>
 <p>ims 张量的形状为 (6, 96, 96, 3)</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">plt.imshow(ims[<span class="hljs-number">0</span>])<br></code></pre></td></tr></table></figure>
-<p><img src="/2023/12/10/einops/1.png" srcset="/img/loading.gif" lazyload alt="png"></p>
+<p><img src="/2023/12/10/1temp/einops/1.png" srcset="/img/loading.gif" lazyload alt="png"></p>
 <p>下面使用einops表示操作过程</p>
 <h3 id="矩阵转置"><a class="markdownIt-Anchor" href="#矩阵转置"></a> 矩阵转置：</h3>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> einops <span class="hljs-keyword">import</span> rearrange, reduce, repeat<br>img=rearrange(ims[<span class="hljs-number">0</span>], <span class="hljs-string">&#x27;h w c -&gt; w h c&#x27;</span>)<br>plt.imshow(img)<br></code></pre></td></tr></table></figure>
-<p><img src="/2023/12/10/einops/2.png" srcset="/img/loading.gif" lazyload alt="png"><br>
+<p><img src="/2023/12/10/1temp/einops/2.png" srcset="/img/loading.gif" lazyload alt="png"><br>
 ​</p>
 <h2 id="将维度融合操作"><a class="markdownIt-Anchor" href="#将维度融合操作"></a> 将维度融合操作</h2>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># [6, 96, 96, 3] -&gt; [96, (6 * 96), 3]</span><br>rearrange(ims, <span class="hljs-string">&#x27;b h w c -&gt; h (b w) c&#x27;</span>).shape<br></code></pre></td></tr></table></figure>
@@ -303,31 +303,31 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 下面操作使将图片的第一维拆分</span><br>rearrange(ims, <span class="hljs-string">&#x27;(b1 b2) h w c -&gt; b1 b2 h w c &#x27;</span>, b1=<span class="hljs-number">2</span>).shape<br>(<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">96</span>, <span class="hljs-number">96</span>, <span class="hljs-number">3</span>)<br></code></pre></td></tr></table></figure>
 <h4 id="将文件的第一维拆分并融入到-h-和-w-维中"><a class="markdownIt-Anchor" href="#将文件的第一维拆分并融入到-h-和-w-维中"></a> 将文件的第一维拆分并融入到 h 和 w 维中</h4>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python">img = rearrange(ims, <span class="hljs-string">&#x27;(b1 b2) h w c -&gt; (b1 h) (b2 w) c &#x27;</span>, b1=<span class="hljs-number">2</span>)<br>plt.imshow(img)<br></code></pre></td></tr></table></figure>
-<p><img src="/2023/12/10/einops/3.png" srcset="/img/loading.gif" lazyload alt="png"><br>
+<p><img src="/2023/12/10/1temp/einops/3.png" srcset="/img/loading.gif" lazyload alt="png"><br>
 ​</p>
 <p>​	<strong>注意这里b1 b2的位置和对应关系很重要，类似于我们的数字表示法，（b1, b2）代表着是在第一维中，每b1个小图片为一个小batch，这些小batch总共会有b2个，那么在上面的例子中，由于顺序是 einops 每三个分组就是 ein 和 ops，再将它们嵌入高宽里面，（b1, h）同样代表着小batch是 h，总共有2个小batch，因此竖着看会有两张图片（把b1嵌入到 h 的维度中去了）；同理（b2， w）的情况</strong></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 这种分割方式就是两个图片为一个小batch（哪个b1 b2方向在后面就从哪个嵌入的维度开始排）</span><br>img = rearrange(ims, <span class="hljs-string">&#x27;(b2 b1) h w c -&gt; (b1 h) (b2 w) c &#x27;</span>, b1=<span class="hljs-number">2</span>)<br>plt.imshow(img)<br></code></pre></td></tr></table></figure>
-<p><img src="/2023/12/10/einops/4.png" srcset="/img/loading.gif" lazyload alt="png"></p>
+<p><img src="/2023/12/10/1temp/einops/4.png" srcset="/img/loading.gif" lazyload alt="png"></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 同理将b2 b1在后方交换的情况</span><br>img = rearrange(ims, <span class="hljs-string">&#x27;(b1 b2) h w c -&gt; (b2 h) (b1 w) c &#x27;</span>, b1=<span class="hljs-number">2</span>)<br>plt.imshow(img)<br></code></pre></td></tr></table></figure>
-<p><img src="/2023/12/10/einops/5.png" srcset="/img/loading.gif" lazyload alt="png"></p>
+<p><img src="/2023/12/10/1temp/einops/5.png" srcset="/img/loading.gif" lazyload alt="png"></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 这里在输出中将h放在b1的前面，那么可以看做每张图像的像素每一行互相嵌入 </span><br>img = rearrange(ims, <span class="hljs-string">&#x27;(b1 b2) h w c -&gt; (h b1) (b2 w) c &#x27;</span>, b1=<span class="hljs-number">2</span>)<br>plt.imshow(img)<br></code></pre></td></tr></table></figure>
-<p><img src="/2023/12/10/einops/6.png" srcset="/img/loading.gif" lazyload alt="png"></p>
+<p><img src="/2023/12/10/1temp/einops/6.png" srcset="/img/loading.gif" lazyload alt="png"></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 一个稍微特殊的情况，将图片的宽嵌入到了高里面，相当于把图像拉伸</span><br>img =rearrange(ims, <span class="hljs-string">&#x27;b h (w w2) c -&gt; (h w2) (b w) c&#x27;</span>, w2=<span class="hljs-number">2</span>)<br>plt.imshow(img)<br></code></pre></td></tr></table></figure>
-<p><img src="/2023/12/10/einops/7.png" srcset="/img/loading.gif" lazyload alt="png"></p>
+<p><img src="/2023/12/10/1temp/einops/7.png" srcset="/img/loading.gif" lazyload alt="png"></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># w2位于w前，一列共有两个图像（把一个图像密切再重排，这里两个图片只是看起来像，它们拼起来才是原图片）</span><br>img =rearrange(ims, <span class="hljs-string">&#x27;b h (w w2) c -&gt; (w2 h) (b w) c&#x27;</span>, w2=<span class="hljs-number">2</span>)<br>plt.imshow(img)<br></code></pre></td></tr></table></figure>
-<p><img src="/2023/12/10/einops/8.png" srcset="/img/loading.gif" lazyload alt="png"><br>
+<p><img src="/2023/12/10/1temp/einops/8.png" srcset="/img/loading.gif" lazyload alt="png"><br>
 ​</p>
 <h2 id="einopsreduce"><a class="markdownIt-Anchor" href="#einopsreduce"></a> einops.reduce</h2>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 在原np操作中，若要对最后一位进行求平均操作要使用x.mean(-1)</span><br><span class="hljs-comment"># 可以代替为</span><br>reduce(x, <span class="hljs-string">&#x27;b h w c -&gt; b h w&#x27;</span>, <span class="hljs-string">&#x27;mean&#x27;</span>)<br></code></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># average over batch</span><br>img = reduce(ims, <span class="hljs-string">&#x27;b h w c -&gt; h w c&#x27;</span>, <span class="hljs-string">&#x27;mean&#x27;</span>)<br><span class="hljs-comment"># ims.mean(axis=0)</span><br>plt.imshow(img)<br></code></pre></td></tr></table></figure>
-<p><img src="/2023/12/10/einops/9.png" srcset="/img/loading.gif" lazyload alt="png"><br>
+<p><img src="/2023/12/10/1temp/einops/9.png" srcset="/img/loading.gif" lazyload alt="png"><br>
 ​</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 还同时对两个维度进行降维：</span><br>img = reduce(ims, <span class="hljs-string">&#x27;b h w c -&gt; h w&#x27;</span>, <span class="hljs-string">&#x27;min&#x27;</span>)<br>plt.imshow(img)<br></code></pre></td></tr></table></figure>
-<p><img src="/2023/12/10/einops/10.png" srcset="/img/loading.gif" lazyload alt="png"></p>
+<p><img src="/2023/12/10/1temp/einops/10.png" srcset="/img/loading.gif" lazyload alt="png"></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 甚至可以通过reduce函数进行平均值池化（可以看出reduce里面内置了rearrange函数）</span><br>img = reduce(ims, <span class="hljs-string">&#x27;b (h h2) (w w2) c -&gt; h (b w) c&#x27;</span>, <span class="hljs-string">&#x27;mean&#x27;</span>, h2=<span class="hljs-number">2</span>, w2=<span class="hljs-number">2</span>)<br>plt.imshow(img)<br></code></pre></td></tr></table></figure>
-<p><img src="/2023/12/10/einops/11.png" srcset="/img/loading.gif" lazyload alt="png"></p>
+<p><img src="/2023/12/10/1temp/einops/11.png" srcset="/img/loading.gif" lazyload alt="png"></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 压缩通道的例子</span><br>img = reduce(ims, <span class="hljs-string">&#x27;(b1 b2) h w c -&gt; (b2 h) (b1 w)&#x27;</span>, <span class="hljs-string">&#x27;mean&#x27;</span>, b1=<span class="hljs-number">2</span>)<br>plt.imshow(img)<br></code></pre></td></tr></table></figure>
-<p><img src="/2023/12/10/einops/12.png" srcset="/img/loading.gif" lazyload alt="png"></p>
+<p><img src="/2023/12/10/1temp/einops/12.png" srcset="/img/loading.gif" lazyload alt="png"></p>
 <h2 id="添加或者缩减维度"><a class="markdownIt-Anchor" href="#添加或者缩减维度"></a> 添加或者缩减维度</h2>
 <p>​	类似于<code>unsqueeze()</code>操作，在目标张量的某一维中添加维度，可以使用1或者（）来进行操作，<strong>( ) 表示在新的维度上不显式指明大小</strong></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python">x = rearrange(ims, <span class="hljs-string">&#x27;b h w c -&gt; b 1 h w 1 c&#x27;</span>) <span class="hljs-comment"># functionality of numpy.expand_dims</span><br><span class="hljs-built_in">print</span>(x.shape)<br><span class="hljs-built_in">print</span>(rearrange(x, <span class="hljs-string">&#x27;b 1 h w 1 c -&gt; b h w c&#x27;</span>).shape) <span class="hljs-comment"># functionality of numpy.squeeze</span><br></code></pre></td></tr></table></figure>
@@ -335,20 +335,20 @@
 (6, 96, 96, 3)
 </code></pre>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 先将每张图片最大像素值显现出来，让后转化回去，将其余像素填0 </span><br>x = reduce(ims, <span class="hljs-string">&#x27;b h w c -&gt; b () () c&#x27;</span>, <span class="hljs-string">&#x27;max&#x27;</span>) - ims<br><span class="hljs-comment"># 上面的一步没有将维度降下去！！！因为后面与ims进行了计算</span><br><span class="hljs-comment"># x = reduce(ims, &#x27;b h w c -&gt; b () () c&#x27;, &#x27;max&#x27;) 维度变为(6,1,1,3)</span><br><span class="hljs-comment"># x = x - ims 维度变为(6,96,96,3)	利用了广播操作</span><br>img = rearrange(x, <span class="hljs-string">&#x27;b h w c -&gt; h (b w) c&#x27;</span>)<br>plt.imshow(img)<br></code></pre></td></tr></table></figure>
-<p><img src="/2023/12/10/einops/13.png" srcset="/img/loading.gif" lazyload alt="png"></p>
+<p><img src="/2023/12/10/1temp/einops/13.png" srcset="/img/loading.gif" lazyload alt="png"></p>
 <h2 id="repeating-elements"><a class="markdownIt-Anchor" href="#repeating-elements"></a> Repeating elements</h2>
 <p>​	<code>repeat</code> 用于在某个维度上重复，感觉和 <code>np.repeat</code> 差得不多，没有前面的好用</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># repeat along a new axis. New axis can be placed anywhere</span><br>repeat(ims[<span class="hljs-number">0</span>], <span class="hljs-string">&#x27;h w c -&gt; h new_axis w c&#x27;</span>, new_axis=<span class="hljs-number">5</span>).shape<br>(<span class="hljs-number">96</span>, <span class="hljs-number">5</span>, <span class="hljs-number">96</span>, <span class="hljs-number">3</span>)<br></code></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># shortcut</span><br>repeat(ims[<span class="hljs-number">0</span>], <span class="hljs-string">&#x27;h w c -&gt; h 5 w c&#x27;</span>).shape<br></code></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 同样的repeat中内置了rearrange函数，下面的用法和rearrange一样</span><br>img = repeat(ims[<span class="hljs-number">0</span>], <span class="hljs-string">&#x27;h w c -&gt; h (w repeat) c&#x27;</span>, repeat=<span class="hljs-number">3</span>)<br>plt.imshow(img)<br></code></pre></td></tr></table></figure>
-<p><img src="/2023/12/10/einops/14.png" srcset="/img/loading.gif" lazyload alt="png"></p>
+<p><img src="/2023/12/10/1temp/einops/14.png" srcset="/img/loading.gif" lazyload alt="png"></p>
 <h2 id="reduce-repeat"><a class="markdownIt-Anchor" href="#reduce-repeat"></a> Reduce ⇆ repeat</h2>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python">repeated = repeat(ims, <span class="hljs-string">&#x27;b h w c -&gt; b h new_axis w c&#x27;</span>, new_axis=<span class="hljs-number">2</span>)<br>reduced = reduce(repeated, <span class="hljs-string">&#x27;b h new_axis w c -&gt; b h w c&#x27;</span>, <span class="hljs-string">&#x27;min&#x27;</span>)<br><span class="hljs-keyword">assert</span> numpy.array_equal(ims, reduced)<br></code></pre></td></tr></table></figure>
 <h2 id="帮助理解的例子"><a class="markdownIt-Anchor" href="#帮助理解的例子"></a> 帮助理解的例子</h2>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python">img = rearrange(ims, <span class="hljs-string">&#x27;(b1 b2) h w c -&gt; (h b1) (w b2) c &#x27;</span>, b1=<span class="hljs-number">2</span>)<br>plt.imshow(img)<br></code></pre></td></tr></table></figure>
-<p><img src="/2023/12/10/einops/15.png" srcset="/img/loading.gif" lazyload alt="png"></p>
+<p><img src="/2023/12/10/1temp/einops/15.png" srcset="/img/loading.gif" lazyload alt="png"></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 一个复杂的例子：</span><br>img = rearrange(ims, <span class="hljs-string">&#x27;b (h1 h2 h3) (w1 w2 w3) c -&gt; (h1 w2 h3) (b w1 h2 w3) c&#x27;</span>, h2=<span class="hljs-number">2</span>, w2=<span class="hljs-number">2</span>, w3=<span class="hljs-number">2</span>, h3=<span class="hljs-number">2</span>)<br>plt.imshow(img)<br></code></pre></td></tr></table></figure>
-<p><img src="/2023/12/10/einops/16.png" srcset="/img/loading.gif" lazyload alt="png"><br>
+<p><img src="/2023/12/10/1temp/einops/16.png" srcset="/img/loading.gif" lazyload alt="png"><br>
 ​</p>
 <h1 id="summary"><a class="markdownIt-Anchor" href="#summary"></a> Summary</h1>
 <ul>
