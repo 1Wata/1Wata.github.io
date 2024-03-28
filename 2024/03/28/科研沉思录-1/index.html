@@ -16,19 +16,21 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta property="og:type" content="article">
-<meta property="og:title" content="科研沉思录-1">
+    <meta name="description" content="Simple is better than complex. ​	Python 之禅告诉了我们优雅的代码应该如何编写：  Beautiful is better than ugly. Explicit is better than implicit. Simple is better than complex. Complex is better than complicated. Flat i">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
 <meta property="og:url" content="http://example.com/2024/03/28/%E7%A7%91%E7%A0%94%E6%B2%89%E6%80%9D%E5%BD%95-1/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Simple is better than complex. ​	Python 之禅告诉了我们优雅的代码应该如何编写：  Beautiful is better than ugly. Explicit is better than implicit. Simple is better than complex. Complex is better than complicated. Flat i">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-03-28T10:14:47.000Z">
-<meta property="article:modified_time" content="2024-03-28T10:14:47.048Z">
+<meta property="article:modified_time" content="2024-03-28T11:01:23.612Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>科研沉思录-1 - Hexo</title>
+  <title>Hexo</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -186,7 +188,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="科研沉思录-1"></span>
+            <span id="subtitle" data-typed-text=""></span>
           
         </div>
 
@@ -209,7 +211,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          0 字
+          685 字
         
       </span>
     
@@ -220,7 +222,7 @@
         
         
         
-          1 分钟
+          7 分钟
         
       </span>
     
@@ -257,12 +259,48 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">科研沉思录-1</h1>
+            <h1 id="seo-header"></h1>
             
             
               <div class="markdown-body">
                 
-                
+                <h1 id="simple-is-better-than-complex"><a class="markdownIt-Anchor" href="#simple-is-better-than-complex"></a> Simple is better than complex.</h1>
+<p>​	Python 之禅告诉了我们优雅的代码应该如何编写：</p>
+<blockquote>
+<p>Beautiful is better than ugly.<br>
+Explicit is better than implicit.<br>
+Simple is better than complex.<br>
+Complex is better than complicated.<br>
+Flat is better than nested.<br>
+Sparse is better than dense.<br>
+Readability counts.<br>
+Special cases aren’t special enough to break the rules.<br>
+Although practicality beats purity.<br>
+Errors should never pass silently.<br>
+Unless explicitly silenced.<br>
+In the face of ambiguity, refuse the temptation to guess.<br>
+There should be one-- and preferably only one --obvious way to do it.<br>
+Although that way may not be obvious at first unless you’re Dutch.<br>
+Now is better than never.<br>
+Although never is often better than <em>right</em> now.<br>
+If the implementation is hard to explain, it’s a bad idea.<br>
+If the implementation is easy to explain, it may be a good idea.<br>
+Namespaces are one honking great idea – let’s do more of those!</p>
+</blockquote>
+<p>​	最近读到了一篇名为 FeatUp 的论文，受这篇论文震惊之余，更理解了 Python 之禅的精神，FeatUp 论文提出了一个有效的采样算子，在投第一版的时候因为其本身的性能不够好，因而被拒稿了，在第二版的时候在第一版上的基础上加入了各种技巧，把性能硬生生拉到了 SOTA 的效果。但是在我眼里，它反而因为引入了过多的奇技淫巧牺牲了整片论文的 elegance。相比于之前的 dysample 和 SAPA 等论文，它们可能没有过多的技巧，但是通过最简单的方式改善性能。再加上最近因为审稿而读的 Beyond CARAFE 论文（这篇论文纯属灌水），我把论文分为三类：</p>
+<ul>
+<li>可有可无的论文：所有灌水的论文都属于这一类（Beyond CARAFE），论文所作的贡献可有可无。如果拒稿理所当然，如果接受该论文就会迅速被人遗忘</li>
+<li>很好地 work 的论文：FeatUp 就是属于这一类的论文，它通过一些暴力的方法（技巧）把性能硬生生拉成 SOTA，它可以给许多人提供 idea，但它绝不是属于最好的论文</li>
+<li>不失性能而且优雅的论文：UNet，Transformer 等经典论文都是属于这一类，用最简单朴素的 idea 达到最好的性能。我相信大道至简，大巧若拙</li>
+</ul>
+<h2 id="再读python之禅"><a class="markdownIt-Anchor" href="#再读python之禅"></a> 再读Python之禅</h2>
+<ol>
+<li><strong>优美胜于丑陋</strong>（Beautiful is better than ugly）——科研工作不只是寻找答案，更是追求一种内在逻辑之美，简洁而富有力量的理论往往比繁复混乱的解释更能体现科学的价值。优美的实验设计、清晰的数据呈现和优雅的结论推理，都是科研人员应当追求的目标</li>
+<li><strong>明了胜于晦涩</strong>（Explicit is better than implicit）——在科研交流与报告中，直截了当、明确清晰的表述优于隐晦难懂的语言。这意味着研究成果应当清楚地阐述假设、方法、数据和结论，避免读者产生误解，确保可重复性和可验证性</li>
+<li><strong>简单胜于复杂</strong>（Simple is better than complex）——解决问题时，寻求简单的解决方案常常更为有效。科研过程中应尽量简化模型、优化实验步骤，减少不必要的变量干扰，以便更准确地把握事物的本质。</li>
+<li><strong>复杂胜过过度复杂</strong>（Complex is better than complicated）——虽然科学研究不可避免地涉及复杂性，但应避免不必要的复杂化。在复杂系统中找到秩序和规律，构建起结构化的理论框架，才是科研智慧的体现</li>
+</ol>
+
                 
               </div>
             
@@ -280,7 +318,7 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/03/27/FeatUp/" title="FeatUp(1)">
+                      <a href="/2024/03/27/%E7%A7%91%E7%A0%94/cv%E5%8A%A8%E6%80%81%E9%87%87%E6%A0%B7%E7%AE%97%E5%AD%90/FeatUp/" title="FeatUp(1)">
                         <span class="hidden-mobile">FeatUp(1)</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
