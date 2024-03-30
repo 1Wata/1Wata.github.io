@@ -4,6 +4,19 @@
   
   
   <entry>
+    <title>8086寻址方式</title>
+    <link href="/2024/03/30/%E5%90%84%E7%A7%8D%E8%AF%AD%E8%A8%80/%E6%B1%87%E7%BC%96/8086%E5%AF%BB%E5%9D%80%E6%96%B9%E5%BC%8F/"/>
+    <url>/2024/03/30/%E5%90%84%E7%A7%8D%E8%AF%AD%E8%A8%80/%E6%B1%87%E7%BC%96/8086%E5%AF%BB%E5%9D%80%E6%96%B9%E5%BC%8F/</url>
+    
+    <content type="html"><![CDATA[<h1 id="8086寻址方式详解"><a class="markdownIt-Anchor" href="#8086寻址方式详解"></a> 8086寻址方式详解</h1><p><img src="/2024/03/30/%E5%90%84%E7%A7%8D%E8%AF%AD%E8%A8%80/%E6%B1%87%E7%BC%96/8086%E5%AF%BB%E5%9D%80%E6%96%B9%E5%BC%8F/1.png" alt="数据允许传输的方式"></p><p>​MOV指令只能在这些有箭头的流向使用，比如通用寄存器到通用寄存器，而不能立即数到立即数</p><h2 id="寻址方式分类"><a class="markdownIt-Anchor" href="#寻址方式分类"></a> 寻址方式分类</h2><p>​8086有三种基本的寻址方式：</p><ul><li>立即寻址（源操作数在指令中）</li><li>寄存器寻址（源操作数在寄存器中）（执行速度最快）</li><li>存储器寻址（源操作书在存储器中）（执行速度最慢）</li></ul><p>其中，存储器寻址（操作数一般存放在数据段，所以操作数的段地址默认为DS）还可以分为：</p><ul><li>直接寻址</li><li>寄存器间接寻址</li><li>寄存器相对寻址</li><li>基址变址寻址</li><li>相对基址变址寻址</li></ul><h3 id="约定"><a class="markdownIt-Anchor" href="#约定"></a> 约定：</h3><p>​操作数的偏移地址称为有效地址，有效地址要加上方括号，以便与立即数区别（<strong>方括号代表着相对地址或者加法</strong>）</p><ul><li>“相对”就代表着用一个数值偏移量</li></ul><h3 id="直接寻址方法"><a class="markdownIt-Anchor" href="#直接寻址方法"></a> 直接寻址方法：</h3><ul><li>直接寻址：<code>MOV AX,[2000H]</code> 省略掉段地址，使用默认的DS</li><li>超越段前缀：使用冒号修改段前缀 <code>MOV AX,ES:[500H]</code></li><li>符号地址：使用一个符号代替数值，汇编之后本质与直接寻址一样</li></ul><h3 id="寄存器间接寻址"><a class="markdownIt-Anchor" href="#寄存器间接寻址"></a> 寄存器间接寻址：</h3><p>​本质上就是用寄存器里面的值代替数值，例如 <code>MOV BX,DS:[BP]</code></p><h3 id="寄存器相对寻址"><a class="markdownIt-Anchor" href="#寄存器相对寻址"></a> 寄存器相对寻址：</h3><p>​在间接寻址的基础上再加上一个位移量（偏移量是数值）。此时没有冒号的方括号可以理解为加法：<code>MOV AX,COUNT[SI]</code>（基地址默认使用了DS）</p><h3 id="基址变址寻址"><a class="markdownIt-Anchor" href="#基址变址寻址"></a> 基址变址寻址：</h3><p>​使用基址寄存器和变址寄存器，类似于寄存器相对寻址将数值变为寄存器内数值：<code>MOV AX,[BX][SI]</code>（段地址使用了DS，两个方括号就是加法）</p><h3 id="相对基址变址"><a class="markdownIt-Anchor" href="#相对基址变址"></a> 相对基址变址：</h3><p>​在基址变址的基础上再加入一个数值偏移量：<code>MOV AX,MASK[BX][SI]</code></p><h2 id="其他寻址方式io端口寻址"><a class="markdownIt-Anchor" href="#其他寻址方式io端口寻址"></a> 其他寻址方式（I/O端口寻址）：</h2><p>​由于8086端口有64k个（共计 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mn>16</mn></msup></mrow><annotation encoding="application/x-tex">2^{16}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mord mtight">6</span></span></span></span></span></span></span></span></span></span></span></span> 个地址），I/O 端口寻址默认使用立即数为8位，因此两种寻址方式为使用8位的直接寻址和使用16位的相对寻址</p><ul><li>直接寻址方式：<code>IN AL,63H</code></li><li>相对寻址方式：<code>MOV DX,213H   IN AL,DX</code></li></ul>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>8086内部寄存器</title>
     <link href="/2024/03/30/%E5%90%84%E7%A7%8D%E8%AF%AD%E8%A8%80/%E6%B1%87%E7%BC%96/8086%E5%AF%84%E5%AD%98%E5%99%A8/"/>
     <url>/2024/03/30/%E5%90%84%E7%A7%8D%E8%AF%AD%E8%A8%80/%E6%B1%87%E7%BC%96/8086%E5%AF%84%E5%AD%98%E5%99%A8/</url>

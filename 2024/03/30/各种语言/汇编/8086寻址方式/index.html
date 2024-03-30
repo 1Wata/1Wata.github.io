@@ -16,24 +16,23 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="8086内部寄存器   AX，BX，CX，DX称为数据寄存器：  AX (Accumulator)：累加寄存器，也称为累加器 BX (Base)：基地址寄存器 CX (Count)：计数器寄存器 DX (Data)：数据寄存器  SP和BP称为指针寄存器：  SP (Stack Pointer)：堆栈指针寄存器（存放栈顶的逻辑偏移地址） BP (Base Pointer)：基指针寄存器（存放内存">
+    <meta name="description" content="8086寻址方式详解  ​	MOV指令只能在这些有箭头的流向使用，比如通用寄存器到通用寄存器，而不能立即数到立即数  寻址方式分类 ​	8086有三种基本的寻址方式：  立即寻址（源操作数在指令中） 寄存器寻址（源操作数在寄存器中）（执行速度最快） 存储器寻址（源操作书在存储器中）（执行速度最慢）  其中，存储器寻址（操作数一般存放在数据段，所以操作数的段地址默认为DS）还可以分为：  直接寻址">
 <meta property="og:type" content="article">
-<meta property="og:title" content="8086内部寄存器">
-<meta property="og:url" content="http://example.com/2024/03/30/%E5%90%84%E7%A7%8D%E8%AF%AD%E8%A8%80/%E6%B1%87%E7%BC%96/8086%E5%AF%84%E5%AD%98%E5%99%A8/index.html">
+<meta property="og:title" content="8086寻址方式">
+<meta property="og:url" content="http://example.com/2024/03/30/%E5%90%84%E7%A7%8D%E8%AF%AD%E8%A8%80/%E6%B1%87%E7%BC%96/8086%E5%AF%BB%E5%9D%80%E6%96%B9%E5%BC%8F/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="8086内部寄存器   AX，BX，CX，DX称为数据寄存器：  AX (Accumulator)：累加寄存器，也称为累加器 BX (Base)：基地址寄存器 CX (Count)：计数器寄存器 DX (Data)：数据寄存器  SP和BP称为指针寄存器：  SP (Stack Pointer)：堆栈指针寄存器（存放栈顶的逻辑偏移地址） BP (Base Pointer)：基指针寄存器（存放内存">
+<meta property="og:description" content="8086寻址方式详解  ​	MOV指令只能在这些有箭头的流向使用，比如通用寄存器到通用寄存器，而不能立即数到立即数  寻址方式分类 ​	8086有三种基本的寻址方式：  立即寻址（源操作数在指令中） 寄存器寻址（源操作数在寄存器中）（执行速度最快） 存储器寻址（源操作书在存储器中）（执行速度最慢）  其中，存储器寻址（操作数一般存放在数据段，所以操作数的段地址默认为DS）还可以分为：  直接寻址">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/2024/03/30/%E5%90%84%E7%A7%8D%E8%AF%AD%E8%A8%80/%E6%B1%87%E7%BC%96/8086%E5%AF%84%E5%AD%98%E5%99%A8/1.png">
-<meta property="og:image" content="http://example.com/2024/03/30/%E5%90%84%E7%A7%8D%E8%AF%AD%E8%A8%80/%E6%B1%87%E7%BC%96/8086%E5%AF%84%E5%AD%98%E5%99%A8/2.png">
-<meta property="article:published_time" content="2024-03-30T06:29:06.000Z">
-<meta property="article:modified_time" content="2024-03-30T07:41:51.349Z">
+<meta property="og:image" content="http://example.com/2024/03/30/%E5%90%84%E7%A7%8D%E8%AF%AD%E8%A8%80/%E6%B1%87%E7%BC%96/8086%E5%AF%BB%E5%9D%80%E6%96%B9%E5%BC%8F/1.png">
+<meta property="article:published_time" content="2024-03-30T07:50:58.000Z">
+<meta property="article:modified_time" content="2024-03-30T08:29:45.725Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/2024/03/30/%E5%90%84%E7%A7%8D%E8%AF%AD%E8%A8%80/%E6%B1%87%E7%BC%96/8086%E5%AF%84%E5%AD%98%E5%99%A8/1.png">
+<meta name="twitter:image" content="http://example.com/2024/03/30/%E5%90%84%E7%A7%8D%E8%AF%AD%E8%A8%80/%E6%B1%87%E7%BC%96/8086%E5%AF%BB%E5%9D%80%E6%96%B9%E5%BC%8F/1.png">
   
   
   
-  <title>8086内部寄存器 - Hexo</title>
+  <title>8086寻址方式 - Hexo</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -191,7 +190,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="8086内部寄存器"></span>
+            <span id="subtitle" data-typed-text="8086寻址方式"></span>
           
         </div>
 
@@ -202,7 +201,7 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-03-30 14:29" pubdate>
+        <time datetime="2024-03-30 15:50" pubdate>
           2024年3月30日 下午
         </time>
       </span>
@@ -214,7 +213,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.1k 字
+          536 字
         
       </span>
     
@@ -225,7 +224,7 @@
         
         
         
-          11 分钟
+          6 分钟
         
       </span>
     
@@ -262,106 +261,54 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">8086内部寄存器</h1>
+            <h1 id="seo-header">8086寻址方式</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="8086内部寄存器"><a class="markdownIt-Anchor" href="#8086内部寄存器"></a> 8086内部寄存器</h1>
-<p><img src="/2024/03/30/%E5%90%84%E7%A7%8D%E8%AF%AD%E8%A8%80/%E6%B1%87%E7%BC%96/8086%E5%AF%84%E5%AD%98%E5%99%A8/1.png" srcset="/img/loading.gif" lazyload alt="全部寄存器"></p>
+                <h1 id="8086寻址方式详解"><a class="markdownIt-Anchor" href="#8086寻址方式详解"></a> 8086寻址方式详解</h1>
+<p><img src="/2024/03/30/%E5%90%84%E7%A7%8D%E8%AF%AD%E8%A8%80/%E6%B1%87%E7%BC%96/8086%E5%AF%BB%E5%9D%80%E6%96%B9%E5%BC%8F/1.png" srcset="/img/loading.gif" lazyload alt="数据允许传输的方式"></p>
+<p>​	MOV指令只能在这些有箭头的流向使用，比如通用寄存器到通用寄存器，而不能立即数到立即数</p>
+<h2 id="寻址方式分类"><a class="markdownIt-Anchor" href="#寻址方式分类"></a> 寻址方式分类</h2>
+<p>​	8086有三种基本的寻址方式：</p>
 <ul>
-<li><strong>AX，BX，CX，DX称为数据寄存器：</strong></li>
+<li>立即寻址（源操作数在指令中）</li>
+<li>寄存器寻址（源操作数在寄存器中）（执行速度最快）</li>
+<li>存储器寻址（源操作书在存储器中）（执行速度最慢）</li>
 </ul>
-<p>AX (Accumulator)：累加寄存器，也称为累加器</p>
-<p>BX (Base)：基地址寄存器</p>
-<p>CX (Count)：计数器寄存器</p>
-<p>DX (Data)：数据寄存器</p>
+<p>其中，存储器寻址（操作数一般存放在数据段，所以操作数的段地址默认为DS）还可以分为：</p>
 <ul>
-<li><strong>SP和BP称为指针寄存器：</strong></li>
+<li>直接寻址</li>
+<li>寄存器间接寻址</li>
+<li>寄存器相对寻址</li>
+<li>基址变址寻址</li>
+<li>相对基址变址寻址</li>
 </ul>
-<p>SP (Stack Pointer)：堆栈指针寄存器（存放栈顶的逻辑偏移地址）</p>
-<p>BP (Base Pointer)：基指针寄存器（存放内存的逻辑偏移地址，比如调用的时候寄存）</p>
+<h3 id="约定"><a class="markdownIt-Anchor" href="#约定"></a> 约定：</h3>
+<p>​	操作数的偏移地址称为有效地址，有效地址要加上方括号，以便与立即数区别（<strong>方括号代表着相对地址或者加法</strong>）</p>
 <ul>
-<li><strong>SI和DI又称作为变址寄存器：</strong></li>
+<li>“相对”就代表着用一个数值偏移量</li>
 </ul>
-<p>SI (Source Index)：源变址寄存器</p>
-<p>DI (Destination Index)：目的变址寄存器</p>
+<h3 id="直接寻址方法"><a class="markdownIt-Anchor" href="#直接寻址方法"></a> 直接寻址方法：</h3>
 <ul>
-<li><strong>控制寄存器：</strong></li>
+<li>直接寻址：<code>MOV AX,[2000H]</code> 省略掉段地址，使用默认的DS</li>
+<li>超越段前缀：使用冒号修改段前缀 <code>MOV AX,ES:[500H]</code></li>
+<li>符号地址：使用一个符号代替数值，汇编之后本质与直接寻址一样</li>
 </ul>
-<p>IP (Instruction Pointer)：指令指针寄存器</p>
-<p>FLAG：标志寄存器</p>
+<h3 id="寄存器间接寻址"><a class="markdownIt-Anchor" href="#寄存器间接寻址"></a> 寄存器间接寻址：</h3>
+<p>​	本质上就是用寄存器里面的值代替数值，例如 <code>MOV BX,DS:[BP]</code></p>
+<h3 id="寄存器相对寻址"><a class="markdownIt-Anchor" href="#寄存器相对寻址"></a> 寄存器相对寻址：</h3>
+<p>​	在间接寻址的基础上再加上一个位移量（偏移量是数值）。此时没有冒号的方括号可以理解为加法：<code>MOV AX,COUNT[SI]</code>（基地址默认使用了DS）</p>
+<h3 id="基址变址寻址"><a class="markdownIt-Anchor" href="#基址变址寻址"></a> 基址变址寻址：</h3>
+<p>​	使用基址寄存器和变址寄存器，类似于寄存器相对寻址将数值变为寄存器内数值：<code>MOV AX,[BX][SI]</code>（段地址使用了DS，两个方括号就是加法）</p>
+<h3 id="相对基址变址"><a class="markdownIt-Anchor" href="#相对基址变址"></a> 相对基址变址：</h3>
+<p>​	在基址变址的基础上再加入一个数值偏移量：<code>MOV AX,MASK[BX][SI]</code></p>
+<h2 id="其他寻址方式io端口寻址"><a class="markdownIt-Anchor" href="#其他寻址方式io端口寻址"></a> 其他寻址方式（I/O端口寻址）：</h2>
+<p>​	由于8086端口有64k个（共计 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mn>16</mn></msup></mrow><annotation encoding="application/x-tex">2^{16}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mord mtight">6</span></span></span></span></span></span></span></span></span></span></span></span> 个地址），I/O 端口寻址默认使用立即数为8位，因此两种寻址方式为使用8位的直接寻址和使用16位的相对寻址</p>
 <ul>
-<li><strong>段寄存器：</strong></li>
+<li>直接寻址方式：<code>IN AL,63H</code></li>
+<li>相对寻址方式：<code>MOV DX,213H   IN AL,DX</code></li>
 </ul>
-<p>CS (Code Segment)：代码段寄存器</p>
-<p>DS (Data Segment)：数据段寄存器</p>
-<p>SS (Stack Segment)：堆栈段寄存器</p>
-<p>ES (Extra Segment)：附加段寄存器</p>
-<h2 id="默认寄存器的使用"><a class="markdownIt-Anchor" href="#默认寄存器的使用"></a> 默认寄存器的使用：</h2>
-<p>在8086微处理器中，有些寄存器组合在一起使用是出于特定的寻址模式、数据传输或运算目的。以下是一些默认一起使用的寄存器组合：</p>
-<ol>
-<li>
-<p><strong>段寄存器与数据/地址寄存器</strong>：</p>
-<ul>
-<li><strong>数据段寄存器 DS</strong> 与 <strong>数据寄存变址寄存器</strong> 组合，用于访问内存中的数据。<strong>在默认情况下，大多数内存操作数的寻址会隐式使用DS段寄存器作为前缀</strong>，除非显式指定其他段寄存器（如ES、SS等）</li>
-<li><strong>堆栈段寄存器 SS</strong> 与 <strong>堆栈指针寄存器 SP</strong> 组合，用于栈操作。<code>PUSH</code>、<code>POP</code>、<code>PUSHF</code>、<code>POPF</code>、<code>CALL</code>、<code>RET</code>等指令会自动结合SS和SP来寻址栈顶元素</li>
-<li><strong>附加段寄存器 ES</strong> 与 <strong>数据寄存器或变址寄存器</strong> 组合，用于访问额外的数据区域，特别是进行字符串操作时（如<code>MOVS</code>, <code>CMPS</code>, <code>STOS</code>, <code>LODS</code>等指令），默认使用ES作为段寄存器</li>
-</ul>
-</li>
-<li>
-<p><strong>基址寄存器（BX或BP）与变址寄存器（SI或DI）</strong>：</p>
-<ul>
-<li>
-<p>在基址加变址寻址模式中，基址寄存器（BX或BP）和变址寄存器（SI或DI）一起使用，形成复杂寻址方式，用于访问内存中相对于某个基址和变址偏移量的位置。例如：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs assembly">MOV AL, [BX+SI] ; 基于BX和SI的偏移寻址内存数据<br></code></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-<li>
-<p><strong>指令指针寄存器 IP 与代码段寄存器 CS</strong>：</p>
-<ul>
-<li>IP 和 CS 一起构成了当前指令的完整逻辑地址（物理地址 = CS × 16 + IP）。虽然它们在编程中不直接作为一对来操作，但在硬件层面始终是一起工作的，以确定下一条要执行的指令所在的位置</li>
-</ul>
-</li>
-</ol>
-<p><img src="/2024/03/30/%E5%90%84%E7%A7%8D%E8%AF%AD%E8%A8%80/%E6%B1%87%E7%BC%96/8086%E5%AF%84%E5%AD%98%E5%99%A8/2.png" srcset="/img/loading.gif" lazyload alt="各个段的访问"></p>
-<h2 id="不可修改的寄存器"><a class="markdownIt-Anchor" href="#不可修改的寄存器"></a> 不可修改的寄存器：</h2>
-<ol>
-<li><strong>指令指针寄存器</strong>（Instruction Pointer, IP）：
-<ul>
-<li><strong>不可直接修改</strong>：IP寄存器存储了下一条要执行指令的偏移地址，它不能直接通过<code>MOV</code>指令赋值。IP的修改通常由转移（jump）指令、调用（call）指令、中断处理（interrupt handling）等自动完成，这些指令会根据需要自动更新IP的值。</li>
-</ul>
-</li>
-<li><strong>代码段寄存器</strong>（Code Segment, CS）：
-<ul>
-<li><strong>间接影响IP</strong>：与IP类似，上述转移指令、调用指令或者系统级操作（如任务切换、中断处理等）间接完成，这些操作会同时更新CS和IP</li>
-</ul>
-</li>
-<li><strong>栈段寄存器</strong>（Stack Segment, SS）和<strong>堆栈指针寄存器</strong>（Stack Pointer, SP）：
-<ul>
-<li><strong>通常不单独修改</strong>：虽然SS和SP寄存器可以被<code>MOV</code>指令修改，但在实际编程中，通常不会直接对SS赋值，而是通过<code>POP</code>、<code>PUSH</code>、<code>CALL</code>、<code>RET</code>等指令间接修改SP，同时这些指令也会隐含地影响SS（如果需要切换栈段）</li>
-</ul>
-</li>
-</ol>
-<p>请注意，上述“不可直接修改”或“通常不单独修改”指的是通过常规的<code>MOV</code>指令直接赋值，而不是指这些寄存器在运行过程中永远不变。实际上，它们的值会随着程序的执行和特定指令的操作而动态变化</p>
-<h2 id="各个段在内存的分布情况"><a class="markdownIt-Anchor" href="#各个段在内存的分布情况"></a> 各个段在内存的分布情况：</h2>
-<ul>
-<li>
-<p>代码段：通常位于内存的低地址区域（向下增长）</p>
-</li>
-<li>
-<p>数据段：通常紧邻代码段下方，存放已初始化的全局变量、静态变量和常量</p>
-</li>
-<li>
-<p>堆栈段：通常位于内存的最高地址区域，其底部不断增长（向上增长）</p>
-</li>
-<li>
-<p>附加段本身不是一个独立的内存区域，而是一个段寄存器，它存储的是一个内存段的地址。可以在程序中动态设定ES寄存器的值，使其指向任何已分配且合适的内存区域</p>
-</li>
-</ul>
-<p>概括来说，代码段、数据段、堆栈段在内存中的相对位置大致如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs code">低地址   ---------------------------- <br>        |                          |<br>        |          代码段           |<br>        |                          |<br>        |--------------------------|<br>        |          数据段           |<br>        |--------------------------|<br>        |           ...            |<br>        |--------------------------|<br>        |      堆栈段（向上增长）     |<br>高地址   ----------------------------<br></code></pre></td></tr></table></figure>
 
                 
               </div>
@@ -376,18 +323,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/03/30/%E5%90%84%E7%A7%8D%E8%AF%AD%E8%A8%80/%E6%B1%87%E7%BC%96/8086%E5%AF%BB%E5%9D%80%E6%96%B9%E5%BC%8F/" title="8086寻址方式">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">8086寻址方式</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/03/28/MMDetection1/" title="MMDetection1">
-                        <span class="hidden-mobile">MMDetection1</span>
+                      <a href="/2024/03/30/%E5%90%84%E7%A7%8D%E8%AF%AD%E8%A8%80/%E6%B1%87%E7%BC%96/8086%E5%AF%84%E5%AD%98%E5%99%A8/" title="8086内部寄存器">
+                        <span class="hidden-mobile">8086内部寄存器</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
