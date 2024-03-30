@@ -1,0 +1,580 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/w.png">
+  <link rel="icon" href="/img/w.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Wandb教程(2) ​	本篇文章用于介绍Wandb如何进行网格超参数搜索，主要使用了Wandb中的Sweep功能：  Sweep使用流程：  定义 Sweeps 配置 ​	Wandb的配置文件支持YAML和Python等多种文件格式，关于如何配置Sweep可见[官方文档](Define sweep configuration for hyperparameter tuning. (wandb.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Wandb教程(2)">
+<meta property="og:url" content="http://example.com/2024/03/19/%E5%90%84%E7%A7%8D%E8%AF%AD%E8%A8%80/Python/Python%E6%A8%A1%E5%9D%97%E5%B7%A5%E5%85%B7/Wandb-2/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Wandb教程(2) ​	本篇文章用于介绍Wandb如何进行网格超参数搜索，主要使用了Wandb中的Sweep功能：  Sweep使用流程：  定义 Sweeps 配置 ​	Wandb的配置文件支持YAML和Python等多种文件格式，关于如何配置Sweep可见[官方文档](Define sweep configuration for hyperparameter tuning. (wandb.">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-03-19T10:55:07.000Z">
+<meta property="article:modified_time" content="2024-03-19T11:21:24.289Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Wandb教程(2) - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.6","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/katex@0.11.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Wataの锟斤拷</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Wandb教程(2)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-03-19 18:55" pubdate>
+          2024年3月19日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          367 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          4 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Wandb教程(2)</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="wandb教程2"><a class="markdownIt-Anchor" href="#wandb教程2"></a> Wandb教程(2)</h1>
+<p>​	本篇文章用于介绍Wandb如何进行网格超参数搜索，主要使用了Wandb中的Sweep功能：</p>
+<h2 id="sweep使用流程"><a class="markdownIt-Anchor" href="#sweep使用流程"></a> Sweep使用流程：</h2>
+<h3 id="定义-sweeps-配置"><a class="markdownIt-Anchor" href="#定义-sweeps-配置"></a> 定义 Sweeps 配置</h3>
+<p>​	Wandb的配置文件支持YAML和Python等多种文件格式，关于如何配置Sweep可见[官方文档](<a target="_blank" rel="noopener" href="https://docs.wandb.ai/guides/sweeps/define-sweep-configuration">Define sweep configuration for hyperparameter tuning. (wandb.ai)</a>)，下面是两种文件配置的例子：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">program:</span> <span class="hljs-string">train.py</span> <span class="hljs-comment"># 训练脚本文件名</span><br><span class="hljs-attr">method:</span> <span class="hljs-string">grid</span> <span class="hljs-comment"># 或 bayes, random 等其他搜索方法</span><br><span class="hljs-attr">parameters:</span><br>  <span class="hljs-attr">learning_rate:</span><br>    <span class="hljs-attr">distribution:</span> <span class="hljs-string">uniform</span><br>    <span class="hljs-attr">min:</span> <span class="hljs-number">0.0001</span><br>    <span class="hljs-attr">max:</span> <span class="hljs-number">0.01</span><br>  <span class="hljs-attr">batch_size:</span><br>    <span class="hljs-attr">values:</span> [<span class="hljs-number">32</span>, <span class="hljs-number">64</span>, <span class="hljs-number">128</span>]<br>  <span class="hljs-attr">dropout_rate:</span><br>    <span class="hljs-attr">distribution:</span> <span class="hljs-string">log_uniform</span><br>    <span class="hljs-attr">min:</span> <span class="hljs-number">0.001</span><br>    <span class="hljs-attr">max:</span> <span class="hljs-number">0.5</span><br><span class="hljs-attr">metric:</span><br>    <span class="hljs-attr">name:</span> <span class="hljs-string">val_accuracy</span> <span class="hljs-comment"># 监控的目标指标名称</span><br>    <span class="hljs-attr">goal:</span> <span class="hljs-string">maximize</span> <span class="hljs-comment"># 指标优化目标（maximize 或 minimize）</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> wandb<br><br>sweep_config = &#123;<br>    <span class="hljs-string">&quot;method&quot;</span>: <span class="hljs-string">&quot;grid&quot;</span>,<br>    <span class="hljs-string">&quot;metric&quot;</span>: &#123;<span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;val_loss&quot;</span>, <span class="hljs-string">&quot;goal&quot;</span>: <span class="hljs-string">&quot;minimize&quot;</span>&#125;,<br>    <span class="hljs-string">&quot;parameters&quot;</span>: &#123;<br>        <span class="hljs-string">&quot;learning_rate&quot;</span>: &#123;<span class="hljs-string">&quot;distribution&quot;</span>: <span class="hljs-string">&quot;uniform&quot;</span>, <span class="hljs-string">&quot;min&quot;</span>: <span class="hljs-number">1e-4</span>, <span class="hljs-string">&quot;max&quot;</span>: <span class="hljs-number">1e-2</span>&#125;,<br>        <span class="hljs-string">&quot;dropout_rate&quot;</span>: &#123;<span class="hljs-string">&quot;distribution&quot;</span>: <span class="hljs-string">&quot;categorical&quot;</span>, <span class="hljs-string">&quot;values&quot;</span>: [<span class="hljs-number">0.2</span>, <span class="hljs-number">0.3</span>, <span class="hljs-number">0.4</span>]&#125;,<br>    &#125;,<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="初始化-sweep"><a class="markdownIt-Anchor" href="#初始化-sweep"></a> 初始化 Sweep</h3>
+<p>​	对于YAML文件，初始化需要使用bash命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">wandb sweep sweep.yaml<br></code></pre></td></tr></table></figure>
+<p>​	对于Python文件，初始化则只需要使用<code>wandb.sweep</code>函数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> wandb<br><br><span class="hljs-comment"># 加载或创建 sweep 配置</span><br>sweep_id = wandb.sweep(sweep_config)<br><br><span class="hljs-comment"># 在训练函数中加入 sweep 调用</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">train</span>(<span class="hljs-params">hparams</span>):<br>    <span class="hljs-comment"># 使用 hparams 来设置训练过程中的超参数</span><br>    wandb.init(config=hparams)<br>    <span class="hljs-comment"># ... 实现你的训练逻辑 ...</span><br>    <br><span class="hljs-comment"># 启动 Sweep，用于启动和管理 Sweep 中的实验执行的一个函数</span><br>wandb.agent(sweep_id, function=train)<br></code></pre></td></tr></table></figure>
+<p><code>wandb.agent()</code> 是用于启动和管理 Sweep 中的实验执行的一个函数，接收两个主要参数：</p>
+<ul>
+<li><code>sweep_id</code>：这是你之前创建或通过 API 获取到的 Sweep 的唯一标识符</li>
+<li><code>function</code>：这是一个可调用对象，通常是一个函数，这个函数负责执行实际的训练逻辑，并且可以访问当前 sweep 运行时传入的超参数</li>
+</ul>
+<h3 id="修改训练脚本以接收超参数"><a class="markdownIt-Anchor" href="#修改训练脚本以接收超参数"></a> 修改训练脚本以接收超参数</h3>
+<p>确保训练脚本（例如上述的 <code>train.py</code>）能够从 <code>wandb.config</code> 中读取超参数值，并根据这些值来配置模型和训练过程</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> wandb<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">train</span>():<br>    <span class="hljs-comment"># 获取当前运行的配置（包含超参数）</span><br>    hparams = wandb.config<br>    learning_rate = hparams.learning_rate<br>    batch_size = hparams.batch_size<br>    dropout_rate = hparams.dropout_rate<br>    <span class="hljs-comment"># 使用这些超参数训练模型...</span><br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+			
+			
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/03/19/%E5%90%84%E7%A7%8D%E8%AF%AD%E8%A8%80/Python/Python%E6%A8%A1%E5%9D%97%E5%B7%A5%E5%85%B7/Python%E5%AE%9E%E7%94%A8%E7%94%A8%E6%B3%95/" title="Python实用用法">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Python实用用法</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/03/17/%E5%90%84%E7%A7%8D%E8%AF%AD%E8%A8%80/Python/Python%E6%A8%A1%E5%9D%97%E5%B7%A5%E5%85%B7/Wandb-1/" title="Wandb教程(1)">
+                        <span class="hidden-mobile">Wandb教程(1)</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <i class="iconfont icon-love"></i> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
