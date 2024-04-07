@@ -19,18 +19,18 @@
     <meta name="description" content="Wandb教程(3) ​	本篇文章用于介绍Wandb如何进行网格超参数搜索，主要使用了Wandb中的Sweep功能：  Sweep配置：  定义 Sweeps 配置 ​	Wandb的配置文件支持YAML和Python等多种文件格式，关于如何配置Sweep可见[官方文档](Define sweep configuration for hyperparameter tuning. (wandb.ai">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Wandb教程(3)">
-<meta property="og:url" content="http://example.com/2024/03/19/%E5%90%84%E7%A7%8D%E8%AF%AD%E8%A8%80/Python/Python%E6%A8%A1%E5%9D%97%E5%B7%A5%E5%85%B7/Wandb-3/index.html">
+<meta property="og:url" content="http://example.com/2024/04/06/%E5%90%84%E7%A7%8D%E8%AF%AD%E8%A8%80/Python/Python%E6%A8%A1%E5%9D%97%E5%B7%A5%E5%85%B7/Wandb-3/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="Wandb教程(3) ​	本篇文章用于介绍Wandb如何进行网格超参数搜索，主要使用了Wandb中的Sweep功能：  Sweep配置：  定义 Sweeps 配置 ​	Wandb的配置文件支持YAML和Python等多种文件格式，关于如何配置Sweep可见[官方文档](Define sweep configuration for hyperparameter tuning. (wandb.ai">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/2024/03/19/%E5%90%84%E7%A7%8D%E8%AF%AD%E8%A8%80/Python/Python%E6%A8%A1%E5%9D%97%E5%B7%A5%E5%85%B7/Wandb-3/1.webp">
-<meta property="og:image" content="http://example.com/2024/03/19/%E5%90%84%E7%A7%8D%E8%AF%AD%E8%A8%80/Python/Python%E6%A8%A1%E5%9D%97%E5%B7%A5%E5%85%B7/Wandb-3/2.webp">
-<meta property="og:image" content="http://example.com/2024/03/19/%E5%90%84%E7%A7%8D%E8%AF%AD%E8%A8%80/Python/Python%E6%A8%A1%E5%9D%97%E5%B7%A5%E5%85%B7/Wandb-3/3.webp">
-<meta property="article:published_time" content="2024-03-19T10:55:07.000Z">
-<meta property="article:modified_time" content="2024-04-07T05:41:22.576Z">
+<meta property="og:image" content="http://example.com/2024/04/06/%E5%90%84%E7%A7%8D%E8%AF%AD%E8%A8%80/Python/Python%E6%A8%A1%E5%9D%97%E5%B7%A5%E5%85%B7/Wandb-3/1.webp">
+<meta property="og:image" content="http://example.com/2024/04/06/%E5%90%84%E7%A7%8D%E8%AF%AD%E8%A8%80/Python/Python%E6%A8%A1%E5%9D%97%E5%B7%A5%E5%85%B7/Wandb-3/2.webp">
+<meta property="og:image" content="http://example.com/2024/04/06/%E5%90%84%E7%A7%8D%E8%AF%AD%E8%A8%80/Python/Python%E6%A8%A1%E5%9D%97%E5%B7%A5%E5%85%B7/Wandb-3/3.webp">
+<meta property="article:published_time" content="2024-04-06T11:27:34.000Z">
+<meta property="article:modified_time" content="2024-04-07T06:10:10.440Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/2024/03/19/%E5%90%84%E7%A7%8D%E8%AF%AD%E8%A8%80/Python/Python%E6%A8%A1%E5%9D%97%E5%B7%A5%E5%85%B7/Wandb-3/1.webp">
+<meta name="twitter:image" content="http://example.com/2024/04/06/%E5%90%84%E7%A7%8D%E8%AF%AD%E8%A8%80/Python/Python%E6%A8%A1%E5%9D%97%E5%B7%A5%E5%85%B7/Wandb-3/1.webp">
   
   
   
@@ -203,8 +203,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-03-19 18:55" pubdate>
-          2024年3月19日 晚上
+        <time datetime="2024-04-06 19:27" pubdate>
+          2024年4月6日 晚上
         </time>
       </span>
     
@@ -318,7 +318,7 @@
 <li><code>Sweep Controller</code> 负责定义超参数搜索的整体策略、配置搜索空间，并根据策略分配具体的超参数组合给 Agent 执行</li>
 <li><code>Agent</code> 根据 <code>Sweep Controller</code> 分配的超参数组合执行相应的训练任务，将训练过程中的数据同步回 <code>wandb</code> 平台</li>
 </ul>
-<p><img src="/2024/03/19/%E5%90%84%E7%A7%8D%E8%AF%AD%E8%A8%80/Python/Python%E6%A8%A1%E5%9D%97%E5%B7%A5%E5%85%B7/Wandb-3/1.webp" srcset="/img/loading.gif" lazyload alt="agent &amp; controller"></p>
+<p><img src="/2024/04/06/%E5%90%84%E7%A7%8D%E8%AF%AD%E8%A8%80/Python/Python%E6%A8%A1%E5%9D%97%E5%B7%A5%E5%85%B7/Wandb-3/1.webp" srcset="/img/loading.gif" lazyload alt="agent &amp; controller"></p>
 <p><code>wandb.agent()</code> 主要接收参数：</p>
 <ul>
 <li><code>sweep_id</code>：这是你之前创建或通过 API 获取到的 Sweep 的唯一标识符</li>
@@ -331,10 +331,10 @@
 <h2 id="效果展示"><a class="markdownIt-Anchor" href="#效果展示"></a> 效果展示：</h2>
 <h3 id="平行坐标系图"><a class="markdownIt-Anchor" href="#平行坐标系图"></a> 平行坐标系图</h3>
 <p>​	可以直观展示哪些超参数组合更加容易获取更好的结果</p>
-<p><img src="/2024/03/19/%E5%90%84%E7%A7%8D%E8%AF%AD%E8%A8%80/Python/Python%E6%A8%A1%E5%9D%97%E5%B7%A5%E5%85%B7/Wandb-3/2.webp" srcset="/img/loading.gif" lazyload alt="坐标线图"></p>
+<p><img src="/2024/04/06/%E5%90%84%E7%A7%8D%E8%AF%AD%E8%A8%80/Python/Python%E6%A8%A1%E5%9D%97%E5%B7%A5%E5%85%B7/Wandb-3/2.webp" srcset="/img/loading.gif" lazyload alt="坐标线图"></p>
 <h2 id="超参数重要性图"><a class="markdownIt-Anchor" href="#超参数重要性图"></a> 超参数重要性图</h2>
 <p>​	可以显示超参数和优化目标最终取值的重要性，和相关性方向</p>
-<p><img src="/2024/03/19/%E5%90%84%E7%A7%8D%E8%AF%AD%E8%A8%80/Python/Python%E6%A8%A1%E5%9D%97%E5%B7%A5%E5%85%B7/Wandb-3/3.webp" srcset="/img/loading.gif" lazyload alt="重要性图"></p>
+<p><img src="/2024/04/06/%E5%90%84%E7%A7%8D%E8%AF%AD%E8%A8%80/Python/Python%E6%A8%A1%E5%9D%97%E5%B7%A5%E5%85%B7/Wandb-3/3.webp" srcset="/img/loading.gif" lazyload alt="重要性图"></p>
 
                 
               </div>
@@ -349,18 +349,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/03/19/%E5%90%84%E7%A7%8D%E8%AF%AD%E8%A8%80/Python/Python%E6%A8%A1%E5%9D%97%E5%B7%A5%E5%85%B7/Python%E5%AE%9E%E7%94%A8%E7%94%A8%E6%B3%95/" title="Python实用用法">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Python实用用法</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/03/17/%E5%90%84%E7%A7%8D%E8%AF%AD%E8%A8%80/Python/Python%E6%A8%A1%E5%9D%97%E5%B7%A5%E5%85%B7/Wandb-1/" title="Wandb教程(1)">
-                        <span class="hidden-mobile">Wandb教程(1)</span>
+                      <a href="/2024/04/05/%E5%B8%B8%E7%94%A8Neck%E7%BD%91%E7%BB%9C/" title="常用Neck网络-1">
+                        <span class="hidden-mobile">常用Neck网络-1</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
