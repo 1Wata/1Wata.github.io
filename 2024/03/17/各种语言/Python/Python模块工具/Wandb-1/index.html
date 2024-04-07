@@ -25,7 +25,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/2024/03/17/%E5%90%84%E7%A7%8D%E8%AF%AD%E8%A8%80/Python/Python%E6%A8%A1%E5%9D%97%E5%B7%A5%E5%85%B7/Wandb-1/1.png">
 <meta property="article:published_time" content="2024-03-17T10:15:55.000Z">
-<meta property="article:modified_time" content="2024-03-25T13:23:48.995Z">
+<meta property="article:modified_time" content="2024-04-06T13:29:20.465Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://example.com/2024/03/17/%E5%90%84%E7%A7%8D%E8%AF%AD%E8%A8%80/Python/Python%E6%A8%A1%E5%9D%97%E5%B7%A5%E5%85%B7/Wandb-1/1.png">
@@ -213,7 +213,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          961 字
+          2.1k 字
         
       </span>
     
@@ -224,7 +224,7 @@
         
         
         
-          10 分钟
+          22 分钟
         
       </span>
     
@@ -268,6 +268,7 @@
                 
                 <h1 id="wandb教程1"><a class="markdownIt-Anchor" href="#wandb教程1"></a> Wandb教程(1)</h1>
 <p>​	Wandb（Weights &amp; Biases）是一个用于机器学习实验跟踪、可视化和管理的平台。它提供了一个强大的工具集，帮助研究人员和开发人员跟踪他们的模型训练过程、超参数、指标以及模型的版本。他就是Tensorboard的白富美版本：颜值高，气质好，可视化交互性强，支持所有深度学习框架。<strong>它内嵌在计算机中，不需要你写可视化代码</strong>（我之前每次可视化都要写一次把张量的batch维度抽出来，再转换通道维的索引…）</p>
+<p>​	<strong>Wandb的网站是高度可交互的，这个功能非常的强大，可以自行探索</strong>（比如添加panel，缩放图像展示格，交互式地进行数据分析等）</p>
 <h2 id="wandb的使用"><a class="markdownIt-Anchor" href="#wandb的使用"></a> Wandb的使用：</h2>
 <p>​	<code>Wandb</code>用法与<code>matplotlib.plt</code>十分类似，既支持面向对象编程也支持面向过程编程，即既可以实例化一个对象使用，又可以纯函数式使用：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">###### 既可以这样使用 ######</span><br><span class="hljs-comment"># 第一步进行初始化</span><br>wandb.init(project=<span class="hljs-string">&quot;your_project_name&quot;</span>)<br><span class="hljs-comment"># 再写入配置信息</span><br>wandb.config.learning_rate = <span class="hljs-number">0.001</span><br>wandb.config.epochs = <span class="hljs-number">10</span><br><span class="hljs-comment"># 写入要记录的信息</span><br>wandb.log(&#123;<span class="hljs-string">&quot;loss&quot;</span>: loss.item()&#125;)<br><span class="hljs-comment"># 结束Wandb运行</span><br>wandb.finish()<br><br><span class="hljs-comment">###### 又可以如下使用 #######</span><br>run = wandb.init(project=<span class="hljs-string">&quot;my_first_project&quot;</span>)<br>config = run.config<br>config.learning_rate = <span class="hljs-number">0.01</span><br>run.log(&#123;<span class="hljs-string">&quot;loss&quot;</span>: loss.item()&#125;)<br>run.finish()<br></code></pre></td></tr></table></figure>
@@ -295,12 +296,8 @@
 <p>​	用于记录在训练过程中需要可视化的信息，函数声明如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs python">wandb.log(<br>    data: <span class="hljs-type">Dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-type">Any</span>],<br>    step: <span class="hljs-type">Optional</span>[<span class="hljs-built_in">int</span>] = <span class="hljs-literal">None</span><br>) -&gt; <span class="hljs-literal">None</span><br></code></pre></td></tr></table></figure>
 <ul>
-<li>
-<p><code>data(dic, optional)</code>：一个可序列化的Python对象的字典，即字符串（str）、整数（ints）、浮点数（floats）、张量（Tensors）、字典（dicts）等</p>
-</li>
-<li>
-<p><code>step(int, optional)</code>：处理中的全局步骤，表示训练过程中的指标随step的变化情况</p>
-</li>
+<li><code>data(dic, optional)</code>：一个可序列化的Python对象的字典，即字符串（str）、整数（ints）、浮点数（floats）、张量（Tensors）、字典（dicts）等</li>
+<li><code>step(int, optional)</code>：处理中的全局步骤，表示训练过程中的指标随step的变化情况</li>
 </ul>
 <h3 id="wandbimage-的使用"><a class="markdownIt-Anchor" href="#wandbimage-的使用"></a> <code>wandb.Image</code> 的使用：</h3>
 <p>​	用于创建一个 <code>wandb.Image</code> 对象，该对象可以被记录到 Wandb 的运行中。以下是 <code>wandb.Image</code> 类的一些常用参数和它们的用法：</p>
@@ -321,7 +318,111 @@
 <p><code>wandb.Image</code> 类的构造函数返回一个 <code>wandb.Image</code> 对象。这个对象可以被传递给 <code>wandb.log</code> 函数，用于记录和可视化图像数据</p>
 <h4 id="使用范例"><a class="markdownIt-Anchor" href="#使用范例"></a> 使用范例：</h4>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">with</span> wandb.init() <span class="hljs-keyword">as</span> run:<br>    examples = []<br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">3</span>):<br>        pixels = np.random.randint(low=<span class="hljs-number">0</span>, high=<span class="hljs-number">256</span>, size=(<span class="hljs-number">100</span>, <span class="hljs-number">100</span>, <span class="hljs-number">3</span>), dtype=np.uint8)<br>        pil_image = PILImage.fromarray(pixels, mode=<span class="hljs-string">&quot;RGB&quot;</span>)<br>        image = wandb.Image(pil_image, caption=<span class="hljs-string">f&quot;random field <span class="hljs-subst">&#123;i&#125;</span>&quot;</span>)<br>        examples.append(image)<br>    run.log(&#123;<span class="hljs-string">&quot;examples&quot;</span>: examples&#125;)<br></code></pre></td></tr></table></figure>
-<h2 id="使用示例使用wanbd可视化vgg网络的特征图"><a class="markdownIt-Anchor" href="#使用示例使用wanbd可视化vgg网络的特征图"></a> 使用示例：使用wanbd可视化vgg网络的特征图</h2>
+<h2 id="wandbartifact的使用"><a class="markdownIt-Anchor" href="#wandbartifact的使用"></a> <code>wandb.Artifact</code>的使用：</h2>
+<p>​	<code>wandb.Artifact</code> 用于封装、管理和共享项目资源（如数据集、模型、代码、日志文件等）的重要类。它允许将这些资源版本化、关联到特定的 <code>wandb</code> 运行，并在 <code>wandb</code> 平台上进行可视化、下载和复用：</p>
+<h3 id="构造函数"><a class="markdownIt-Anchor" href="#构造函数"></a> 构造函数</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">wandb.Artifact(name: <span class="hljs-built_in">str</span>, <span class="hljs-built_in">type</span>: <span class="hljs-built_in">str</span>, description: <span class="hljs-type">Optional</span>[<span class="hljs-built_in">str</span>] = <span class="hljs-literal">None</span>, metadata: <span class="hljs-type">Optional</span>[<span class="hljs-type">Dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-type">Any</span>]] = <span class="hljs-literal">None</span>, version: <span class="hljs-type">Optional</span>[<span class="hljs-built_in">str</span>] = <span class="hljs-literal">None</span>, \**kwargs: <span class="hljs-type">Any</span>) -&gt; Artifact<br></code></pre></td></tr></table></figure>
+<p><strong>参数</strong>:</p>
+<ul>
+<li><strong><code>name: str</code></strong>: <code>Artifact</code> 的唯一名称。在项目中应保持唯一，以避免覆盖已有资源</li>
+<li><strong><code>type: str</code></strong>: <code>Artifact</code> 的类型，用于标识资源的类别。常见的类型有 <code>'dataset'</code>、<code>'model'</code>、<code>'code'</code> 等，也可以自定义。</li>
+<li><strong><code>description: Optional[str] = None</code></strong>: 可选的描述文字，用于提供 <code>Artifact</code> 的简要说明。</li>
+<li><strong><code>metadata: Optional[Dict[str, Any]] = None</code></strong>: 可选的元数据字典，用于存储关于 <code>Artifact</code> 的附加信息，如数据集统计信息、模型架构摘要等</li>
+<li><strong><code>version: Optional[str] = None</code></strong>: 可选的版本号。如果不指定，<code>wandb</code> 会自动为 <code>Artifact</code> 分配一个版本</li>
+</ul>
+<p><strong>返回值</strong>:</p>
+<ul>
+<li>返回一个 <code>wandb.Artifact</code> 对象，代表创建的资源包。</li>
+</ul>
+<h3 id="主要方法"><a class="markdownIt-Anchor" href="#主要方法"></a> 主要方法：</h3>
+<ul>
+<li><code>add_file</code>：用于将指定路径下的单个文件添加到 <code>Artifact</code> 中。这使得该文件成为 <code>Artifact</code> 的一部分，将在 <code>Artifact</code> 上传至 <code>wandb</code> 服务器时一同保存</li>
+<li><code>add_dir</code>：将指定路径下的整个目录及其内容（包括子目录和文件）添加到 <code>Artifact</code> 中</li>
+<li><code>log_artifact</code>将 <code>Artifact</code> 记录到指定的 <code>wandb</code> 运行中，并将其上传到 <code>wandb</code> 服务器。这样，该 <code>Artifact</code> 就与特定的 <code>wandb</code> 运行关联起来，可以在 <code>wandb</code> 界面上查看、下载、分享和复用</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">add_file(path: <span class="hljs-type">Union</span>[<span class="hljs-built_in">str</span>, Path], name: <span class="hljs-type">Optional</span>[<span class="hljs-built_in">str</span>] = <span class="hljs-literal">None</span>, metadata: <span class="hljs-type">Optional</span>[<span class="hljs-type">Dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-type">Any</span>]] = <span class="hljs-literal">None</span>) -&gt; <span class="hljs-literal">None</span><br></code></pre></td></tr></table></figure>
+<p>`<strong>参数</strong>:</p>
+<ul>
+<li><strong><code>path: Union[str, Path]</code></strong>: 要添加到 <code>Artifact</code> 中的本地文件或目录的路径</li>
+<li><strong><code>name: Optional[str] = None</code></strong>: 可选的在 <code>Artifact</code> 内部使用的文件名。如果不指定，将使用原始文件名</li>
+<li><strong><code>metadata: Optional[Dict[str, Any]] = None</code></strong>: 可选的文件元数据字典，用于存储关于文件的附加信息</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">add_dir(path: <span class="hljs-type">Union</span>[<span class="hljs-built_in">str</span>, Path], name: <span class="hljs-type">Optional</span>[<span class="hljs-built_in">str</span>] = <span class="hljs-literal">None</span>, recursive: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">True</span>, metadata: <span class="hljs-type">Optional</span>[<span class="hljs-type">Dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-type">Any</span>]] = <span class="hljs-literal">None</span>) -&gt; <span class="hljs-literal">None</span><br></code></pre></td></tr></table></figure>
+<p><strong>参数</strong>:</p>
+<ul>
+<li><strong><code>path: Union[str, Path]</code></strong>: 要添加到 <code>Artifact</code> 中的本地目录的路径</li>
+<li><strong><code>name: Optional[str] = None</code></strong>: 可选的在 <code>Artifact</code> 内部使用的目录名。如果不指定，将使用原始目录名</li>
+<li><strong><code>recursive: bool = True</code></strong>: 是否递归地添加目录下所有文件和子目录。默认为 <code>True</code></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">log_artifact(run: <span class="hljs-type">Optional</span>[<span class="hljs-type">Union</span>[<span class="hljs-built_in">str</span>, wandb.apis.public.Run]] = <span class="hljs-literal">None</span>, aliases: <span class="hljs-type">Optional</span>[<span class="hljs-type">List</span>[<span class="hljs-built_in">str</span>]] = <span class="hljs-literal">None</span>, step: <span class="hljs-type">Optional</span>[<span class="hljs-built_in">int</span>] = <span class="hljs-literal">None</span>, commit: <span class="hljs-type">Optional</span>[<span class="hljs-built_in">bool</span>] = <span class="hljs-literal">True</span>) -&gt; <span class="hljs-literal">None</span><br></code></pre></td></tr></table></figure>
+<p><strong>参数</strong>:</p>
+<ul>
+<li><strong><code>run: Optional[Union[str, wandb.apis.public.Run]] = None</code></strong>: 可选的 <code>wandb</code> 运行对象或运行ID。如果不指定，将使用当前 <code>wandb</code> 运行</li>
+<li><strong><code>commit: Optional[bool] = True</code></strong>: 是否立即提交并上传</li>
+</ul>
+<h2 id="wandtable使用"><a class="markdownIt-Anchor" href="#wandtable使用"></a> <code>Wand.Table</code>使用：</h2>
+<p>​	<code>wandb.Table</code> 是用于展示和记录表格数据的一种数据结构。它允许用户将结构化的数据（如 Pandas DataFrame、NumPy 数组或其他表格数据）以表格形式可视化，并将其与 <code>wandb</code> 运行关联起来，便于在 <code>wandb</code> 界面上进行数据分析、探索和比较</p>
+<h3 id="创建-wandbtable"><a class="markdownIt-Anchor" href="#创建-wandbtable"></a> <strong>创建 <code>wandb.Table</code></strong></h3>
+<p><strong>构造函数</strong>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">wandb.Table(data: <span class="hljs-type">Union</span>[pandas.DataFrame, <span class="hljs-type">List</span>[<span class="hljs-type">Dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-type">Any</span>]], <span class="hljs-type">List</span>[<span class="hljs-type">List</span>[<span class="hljs-type">Any</span>]], <span class="hljs-type">Dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-type">List</span>[<span class="hljs-type">Any</span>]], <span class="hljs-type">List</span>[<span class="hljs-type">Tuple</span>[<span class="hljs-built_in">str</span>, <span class="hljs-type">Any</span>]], <span class="hljs-type">Tuple</span>[<span class="hljs-built_in">str</span>, <span class="hljs-type">Any</span>]], columns: <span class="hljs-type">Optional</span>[<span class="hljs-type">List</span>[<span class="hljs-built_in">str</span>]] = <span class="hljs-literal">None</span>)<br></code></pre></td></tr></table></figure>
+<p><strong>参数</strong>:</p>
+<ul>
+<li><strong><code>data</code></strong>: 表格数据，可以是以下类型之一：
+<ul>
+<li>Pandas DataFrame</li>
+<li>列表嵌套字典（每一项代表一行数据，键为列名，值为数据）</li>
+<li>列表嵌套列表（每一项代表一行数据，按列顺序排列）</li>
+<li>字典嵌套列表（键为列名，值为该列数据组成的列表）</li>
+<li>列表嵌套元组（每一项为 <code>(column_name, value)</code> 的二元组）</li>
+<li>元组（只有一行数据时，形式为 <code>(column_name, value)</code>）</li>
+</ul>
+</li>
+<li><strong><code>columns</code></strong>: 可选的列名列表，用于指定列名。对于不提供列名的输入类型（如列表嵌套列表），此参数是必需的</li>
+</ul>
+<h3 id="常用方法"><a class="markdownIt-Anchor" href="#常用方法"></a> 常用方法：</h3>
+<h4 id="add_data-方法"><a class="markdownIt-Anchor" href="#add_data-方法"></a> <code>add_data</code> 方法</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">wandb.Table.add_data(row_data: <span class="hljs-type">Union</span>[<span class="hljs-type">Dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-type">Any</span>], <span class="hljs-type">List</span>[<span class="hljs-type">Any</span>], <span class="hljs-type">Tuple</span>[<span class="hljs-built_in">str</span>, <span class="hljs-type">Any</span>]], column_names: <span class="hljs-type">Optional</span>[<span class="hljs-type">List</span>[<span class="hljs-built_in">str</span>]] = <span class="hljs-literal">None</span>)<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>作用</strong>: 向现有 <code>wandb.Table</code> 对象中添加新的行数据</li>
+<li><strong>参数</strong>:
+<ul>
+<li><strong><code>row_data</code></strong>: 要添加的新行数据，可以是以下类型之一：
+<ul>
+<li>字典（键为列名，值为数据）</li>
+<li>列表（按列顺序排列的数据）</li>
+<li>元组（只有一行数据时，形式为 <code>(column_name, value)</code>）</li>
+</ul>
+</li>
+<li><strong><code>column_names</code></strong>: 可选的列名列表，用于指定列名。对于不提供列名的输入类型（如列表），此参数是必需的</li>
+</ul>
+</li>
+</ul>
+<h4 id="add_rows-方法"><a class="markdownIt-Anchor" href="#add_rows-方法"></a> <code>add_rows</code> 方法</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">wandb.Table.add_rows(rows: <span class="hljs-type">List</span>[<span class="hljs-type">Union</span>[<span class="hljs-type">Dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-type">Any</span>], <span class="hljs-type">List</span>[<span class="hljs-type">Any</span>], <span class="hljs-type">Tuple</span>[<span class="hljs-built_in">str</span>, <span class="hljs-type">Any</span>]]], column_names: <span class="hljs-type">Optional</span>[<span class="hljs-type">List</span>[<span class="hljs-built_in">str</span>]] = <span class="hljs-literal">None</span>)<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>作用</strong>: 向现有 <code>wandb.Table</code> 对象中批量添加多行数据</li>
+<li><strong>参数</strong>:
+<ul>
+<li><strong><code>rows</code></strong>: 要添加的新行数据列表，每一项可以是以下类型之一：
+<ul>
+<li>字典（键为列名，值为数据）</li>
+<li>列表（按列顺序排列的数据）</li>
+<li>元组（只有一行数据时，形式为 <code>(column_name, value)</code>）</li>
+</ul>
+</li>
+<li><strong><code>column_names</code></strong>: 可选的列名列表，用于指定列名。对于不提供列名的输入类型（如列表），此参数是必需的</li>
+</ul>
+</li>
+</ul>
+<h3 id="wandtable作用"><a class="markdownIt-Anchor" href="#wandtable作用"></a> <code>Wand.Table</code>作用：</h3>
+<ol>
+<li><strong>数据可视化</strong>: <code>wandb.Table</code> 使得结构化的数据能够在 <code>wandb</code> 界面上以表格形式展示，便于直观地查看、分析和比较数据</li>
+<li><strong>数据记录</strong>: 将 <code>wandb.Table</code> 记录到 <code>wandb</code> 运行中，可以将实验数据（如中间结果、评估指标、样本数据等）与模型训练过程关联起来，形成完整的实验记录，便于后续回顾、分析和复现</li>
+<li><strong>数据版本控制</strong>: 由于 <code>wandb.Table</code> 是 <code>wandb</code> 运行的一部分，它会随运行一起版本化。用户可以轻松地对比不同运行之间的表格数据，观察数据的变化趋势或差异</li>
+</ol>
+<h4 id="使用范例-2"><a class="markdownIt-Anchor" href="#使用范例-2"></a> 使用范例：</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs python">good_cases = wandb.Table(columns = [<span class="hljs-string">&#x27;Image&#x27;</span>,<span class="hljs-string">&#x27;GroundTruth&#x27;</span>,<span class="hljs-string">&#x27;Prediction&#x27;</span>])<br>bad_cases = wandb.Table(columns = [<span class="hljs-string">&#x27;Image&#x27;</span>,<span class="hljs-string">&#x27;GroundTruth&#x27;</span>,<span class="hljs-string">&#x27;Prediction&#x27;</span>])<br><br><span class="hljs-comment"># 找到50个good cases 和 50 个bad cases</span><br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> tqdm(<span class="hljs-built_in">range</span>(<span class="hljs-number">1000</span>)):<br>    features,label = ds_val[i]<br>    tensor = features.to(device)<br>    y_pred = torch.argmax(model(<span class="hljs-built_in">input</span>)) <br>    <br>    <span class="hljs-comment"># log badcase</span><br>    <span class="hljs-keyword">if</span> y_pred!=label:<br>        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(bad_cases.data)&lt;<span class="hljs-number">50</span>:<br>            data = features.permute(<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">0</span>).numpy()<br>            input_img = wandb.Image(fig2img(data2fig(data)))<br>            bad_cases.add_data(input_img,label,y_pred)<br>            <br>    <span class="hljs-comment"># log goodcase</span><br>    <span class="hljs-keyword">else</span>:<br>        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(good_cases.data)&lt;<span class="hljs-number">50</span>:<br>            data = features.permute(<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">0</span>).numpy()<br>            input_img = wandb.Image(fig2img(data2fig(data)))<br>            good_cases.add_data(input_img,label,y_pred)<br><br>wandb.log(&#123;<span class="hljs-string">&#x27;good_cases&#x27;</span>:good_cases,<span class="hljs-string">&#x27;bad_cases&#x27;</span>:bad_cases&#125;)<br></code></pre></td></tr></table></figure>
+<h2 id="使用示例使用wandb可视化vgg网络的特征图"><a class="markdownIt-Anchor" href="#使用示例使用wandb可视化vgg网络的特征图"></a> 使用示例：使用wandb可视化vgg网络的特征图</h2>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np<br><span class="hljs-keyword">import</span> torch<br><span class="hljs-keyword">import</span> torch.nn <span class="hljs-keyword">as</span> nn<br><span class="hljs-keyword">import</span> torchvision.models <span class="hljs-keyword">as</span> models<br><span class="hljs-keyword">from</span> torchvision.transforms <span class="hljs-keyword">import</span> transforms<br><span class="hljs-keyword">import</span> wandb<br><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt<br><span class="hljs-keyword">from</span> PIL <span class="hljs-keyword">import</span> Image<br><br><br>vgg16_pretrained = models.vgg16(pretrained=<span class="hljs-literal">True</span>)<br>run = wandb.init(project=<span class="hljs-string">&#x27;visualize_featuremap&#x27;</span>)<br><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyModel</span>(nn.Module):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-built_in">super</span>(MyModel, self).__init__()<br>        self.encoder1 = vgg16_pretrained.features[:<span class="hljs-number">5</span>]<br>        self.encoder2 = vgg16_pretrained.features[<span class="hljs-number">5</span>:<span class="hljs-number">10</span>]<br>        self.encoder3 = vgg16_pretrained.features[<span class="hljs-number">10</span>:<span class="hljs-number">17</span>]<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">forward</span>(<span class="hljs-params">self, x</span>):<br>        x = self.encoder1(x)<br>        x = self.encoder2(x)<br>        x = self.encoder3(x)<br>        <span class="hljs-keyword">return</span> x<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">visualize</span>(<span class="hljs-params">output, name</span>):<br>    Images = []<br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(output.shape[<span class="hljs-number">1</span>]):<br>        <span class="hljs-comment"># 灰度图的像素值要乘255，不然对比度太低会显示出一团黑</span><br>        numpy_Image = (output[:, i, :, :].squeeze(<span class="hljs-number">0</span>).detach().cpu() * <span class="hljs-number">255</span>).numpy().astype(np.uint8)<br>        cmap = plt.get_cmap(<span class="hljs-string">&#x27;rainbow&#x27;</span>, lut=<span class="hljs-number">256</span>)<br>        numpy_Image = cmap(numpy_Image)<br>        <span class="hljs-comment"># 可以选择转化为PIL图像，其实Numpy图像本身就够了</span><br>        <span class="hljs-comment"># pil_image = Image.fromarray(numpy_Image.astype(&#x27;uint8&#x27;), mode=&#x27;L&#x27;)  # 使用 &#x27;L&#x27; 模式表示灰度图像</span><br>        Images.append(wandb.Image(numpy_Image, caption=<span class="hljs-string">f&quot;<span class="hljs-subst">&#123;name&#125;</span> feature map <span class="hljs-subst">&#123;i&#125;</span>&quot;</span>))<br><br>    run.log(&#123;name: Images&#125;)<br><br>mymodel = MyModel()<br>mymodel.encoder1.register_forward_hook(<span class="hljs-keyword">lambda</span> module, <span class="hljs-built_in">input</span>, output: visualize(output, name=<span class="hljs-string">&#x27;encoder1&#x27;</span>))<br>mymodel.encoder2.register_forward_hook(<span class="hljs-keyword">lambda</span> module, <span class="hljs-built_in">input</span>, output: visualize(output, name=<span class="hljs-string">&#x27;encoder2&#x27;</span>))<br>mymodel.encoder3.register_forward_hook(<span class="hljs-keyword">lambda</span> module, <span class="hljs-built_in">input</span>, output: visualize(output, name=<span class="hljs-string">&#x27;encoder3&#x27;</span>))<br><br>input_image = Image.<span class="hljs-built_in">open</span>(<span class="hljs-string">&quot;./Lena.jpg&quot;</span>).convert(<span class="hljs-string">&quot;RGB&quot;</span>)<br>transforms = transforms.Compose([<br>    transforms.ToTensor(),<br>    transforms.Normalize([<span class="hljs-number">0.485</span>, <span class="hljs-number">0.456</span>, <span class="hljs-number">0.406</span>], [<span class="hljs-number">0.229</span>, <span class="hljs-number">0.224</span>, <span class="hljs-number">0.225</span>])<br>])<br><br>input_image = transforms(input_image).unsqueeze(<span class="hljs-number">0</span>)<br>_ = mymodel(input_image)<br><br>run.finish()<br></code></pre></td></tr></table></figure>
 <h3 id="结果可视化图"><a class="markdownIt-Anchor" href="#结果可视化图"></a> 结果可视化图：</h3>
 <p><img src="/2024/03/17/%E5%90%84%E7%A7%8D%E8%AF%AD%E8%A8%80/Python/Python%E6%A8%A1%E5%9D%97%E5%B7%A5%E5%85%B7/Wandb-1/1.png" srcset="/img/loading.gif" lazyload alt="visualize"></p>
@@ -339,9 +440,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/03/19/%E5%90%84%E7%A7%8D%E8%AF%AD%E8%A8%80/Python/Python%E6%A8%A1%E5%9D%97%E5%B7%A5%E5%85%B7/Wandb-2/" title="Wandb教程(2)">
+                      <a href="/2024/03/19/%E5%90%84%E7%A7%8D%E8%AF%AD%E8%A8%80/Python/Python%E6%A8%A1%E5%9D%97%E5%B7%A5%E5%85%B7/Wandb-3/" title="Wandb教程(3)">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Wandb教程(2)</span>
+                        <span class="hidden-mobile">Wandb教程(3)</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
