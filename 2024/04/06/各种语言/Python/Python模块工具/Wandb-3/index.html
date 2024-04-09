@@ -27,7 +27,7 @@
 <meta property="og:image" content="http://example.com/2024/04/06/%E5%90%84%E7%A7%8D%E8%AF%AD%E8%A8%80/Python/Python%E6%A8%A1%E5%9D%97%E5%B7%A5%E5%85%B7/Wandb-3/2.webp">
 <meta property="og:image" content="http://example.com/2024/04/06/%E5%90%84%E7%A7%8D%E8%AF%AD%E8%A8%80/Python/Python%E6%A8%A1%E5%9D%97%E5%B7%A5%E5%85%B7/Wandb-3/3.webp">
 <meta property="article:published_time" content="2024-04-06T11:27:34.000Z">
-<meta property="article:modified_time" content="2024-04-07T06:10:10.440Z">
+<meta property="article:modified_time" content="2024-04-07T10:29:15.649Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://example.com/2024/04/06/%E5%90%84%E7%A7%8D%E8%AF%AD%E8%A8%80/Python/Python%E6%A8%A1%E5%9D%97%E5%B7%A5%E5%85%B7/Wandb-3/1.webp">
@@ -215,7 +215,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          840 字
+          1k 字
         
       </span>
     
@@ -226,7 +226,7 @@
         
         
         
-          9 分钟
+          11 分钟
         
       </span>
     
@@ -310,7 +310,15 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs python">sweep_config[<span class="hljs-string">&#x27;early_terminate&#x27;</span>] = &#123;<br>    <span class="hljs-string">&#x27;type&#x27;</span>:<span class="hljs-string">&#x27;hyperband&#x27;</span>,<br>    <span class="hljs-string">&#x27;min_iter&#x27;</span>:<span class="hljs-number">3</span>,<br>    <span class="hljs-string">&#x27;eta&#x27;</span>:<span class="hljs-number">2</span>,<br>    <span class="hljs-string">&#x27;s&#x27;</span>:<span class="hljs-number">3</span><br>&#125; <span class="hljs-comment">#在step=3, 6, 12 时考虑是否剪枝</span><br></code></pre></td></tr></table></figure>
 <h2 id="启动sweep"><a class="markdownIt-Anchor" href="#启动sweep"></a> 启动Sweep：</h2>
 <h3 id="初始化-sweep-controller"><a class="markdownIt-Anchor" href="#初始化-sweep-controller"></a> 初始化 sweep controller</h3>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">sweep_id = wandb.sweep(sweep_config, project=config.project_name)<br></code></pre></td></tr></table></figure>
+<p>​	<code>wandb.sweep</code> 用于创建和管理超参数搜索（Hyperparameter Sweeps）的主要接口。它允许定义搜索空间、选择搜索策略，并启动一个或多个 Agent 来执行一系列训练试验，以寻找最优模型配置</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">wandb.sweep(sweep_config: <span class="hljs-type">Union</span>[<span class="hljs-built_in">str</span>, <span class="hljs-type">Dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-type">Any</span>]], project: <span class="hljs-type">Optional</span>[<span class="hljs-built_in">str</span>] = <span class="hljs-literal">None</span>) -&gt; <span class="hljs-built_in">str</span><br></code></pre></td></tr></table></figure>
+<p><strong>参数</strong>：</p>
+<ul>
+<li><strong><code>sweep_config</code></strong>: 定义超参数搜索的配置。可以是 YAML 文件的路径（字符串）或直接提供一个 Python 字典。该配置包含搜索空间、搜索算法、调度策略等信息</li>
+<li><strong><code>project</code></strong>: 可选的字符串，指定 <code>wandb</code> 项目名称。如果不指定，将使用当前默认项目</li>
+</ul>
+<p><strong>返回值</strong>：返回一个字符串，表示新创建的 Sweep 的唯一 ID (<code>sweep_id</code>)。这个 ID 用于后续通过 <code>wandb.agent</code> 启动 Agent 时关联到该 Sweep</p>
+<p><strong>注意：name 在 sweep_config 里面配置</strong></p>
 <h3 id="启动-sweep-agent"><a class="markdownIt-Anchor" href="#启动-sweep-agent"></a> 启动 Sweep agent</h3>
 <p>​	我们需要把模型训练相关的全部代码整理成一个 train函数，再将train函数传入 sweep agent：</p>
 <p>​	<code>sweep_id</code>就是一个 sweep controller，<code>wandb.agent</code>就是用于创建 sweep agent 的函数它和 sweep agent 的关系如下：</p>
@@ -327,7 +335,7 @@
 </ul>
 <h3 id="修改训练脚本以接收超参数"><a class="markdownIt-Anchor" href="#修改训练脚本以接收超参数"></a> 修改训练脚本以接收超参数</h3>
 <p>确保训练脚本（例如上述的 <code>train.py</code>）能够从 <code>wandb.config</code> 中读取超参数值，并根据这些值来配置模型和训练过程</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> wandb<br><br>cofig = &#123;<br>    ...<br>&#125;<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">train</span>(<span class="hljs-params">config=config</span>):<br>    <span class="hljs-comment"># 获取当前运行的配置（包含超参数）</span><br>    hparams = wandb.config<br>    learning_rate = hparams.learning_rate<br>    batch_size = hparams.batch_size<br>    dropout_rate = hparams.dropout_rate<br>    <span class="hljs-comment"># 使用这些超参数训练模型...</span><br>    <br><br></code></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> wandb<br><br>cofig = &#123;<br>    ...<br>&#125;<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">train</span>(<span class="hljs-params">config=config</span>):<br>    <span class="hljs-comment"># 获取当前运行的配置（包含超参数）</span><br>    hparams = wandb.config<br>    learning_rate = hparams.learning_rate<br>    batch_size = hparams.batch_size<br>    dropout_rate = hparams.dropout_rate<br>    <span class="hljs-comment"># 使用这些超参数训练模型...</span><br>    <br></code></pre></td></tr></table></figure>
 <h2 id="效果展示"><a class="markdownIt-Anchor" href="#效果展示"></a> 效果展示：</h2>
 <h3 id="平行坐标系图"><a class="markdownIt-Anchor" href="#平行坐标系图"></a> 平行坐标系图</h3>
 <p>​	可以直观展示哪些超参数组合更加容易获取更好的结果</p>
@@ -348,6 +356,12 @@
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2024/04/09/Java%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7/" title="Java高级特性">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Java高级特性</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
