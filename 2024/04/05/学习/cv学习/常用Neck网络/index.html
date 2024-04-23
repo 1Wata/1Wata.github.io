@@ -19,22 +19,22 @@
     <meta name="description" content="SPP(Spatial Pyramid Pooling)  Motivation： ​	SPP的提出就是为了解决CNN输入图像大小必须固定的问题，从而可以使得输入图像高宽比和大小任意  网络结构解析： ​	SPP-Neck网络结构如下：   首先是输入层(input image),其大小可以是任意的 中间的部分就是SPP-Neck层，SPP会在最后一层卷积层输出的特征图上进行操作，将其划分为多个">
 <meta property="og:type" content="article">
 <meta property="og:title" content="常用Neck网络-1">
-<meta property="og:url" content="http://example.com/2024/04/05/%E5%B8%B8%E7%94%A8Neck%E7%BD%91%E7%BB%9C/index.html">
+<meta property="og:url" content="http://example.com/2024/04/05/%E5%AD%A6%E4%B9%A0/cv%E5%AD%A6%E4%B9%A0/%E5%B8%B8%E7%94%A8Neck%E7%BD%91%E7%BB%9C/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="SPP(Spatial Pyramid Pooling)  Motivation： ​	SPP的提出就是为了解决CNN输入图像大小必须固定的问题，从而可以使得输入图像高宽比和大小任意  网络结构解析： ​	SPP-Neck网络结构如下：   首先是输入层(input image),其大小可以是任意的 中间的部分就是SPP-Neck层，SPP会在最后一层卷积层输出的特征图上进行操作，将其划分为多个">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/2024/04/05/%E5%B8%B8%E7%94%A8Neck%E7%BD%91%E7%BB%9C/1.png">
-<meta property="og:image" content="http://example.com/2024/04/05/%E5%B8%B8%E7%94%A8Neck%E7%BD%91%E7%BB%9C/2.png">
-<meta property="og:image" content="http://example.com/2024/04/05/%E5%B8%B8%E7%94%A8Neck%E7%BD%91%E7%BB%9C/3.png">
-<meta property="og:image" content="http://example.com/2024/04/05/%E5%B8%B8%E7%94%A8Neck%E7%BD%91%E7%BB%9C/4.png">
-<meta property="og:image" content="http://example.com/2024/04/05/%E5%B8%B8%E7%94%A8Neck%E7%BD%91%E7%BB%9C/5.png">
-<meta property="og:image" content="http://example.com/2024/04/05/%E5%B8%B8%E7%94%A8Neck%E7%BD%91%E7%BB%9C/6.png">
-<meta property="og:image" content="http://example.com/2024/04/05/%E5%B8%B8%E7%94%A8Neck%E7%BD%91%E7%BB%9C/7.png">
+<meta property="og:image" content="http://example.com/2024/04/05/%E5%AD%A6%E4%B9%A0/cv%E5%AD%A6%E4%B9%A0/%E5%B8%B8%E7%94%A8Neck%E7%BD%91%E7%BB%9C/1.png">
+<meta property="og:image" content="http://example.com/2024/04/05/%E5%AD%A6%E4%B9%A0/cv%E5%AD%A6%E4%B9%A0/%E5%B8%B8%E7%94%A8Neck%E7%BD%91%E7%BB%9C/2.png">
+<meta property="og:image" content="http://example.com/2024/04/05/%E5%AD%A6%E4%B9%A0/cv%E5%AD%A6%E4%B9%A0/%E5%B8%B8%E7%94%A8Neck%E7%BD%91%E7%BB%9C/3.png">
+<meta property="og:image" content="http://example.com/2024/04/05/%E5%AD%A6%E4%B9%A0/cv%E5%AD%A6%E4%B9%A0/%E5%B8%B8%E7%94%A8Neck%E7%BD%91%E7%BB%9C/4.png">
+<meta property="og:image" content="http://example.com/2024/04/05/%E5%AD%A6%E4%B9%A0/cv%E5%AD%A6%E4%B9%A0/%E5%B8%B8%E7%94%A8Neck%E7%BD%91%E7%BB%9C/5.png">
+<meta property="og:image" content="http://example.com/2024/04/05/%E5%AD%A6%E4%B9%A0/cv%E5%AD%A6%E4%B9%A0/%E5%B8%B8%E7%94%A8Neck%E7%BD%91%E7%BB%9C/6.png">
+<meta property="og:image" content="http://example.com/2024/04/05/%E5%AD%A6%E4%B9%A0/cv%E5%AD%A6%E4%B9%A0/%E5%B8%B8%E7%94%A8Neck%E7%BD%91%E7%BB%9C/7.png">
 <meta property="article:published_time" content="2024-04-05T01:53:26.000Z">
 <meta property="article:modified_time" content="2024-04-05T09:10:45.146Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/2024/04/05/%E5%B8%B8%E7%94%A8Neck%E7%BD%91%E7%BB%9C/1.png">
+<meta name="twitter:image" content="http://example.com/2024/04/05/%E5%AD%A6%E4%B9%A0/cv%E5%AD%A6%E4%B9%A0/%E5%B8%B8%E7%94%A8Neck%E7%BD%91%E7%BB%9C/1.png">
   
   
   
@@ -277,7 +277,7 @@
 <p>​	SPP的提出就是为了解决CNN输入图像大小必须固定的问题，从而可以使得输入图像高宽比和大小任意</p>
 <h2 id="网络结构解析"><a class="markdownIt-Anchor" href="#网络结构解析"></a> 网络结构解析：</h2>
 <p>​	SPP-Neck网络结构如下：</p>
-<p><img src="/2024/04/05/%E5%B8%B8%E7%94%A8Neck%E7%BD%91%E7%BB%9C/1.png" srcset="/img/loading.gif" lazyload alt="SPP-Neck"></p>
+<p><img src="/2024/04/05/%E5%AD%A6%E4%B9%A0/cv%E5%AD%A6%E4%B9%A0/%E5%B8%B8%E7%94%A8Neck%E7%BD%91%E7%BB%9C/1.png" srcset="/img/loading.gif" lazyload alt="SPP-Neck"></p>
 <ul>
 <li>首先是输入层(input image),其大小可以是任意的</li>
 <li>中间的部分就是SPP-Neck层，SPP会<strong>在最后一层卷积层</strong>输出的特征图上进行操作，将其划分为多个不同大小的子区域，并对每个子区域分别执行池化操作
@@ -299,9 +299,9 @@
 <p>在这样问题的存在下，语义分割问题一直处在瓶颈期无法再明显提高精度， 而 dilated convolution 的设计就良好的避免了这些问题</p>
 <h2 id="网络结构解析-2"><a class="markdownIt-Anchor" href="#网络结构解析-2"></a> 网络结构解析：</h2>
 <p>ASPP网络结构如下：</p>
-<p><img src="/2024/04/05/%E5%B8%B8%E7%94%A8Neck%E7%BD%91%E7%BB%9C/2.png" srcset="/img/loading.gif" lazyload alt="ASPP-network"></p>
+<p><img src="/2024/04/05/%E5%AD%A6%E4%B9%A0/cv%E5%AD%A6%E4%B9%A0/%E5%B8%B8%E7%94%A8Neck%E7%BD%91%E7%BB%9C/2.png" srcset="/img/loading.gif" lazyload alt="ASPP-network"></p>
 <p>中间黄色括号部分即为 ASPP-Neck，展开结构如下所示：</p>
-<p><img src="/2024/04/05/%E5%B8%B8%E7%94%A8Neck%E7%BD%91%E7%BB%9C/3.png" srcset="/img/loading.gif" lazyload alt="ASPP"></p>
+<p><img src="/2024/04/05/%E5%AD%A6%E4%B9%A0/cv%E5%AD%A6%E4%B9%A0/%E5%B8%B8%E7%94%A8Neck%E7%BD%91%E7%BB%9C/3.png" srcset="/img/loading.gif" lazyload alt="ASPP"></p>
 <ul>
 <li>对于 input，网络会对 feature map 分别进行 $1 \times1 $ 和不同比例空洞卷积，这些操作都不改变 feature map 的大小</li>
 <li>右边部分称为 ASPP Pooling，目的是为了得到语义信息，首先是一个 <code>AdaptiveAvgPool2d</code> 层。自适应均值池化就是不需要指定 kernel size 和 stride，只需指定最后的输出尺寸，再进行 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>×</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">1 \times 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span> 卷积后上采样</li>
@@ -314,11 +314,11 @@
 <p>​	采用神经网络结构搜索（Neural Architecture Search, NAS），在一个覆盖所有跨尺度连接的新型可扩展搜索空间中发现了一个新的特征金字塔结构，NAS-FPN。与原始FPN相比，NAS-FPN显著提高了目标检测的性能，并取得了更好了速度-精度的 trade-off</p>
 <h2 id="网络结构解析-3"><a class="markdownIt-Anchor" href="#网络结构解析-3"></a> 网络结构解析：</h2>
 <p>​	作者提出了merging cell作为FPN的basic building block，将任何两层的输入特征融合为一层的输出特征：</p>
-<p><img src="/2024/04/05/%E5%B8%B8%E7%94%A8Neck%E7%BD%91%E7%BB%9C/4.png" srcset="/img/loading.gif" lazyload alt="搜索示意图"></p>
+<p><img src="/2024/04/05/%E5%AD%A6%E4%B9%A0/cv%E5%AD%A6%E4%B9%A0/%E5%B8%B8%E7%94%A8Neck%E7%BD%91%E7%BB%9C/4.png" srcset="/img/loading.gif" lazyload alt="搜索示意图"></p>
 <p>​	最终搜索到的NAS-FPN的完整结构如图6所示</p>
-<p><img src="/2024/04/05/%E5%B8%B8%E7%94%A8Neck%E7%BD%91%E7%BB%9C/5.png" srcset="/img/loading.gif" lazyload alt="NAS-FPN"></p>
+<p><img src="/2024/04/05/%E5%AD%A6%E4%B9%A0/cv%E5%AD%A6%E4%B9%A0/%E5%B8%B8%E7%94%A8Neck%E7%BD%91%E7%BB%9C/5.png" srcset="/img/loading.gif" lazyload alt="NAS-FPN"></p>
 <p>​	如下图所示，下图其中(a)是原始FPN结构，(b)-(f)的精度逐渐变高，(f)是最终的NAS-FPN结构，每个圆点代表一个特征层，绿色圆圈表示输入层，红色圆圈表示输出层，这些特征层在同一个行中具有相同的分辨率。箭头指示特征层之间的连接或信息流的方向</p>
-<p><img src="/2024/04/05/%E5%B8%B8%E7%94%A8Neck%E7%BD%91%E7%BB%9C/6.png" srcset="/img/loading.gif" lazyload alt="网格搜索示意"></p>
+<p><img src="/2024/04/05/%E5%AD%A6%E4%B9%A0/cv%E5%AD%A6%E4%B9%A0/%E5%B8%B8%E7%94%A8Neck%E7%BD%91%E7%BB%9C/6.png" srcset="/img/loading.gif" lazyload alt="网格搜索示意"></p>
 <h2 id="代码实现-3"><a class="markdownIt-Anchor" href="#代码实现-3"></a> 代码实现：</h2>
 <p>​	以 mmdetection 中的一部分代码为例：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">forward</span>(<span class="hljs-params">self, inputs: <span class="hljs-type">Tuple</span>[Tensor]</span>) -&gt; <span class="hljs-built_in">tuple</span>:<br>    <span class="hljs-comment"># [(8,256,160,160),</span><br>    <span class="hljs-comment">#  (8,512,80,80),</span><br>    <span class="hljs-comment">#  (8,1024,40,40),</span><br>    <span class="hljs-comment">#  (8,2048,20,20)]</span><br>    <span class="hljs-string">&quot;&quot;&quot;Forward function.</span><br><span class="hljs-string">     Args:</span><br><span class="hljs-string">        inputs (tuple[Tensor]): Features from the upstream network, each</span><br><span class="hljs-string">            is a 4D-tensor.</span><br><span class="hljs-string">    Returns:</span><br><span class="hljs-string">        tuple: Feature maps, each is a 4D-tensor.</span><br><span class="hljs-string">    &quot;&quot;&quot;</span><br>    <span class="hljs-comment"># build P3-P5</span><br>    feats = [<br>        lateral_conv(inputs[i + self.start_level])<br>        <span class="hljs-keyword">for</span> i, lateral_conv <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(self.lateral_convs)<br>    ]  <span class="hljs-comment"># [(8,256,80,80),(8,256,40,40),(8,256,20,20)]</span><br>    <span class="hljs-comment"># build P6-P7 on top of P5</span><br>    <span class="hljs-keyword">for</span> downsample <span class="hljs-keyword">in</span> self.extra_downsamples:<br>        feats.append(downsample(feats[-<span class="hljs-number">1</span>]))  <span class="hljs-comment"># [..., (8,256,10,10),(8,256,5,5)]</span><br> <br>    p3, p4, p5, p6, p7 = feats<br> <br>    <span class="hljs-keyword">for</span> stage <span class="hljs-keyword">in</span> self.fpn_stages:<br>        <span class="hljs-comment"># gp(p6, p4) -&gt; p4_1</span><br>        <span class="hljs-comment"># print(stage[&#x27;gp_64_4&#x27;])</span><br>        p4_1 = stage[<span class="hljs-string">&#x27;gp_64_4&#x27;</span>](p6, p4, out_size=p4.shape[-<span class="hljs-number">2</span>:])  <span class="hljs-comment"># (8,256,40,40)</span><br>        <span class="hljs-comment"># sum(p4_1, p4) -&gt; p4_2</span><br>        p4_2 = stage[<span class="hljs-string">&#x27;sum_44_4&#x27;</span>](p4_1, p4, out_size=p4.shape[-<span class="hljs-number">2</span>:])  <span class="hljs-comment"># (8,256,40,40)</span><br>        <span class="hljs-comment"># sum(p4_2, p3) -&gt; p3_out</span><br>        p3 = stage[<span class="hljs-string">&#x27;sum_43_3&#x27;</span>](p4_2, p3, out_size=p3.shape[-<span class="hljs-number">2</span>:])  <span class="hljs-comment"># (8,256,80,80)</span><br>        <span class="hljs-comment"># sum(p3_out, p4_2) -&gt; p4_out</span><br>        p4 = stage[<span class="hljs-string">&#x27;sum_34_4&#x27;</span>](p3, p4_2, out_size=p4.shape[-<span class="hljs-number">2</span>:])  <span class="hljs-comment"># (8,256,40,40)</span><br>        <span class="hljs-comment"># sum(p5, gp(p4_out, p3_out)) -&gt; p5_out</span><br>        p5_tmp = stage[<span class="hljs-string">&#x27;gp_43_5&#x27;</span>](p4, p3, out_size=p5.shape[-<span class="hljs-number">2</span>:])  <span class="hljs-comment"># (8,256,20,20)</span><br>        p5 = stage[<span class="hljs-string">&#x27;sum_55_5&#x27;</span>](p5, p5_tmp, out_size=p5.shape[-<span class="hljs-number">2</span>:])  <span class="hljs-comment"># (8,256,20,20)</span><br>        <span class="hljs-comment"># sum(p7, gp(p5_out, p4_2)) -&gt; p7_out</span><br>        p7_tmp = stage[<span class="hljs-string">&#x27;gp_54_7&#x27;</span>](p5, p4_2, out_size=p7.shape[-<span class="hljs-number">2</span>:])  <span class="hljs-comment"># (8,256,5,5)</span><br>        p7 = stage[<span class="hljs-string">&#x27;sum_77_7&#x27;</span>](p7, p7_tmp, out_size=p7.shape[-<span class="hljs-number">2</span>:])  <span class="hljs-comment"># (8,256,5,5)</span><br>        <span class="hljs-comment"># gp(p7_out, p5_out) -&gt; p6_out</span><br>        p6 = stage[<span class="hljs-string">&#x27;gp_75_6&#x27;</span>](p7, p5, out_size=p6.shape[-<span class="hljs-number">2</span>:])  <span class="hljs-comment"># (8,256,10,10)</span><br> <br>    <span class="hljs-keyword">return</span> p3, p4, p5, p6, p7<br></code></pre></td></tr></table></figure>
@@ -327,7 +327,7 @@
 <p>​	dense prediction task 不仅要关心语义信息，还要关注图像的精确到像素点的浅层信息。PANet 最大的贡献是提出了一个自顶向下和自底向上的双向融合骨干网络，同时在最底层和最高层之间添加了一条“short-cut”，用于缩短层之间的路径</p>
 <h2 id="网络结构解析-4"><a class="markdownIt-Anchor" href="#网络结构解析-4"></a> 网络结构解析：</h2>
 <p>​	PANet网络结构如下：<br>
-<img src="/2024/04/05/%E5%B8%B8%E7%94%A8Neck%E7%BD%91%E7%BB%9C/7.png" srcset="/img/loading.gif" lazyload alt="PANet"></p>
+<img src="/2024/04/05/%E5%AD%A6%E4%B9%A0/cv%E5%AD%A6%E4%B9%A0/%E5%B8%B8%E7%94%A8Neck%E7%BD%91%E7%BB%9C/7.png" srcset="/img/loading.gif" lazyload alt="PANet"></p>
 <p>​	具体的实现比较简单，就是在FPN的基础上加上了一个Neck部分，再通过两条虚线将浅层网络信息跳连到深层网络中（按理来说PANet是可以在NAS-FPN那篇论文中搜索到的，查了一下确实PANet的发表时间早于NAS-FPN）</p>
 <h1 id="其它"><a class="markdownIt-Anchor" href="#其它"></a> 其它：</h1>
 <p>​	还有各种FPN网络如PANet、ASFF、NAS-FPN、BiFPN、Recursive-FPN…太多了，有需要的时候再查</p>

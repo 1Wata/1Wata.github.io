@@ -24,7 +24,7 @@
 <meta property="og:description" content="Java高级特性  Static关键字  静态变量（Static Variables）：  当 static 修饰一个成员变量时，这个变量就成为静态变量，也称为类变量。静态变量存储在Java方法区中，且仅有一个副本，供所有类的实例共享 静态变量在类加载时初始化，其生命周期贯穿整个程序执行过程，直到JVM停止运行（类似于全局变量） 可以通过类名直接访问静态变量，无需创建类的实例   静态方法（St">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-04-09T06:53:03.000Z">
-<meta property="article:modified_time" content="2024-04-16T12:20:59.012Z">
+<meta property="article:modified_time" content="2024-04-19T10:35:43.630Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -211,7 +211,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          901 字
+          1.5k 字
         
       </span>
     
@@ -222,7 +222,7 @@
         
         
         
-          10 分钟
+          16 分钟
         
       </span>
     
@@ -306,6 +306,130 @@
 <li>用<code>implements</code>代替<code>extends</code>声明子类，该子类中必须实现接口（及其超类）中的所有方法</li>
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">CanFly</span> &#123;<br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">fly</span><span class="hljs-params">()</span>;<br>&#125;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">CanSwim</span> &#123;<br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">swim</span><span class="hljs-params">()</span>;<br>&#125;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Animal</span> &#123;<br>    <span class="hljs-keyword">protected</span> String name;<br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">Animal</span><span class="hljs-params">(String name)</span> &#123;<br>        <span class="hljs-built_in">this</span>.name = name;<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">eat</span><span class="hljs-params">()</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">sleep</span><span class="hljs-params">()</span>;<br>&#125;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Mammal</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">Animal</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">CanFly</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">Mammal</span><span class="hljs-params">(String name)</span> &#123;<br>        <span class="hljs-built_in">super</span>(name);<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">careForYoung</span><span class="hljs-params">()</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">fly</span><span class="hljs-params">()</span>;<br>&#125;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Bird</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">Mammal</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">CanSwim</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">Bird</span><span class="hljs-params">(String name)</span> &#123;<br>        <span class="hljs-built_in">super</span>(name);<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">careForYoung</span><span class="hljs-params">()</span> &#123;<br>        System.out.println(name + <span class="hljs-string">&quot; cares for its young.&quot;</span>);<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">eat</span><span class="hljs-params">()</span> &#123;<br>        System.out.println(name + <span class="hljs-string">&quot; eats.&quot;</span>);<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">sleep</span><span class="hljs-params">()</span> &#123;<br>        System.out.println(name + <span class="hljs-string">&quot; sleeps.&quot;</span>);<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">fly</span><span class="hljs-params">()</span> &#123;<br>        System.out.println(name + <span class="hljs-string">&quot; flies.&quot;</span>);<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">swim</span><span class="hljs-params">()</span> &#123;<br>        System.out.println(name + <span class="hljs-string">&quot; swims.&quot;</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="package语句"><a class="markdownIt-Anchor" href="#package语句"></a> <code>package</code>语句</h2>
+<p>​	包(package)是相关类与接口的一个集合，它提供访问控制与命名空间管理，Java平台中的类与接口都是根据功能以包组织的。</p>
+<p>包机制的好处：</p>
+<ul>
+<li>
+<p>程序员容易确定包中的类是相关的，并且容易根据所需的功能找到相应的类</p>
+</li>
+<li>
+<p><strong>每个包都创建一个新的命名空间，因此不同包中的类名不会冲突</strong></p>
+</li>
+<li>
+<p>同一个包中的类之间有比较宽松的访问控制</p>
+</li>
+</ul>
+<h3 id="包成员的使用import"><a class="markdownIt-Anchor" href="#包成员的使用import"></a> 包成员的使用<code>import</code></h3>
+<p>​	将package引入源程序，格式为：</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span>  包名.*；<br><span class="hljs-keyword">import</span>  包名. 类名；<br></code></pre></td></tr></table></figure>
+<ul>
+<li>import语句必须在源程序之前，在package声明之后</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java">[<span class="hljs-keyword">package</span> ……]   <span class="hljs-comment">//缺省是package . </span><br>[<span class="hljs-keyword">import</span> ……]     <span class="hljs-comment">//缺省是import java.lang.*</span><br>[类声明 ……]<br></code></pre></td></tr></table></figure>
+<ul>
+<li>引入其他类的静态成员：</li>
+</ul>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span>  <span class="hljs-keyword">static</span> ……<br><span class="hljs-keyword">import</span>  <span class="hljs-keyword">static</span> java.lang.Math.*；<br></code></pre></td></tr></table></figure>
+<h3 id="包名与包中类的存储位置"><a class="markdownIt-Anchor" href="#包名与包中类的存储位置"></a> 包名与包中类的存储位置</h3>
+<ul>
+<li>
+<p>包分隔符相当于目录分隔符，包存储的路径由包根路径加上包名指明的路径组成。</p>
+</li>
+<li>
+<p>包的根路径由CLASSPATH环境变量指出。</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> abc.financeDept<br>%CLASSPATH%\abc\financeDept<br></code></pre></td></tr></table></figure>
+<h2 id="枚举类型"><a class="markdownIt-Anchor" href="#枚举类型"></a> 枚举类型</h2>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java">[<span class="hljs-keyword">public</span>] <span class="hljs-keyword">enum</span> 枚举类型名 [implements 接口名表] &#123;<br>  枚举常量定义<br>  [枚举体定义]<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>
+<p>枚举类型与类一样，也可以实现接口。</p>
+</li>
+<li>
+<p>所有的枚举类型都隐含地继承了<code>java.lang.Enum</code>类，由于Java不支持多继承，所以<strong>枚举类型的声明中不能再继承任何类</strong></p>
+</li>
+<li>
+<p>枚举类型实际上是具有固定实例的特殊类</p>
+</li>
+<li>
+<p>每个枚举常量都将与一个整数值相对应</p>
+</li>
+<li>
+<p>枚举类型的构造方法只能定义为private（默认）</p>
+</li>
+<li>
+<p>枚举类型的方法：</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java">equals：如果传入对象等于此枚举常量时，返回<span class="hljs-literal">true</span><br>name：返回此枚举常量的名称，在其枚举声明中对其进行声明<br>ordinal：返回枚举常量的序数（它在枚举声明中的位置，其中初始常量序数为零）<br>toString：返回枚举常量的名称，它包含在声明中<br>values：返回一个包含该枚举类型所有常量的数组<br></code></pre></td></tr></table></figure>
+<ul>
+<li>枚举类型的变量也属于一种引用型变量</li>
+</ul>
+<h2 id="wrapper类"><a class="markdownIt-Anchor" href="#wrapper类"></a> Wrapper类</h2>
+<ul>
+<li>
+<p>Wrapper将基本类型表示成类</p>
+</li>
+<li>
+<p>每个Wrapper类对象都封装了基本类型的一个值</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Primitive Data Type</th>
+<th>Wrapper Class</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>boolean</td>
+<td>Boolean</td>
+</tr>
+<tr>
+<td>byte</td>
+<td>Byte</td>
+</tr>
+<tr>
+<td>char</td>
+<td>Character</td>
+</tr>
+<tr>
+<td>short</td>
+<td>Short</td>
+</tr>
+<tr>
+<td>int</td>
+<td>Integer</td>
+</tr>
+<tr>
+<td>long</td>
+<td>Long</td>
+</tr>
+<tr>
+<td>float</td>
+<td>Float</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><code>Wrapper</code>类中包含了很多有用的方法和常量，如数字型Wrapper类中的MIN_VALUE 和 MAX_VALUE 常量，定义了该类型的最大值与最小值。byteValue, shortValue方法进行数值转换，valueOf  和 toString 实现字符串与数值之间的转换</li>
+</ul>
+<h3 id="自动装箱与拆箱"><a class="markdownIt-Anchor" href="#自动装箱与拆箱"></a> 自动装箱与拆箱</h3>
+<ul>
+<li>
+<p>装箱（Box）:把基本类型的数据通过相应Wrapper类形成对象</p>
+</li>
+<li>
+<p>拆箱（Unbox）：把一个Wrapper类对象中的基本数据类型提取出来</p>
+</li>
+<li>
+<p>自动装箱与拆箱</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">Integer</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">10</span>;<br><span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> i;<br></code></pre></td></tr></table></figure>
 
                 
               </div>
