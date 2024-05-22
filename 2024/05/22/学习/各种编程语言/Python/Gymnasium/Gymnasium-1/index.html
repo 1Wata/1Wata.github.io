@@ -1,0 +1,632 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/w.png">
+  <link rel="icon" href="/img/w.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Gymnasium入门 ​	Gymnasium 是一个为所有单代理强化学习环境提供 API 的项目，并包括常见环境的实现：cartpole、pendulum、mountain-car、mujoco、atari 等 ​	该 API 包含四个关键函数：make、reset、step 和 render。 Gymnasium 的核心是 Env，一个高级 Python 类，代表强化学习理论中的马尔可夫决策">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Gymnasium-1">
+<meta property="og:url" content="http://example.com/2024/05/22/%E5%AD%A6%E4%B9%A0/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/Gymnasium/Gymnasium-1/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Gymnasium入门 ​	Gymnasium 是一个为所有单代理强化学习环境提供 API 的项目，并包括常见环境的实现：cartpole、pendulum、mountain-car、mujoco、atari 等 ​	该 API 包含四个关键函数：make、reset、step 和 render。 Gymnasium 的核心是 Env，一个高级 Python 类，代表强化学习理论中的马尔可夫决策">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2024/05/22/%E5%AD%A6%E4%B9%A0/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/Gymnasium/Gymnasium-1/1.png">
+<meta property="article:published_time" content="2024-05-22T12:16:41.000Z">
+<meta property="article:modified_time" content="2024-05-22T13:11:05.059Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2024/05/22/%E5%AD%A6%E4%B9%A0/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/Gymnasium/Gymnasium-1/1.png">
+  
+  
+  
+  <title>Gymnasium-1 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.6","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/katex@0.11.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Wataの锟斤拷</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Gymnasium-1"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-05-22 20:16" pubdate>
+          2024年5月22日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          13 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Gymnasium-1</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="gymnasium入门"><a class="markdownIt-Anchor" href="#gymnasium入门"></a> Gymnasium入门</h1>
+<p>​	Gymnasium 是一个为所有单代理强化学习环境提供 API 的项目，并包括常见环境的实现：cartpole、pendulum、mountain-car、mujoco、atari 等</p>
+<p>​	该 API 包含四个关键函数：<code>make</code>、<code>reset</code>、<code>step</code> 和 <code>render</code>。 Gymnasium 的核心是 <code>Env</code>，一个高级 Python 类，代表强化学习理论中的马尔可夫决策过程 (MDP)</p>
+<p>​	官方文档可见：<a target="_blank" rel="noopener" href="https://gymnasium.farama.org/">Gymnasium Documentation (farama.org)</a></p>
+<h2 id="主要函数简要介绍"><a class="markdownIt-Anchor" href="#主要函数简要介绍"></a> 主要函数简要介绍</h2>
+<h3 id="gymmake-用法"><a class="markdownIt-Anchor" href="#gymmake-用法"></a> <code>gym.make</code> 用法</h3>
+<p><code>gym.make</code> 用于创建或加载一个环境，函数签名如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">env = gym.make(<span class="hljs-built_in">id</span>, **kwargs)<br></code></pre></td></tr></table></figure>
+<h4 id="参数"><a class="markdownIt-Anchor" href="#参数"></a> 参数</h4>
+<ul>
+<li><code>id</code> (str): 环境的标识符。即环境的名称，比如 <code>&quot;CartPole-v1&quot;</code>、<code>&quot;MountainCar-v0&quot;</code> 等</li>
+<li><code>**kwargs</code>: 可选的关键字参数。这些参数可以包括环境特定的配置或者设置，比如环境的渲染模式。具体可用的关键字参数依赖于所创建的环境类型</li>
+</ul>
+<h4 id="返回值"><a class="markdownIt-Anchor" href="#返回值"></a> 返回值</h4>
+<ul>
+<li><code>env</code> (Env): 创建的环境实例。这是一个实现了Gymnasium环境接口的对象</li>
+</ul>
+<h3 id="envreset-用法"><a class="markdownIt-Anchor" href="#envreset-用法"></a> <code>env.reset</code> 用法</h3>
+<p>​	<code>env.reset()</code> 用于重置环境到一个初始状态，通常在每个 episode 的开始被调用。调用 <code>reset</code> 方法后，环境会返回一个新的初始观测值（observation），标志着一个新的episode的开始。函数签名：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">observation = env.reset(options=<span class="hljs-literal">None</span>)<br></code></pre></td></tr></table></figure>
+<h4 id="参数-2"><a class="markdownIt-Anchor" href="#参数-2"></a> 参数</h4>
+<ul>
+<li><code>options</code> (dict, optional): 重置环境时可以提供的额外参数。这些选项是环境特定的，<strong>允许用户以特定方式重置环境</strong>。如果不提供或为 <code>None</code>，则使用环境的默认重置方式</li>
+</ul>
+<h4 id="返回值-2"><a class="markdownIt-Anchor" href="#返回值-2"></a> 返回值</h4>
+<ul>
+<li><code>observation</code> (Any): 重置后的环境的初始观测值。观测值的具体类型和格式依据环境而定</li>
+</ul>
+<h3 id="envstepaction-用法"><a class="markdownIt-Anchor" href="#envstepaction-用法"></a> <code>env.step(action)</code> 用法</h3>
+<p><code>env.step(action)</code> 用于在环境中执行一个动作并推进环境状态。这是模拟与环境交互的基本方式，涵盖了执行动作、接收新状态（观测值）、获得奖励、判断 episode 是否结束以及获取额外信息等几个方面。函数签名</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">observation, reward, done, truncated, info = env.step(action)<br></code></pre></td></tr></table></figure>
+<h4 id="参数-3"><a class="markdownIt-Anchor" href="#参数-3"></a> 参数</h4>
+<ul>
+<li><code>action</code> (Any): 要在环境中执行的动作。动作的类型和取值范围取决于具体的环境</li>
+</ul>
+<h4 id="返回值-3"><a class="markdownIt-Anchor" href="#返回值-3"></a> 返回值</h4>
+<ul>
+<li><code>observation</code> (Any): 执行动作后的新观测值。表示环境的新状态</li>
+<li><code>reward</code> (float): 执行动作后获得的即时奖励。奖励的大小和正负反馈了动作的好坏，对于学习过程至关重要。</li>
+<li><code>done</code> (bool): 表示当前episode是否结束。如果为 <code>True</code>，表示达到了终止条件，需要调用 <code>env.reset()</code> 来开始新的episode</li>
+<li><code>truncated</code> (bool, optional): 在某些环境中可用，表示episode是否因时间限制或其他非自然原因被截断。这与 <code>done</code> 类似但原因不同</li>
+<li><code>info</code> (dict): 包含有关步骤的额外信息，可能包含调试或诊断信息。具体内容依赖于环境，但通常不用于学习过程，而是用于记录或分析</li>
+</ul>
+<h3 id="envrender-用法"><a class="markdownIt-Anchor" href="#envrender-用法"></a> <code>env.render()</code> 用法</h3>
+<p><code>env.render()</code> 用于可视化环境状态。这个方法可以让用户观察环境当前的状态，对于理解环境动态、调试算法或展示强化学习过程的结果非常有帮助。不过并非所有环境都支持渲染。函数签名：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">env.render(mode=<span class="hljs-string">&#x27;human&#x27;</span>)<br></code></pre></td></tr></table></figure>
+<h4 id="参数-4"><a class="markdownIt-Anchor" href="#参数-4"></a> 参数</h4>
+<ul>
+<li><code>mode</code> (str, optional): 指定渲染的方式。最常见的是 <code>'human'</code>，意味着以人类可读的形式（通常是图形界面）显示环境状态。某些环境还可能支持 <code>'rgb_array'</code> 模式来返回环境状态的RGB图像数组，或者 <code>'ansi'</code> 模式用于控制台输出。默认通常是 <code>'human'</code>。</li>
+</ul>
+<h4 id="返回值-4"><a class="markdownIt-Anchor" href="#返回值-4"></a> 返回值</h4>
+<ul>
+<li>根据 <code>mode</code> 参数的不同，返回值也有所不同。如果是 <code>'human'</code> 模式，通常没有直接的返回值；如果是 <code>'rgb_array'</code> 模式，则会返回表示当前帧的numpy数组。</li>
+</ul>
+<h2 id="官方文档的一些说明"><a class="markdownIt-Anchor" href="#官方文档的一些说明"></a> 官方文档的一些说明</h2>
+<h3 id="查阅官方文档的环境说明"><a class="markdownIt-Anchor" href="#查阅官方文档的环境说明"></a> 查阅官方文档的环境说明：</h3>
+<p>​	进入<a target="_blank" rel="noopener" href="https://gymnasium.farama.org/">Gymnasium Documentation (farama.org)</a> 直接用环境名称搜索即可</p>
+<h3 id="官方文档的一些名词解释"><a class="markdownIt-Anchor" href="#官方文档的一些名词解释"></a> 官方文档的一些名词解释：</h3>
+<h3 id="action_space"><a class="markdownIt-Anchor" href="#action_space"></a> <code>action_space</code></h3>
+<ul>
+<li><strong>含义</strong>: <code>action_space</code> 描述了智能体可以采取的所有可能动作的集合，以及这些动作的类型和取值范围。它定义了智能体能够向环境发送哪些控制信号。</li>
+<li><strong>类型</strong>: 通常，<code>action_space</code> 是一个 <code>gym.Space</code> 对象的实例，具体可以是 <code>Discrete</code>（离散空间）、<code>Box</code>（连续空间）、<code>MultiDiscrete</code>、<code>MultiBinary</code> 等</li>
+</ul>
+<p>​	例如，在一个游戏中，<code>action_space</code> 可能是一个 <code>Discrete(5)</code>，意味着有5个可能的离散动作；在机器人控制任务中，<code>action_space</code> 可能是一个 <code>Box(-1.0, 1.0, shape=(2,))</code>，表示动作是一个二维的连续向量，每个分量的取值范围是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mo>−</mo><mn>1.0</mn><mo separator="true">,</mo><mn>1.0</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[-1.0,1.0]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">−</span><span class="mord">1</span><span class="mord">.</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">1</span><span class="mord">.</span><span class="mord">0</span><span class="mclose">]</span></span></span></span></p>
+<h3 id="observation_space"><a class="markdownIt-Anchor" href="#observation_space"></a> <code>observation_space</code></h3>
+<ul>
+<li><strong>含义</strong>: <code>observation_space</code> 描述了环境状态（或称为观测）的表示形式，即智能体能够接收到的关于环境状态的所有可能信息的结构和范围。它告诉智能体期望接收什么样的数据作为输入。</li>
+<li><strong>类型</strong>: 同样是一个 <code>gym.Space</code> 对象，它可以是 <code>Box</code>（表示多维连续空间）、<code>Discrete</code>（单个离散值）、<code>Tuple</code>（组合空间）、<code>Dict</code>（带有键值对的空间）等</li>
+</ul>
+<p>​	例如，在 <code>Pendulum-v1</code> 环境中，<code>observation_space</code> 可能是一个 <code>Box(-inf, inf, shape=(3,), dtype=np.float32)</code>，表示观测是一个三维的浮点数数组，通常包含角位置、角速度等物理量</p>
+<h3 id="一些补充"><a class="markdownIt-Anchor" href="#一些补充"></a> 一些补充：</h3>
+<p>​	官方文档的内容可能写的不是那么仔细，我们有时候需要自己去判断 <code>obseravtion</code> 等返回值的结构，比如用 <code>pendulum</code> 为例，官方文档如下：</p>
+<p><img src="/2024/05/22/%E5%AD%A6%E4%B9%A0/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/Gymnasium/Gymnasium-1/1.png" srcset="/img/loading.gif" lazyload alt="pendulum"></p>
+<p>但是实际上 <code>observation</code> 返回的是一个 <code>Tuple</code>，我们看看这个 <code>Tuple</code> 是什么：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs python">state = env.reset()<br><span class="hljs-keyword">for</span> a <span class="hljs-keyword">in</span> state:<br>	<span class="hljs-built_in">print</span>(<span class="hljs-built_in">type</span>(a))<br>    <span class="hljs-built_in">print</span>(a)<br>	<span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;-------------------------------------)</span><br><span class="hljs-string"></span><br><span class="hljs-string">&gt;&gt;&gt; OUTPUT:</span><br><span class="hljs-string">class &#x27;numpy.ndarray&#x27;</span><br><span class="hljs-string">[0.78826123 0.6153407  0.8380773 ]</span><br><span class="hljs-string">-------------------------------------</span><br><span class="hljs-string">&lt;class &#x27;dict&#x27;&gt;</span><br><span class="hljs-string">&#123;&#125;</span><br><span class="hljs-string">-------------------------------------</span><br></code></pre></td></tr></table></figure>
+<p>至于这个空字典是什么，咱不知道，咱也不敢多问</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+			
+			
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/05/21/%E5%AD%A6%E4%B9%A0/reinforcement%20learning/DQN-2/" title="DQN-2">
+                        <span class="hidden-mobile">DQN-2</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <i class="iconfont icon-love"></i> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
