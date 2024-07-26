@@ -16,23 +16,24 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="MMDection教程(1)  框架整体流程 ​	我们将 Pytorch 训练流程和 MMDection 训练流程做对比：  Pytorch 我们使用Pytorch构建一个新算法时，通常包含如下几步：  构建数据集：新建一个类，并继承Dataset类，重写__getitem__()方法实现数据和标签的加载和遍历功能，并以pipeline的方式定义数据预处理流程 构建数据加载器：传入相应的参数实例">
+    <meta name="description" content="8086转移指令 ​	8086的控制转移指令可以由如下表表示：  ​	本文重点解析JMP，CALL与INT指令  补充内容  PTR指令： ​	PTR是一个伪指令（pseudo-instruction），用于指示编译器或汇编器如何解释后续的内存操作数的类型和大小。举例：PTR用于指定操作数是字节（BYTE）、字（WORD）、双字（DWORD）等不同大小，从而帮助汇编程序正确生成访问内存所需的有效">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MMDetection1">
-<meta property="og:url" content="http://example.com/2024/03/28/MMDetection1/index.html">
+<meta property="og:title" content="8086转移指令">
+<meta property="og:url" content="http://example.com/2024/05/26/%E5%AD%A6%E4%B9%A0/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/%E6%B1%87%E7%BC%96/8086%E8%BD%AC%E7%A7%BB%E6%8C%87%E4%BB%A4/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="MMDection教程(1)  框架整体流程 ​	我们将 Pytorch 训练流程和 MMDection 训练流程做对比：  Pytorch 我们使用Pytorch构建一个新算法时，通常包含如下几步：  构建数据集：新建一个类，并继承Dataset类，重写__getitem__()方法实现数据和标签的加载和遍历功能，并以pipeline的方式定义数据预处理流程 构建数据加载器：传入相应的参数实例">
+<meta property="og:description" content="8086转移指令 ​	8086的控制转移指令可以由如下表表示：  ​	本文重点解析JMP，CALL与INT指令  补充内容  PTR指令： ​	PTR是一个伪指令（pseudo-instruction），用于指示编译器或汇编器如何解释后续的内存操作数的类型和大小。举例：PTR用于指定操作数是字节（BYTE）、字（WORD）、双字（DWORD）等不同大小，从而帮助汇编程序正确生成访问内存所需的有效">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/a13afdb1195f46148843a818cc8f5bbf.png">
-<meta property="article:published_time" content="2024-03-28T13:12:49.000Z">
-<meta property="article:modified_time" content="2024-03-29T10:59:12.852Z">
+<meta property="og:image" content="http://example.com/2024/05/26/%E5%AD%A6%E4%B9%A0/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/%E6%B1%87%E7%BC%96/8086%E8%BD%AC%E7%A7%BB%E6%8C%87%E4%BB%A4/image-20240526143906906.png">
+<meta property="og:image" content="http://example.com/2024/05/26/%E5%AD%A6%E4%B9%A0/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/%E6%B1%87%E7%BC%96/8086%E8%BD%AC%E7%A7%BB%E6%8C%87%E4%BB%A4/image-20240526144452498.png">
+<meta property="article:published_time" content="2024-05-26T06:29:45.000Z">
+<meta property="article:modified_time" content="2024-05-26T07:23:10.697Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://img-blog.csdnimg.cn/a13afdb1195f46148843a818cc8f5bbf.png">
+<meta name="twitter:image" content="http://example.com/2024/05/26/%E5%AD%A6%E4%B9%A0/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/%E6%B1%87%E7%BC%96/8086%E8%BD%AC%E7%A7%BB%E6%8C%87%E4%BB%A4/image-20240526143906906.png">
   
   
   
-  <title>MMDetection1 - Hexo</title>
+  <title>8086转移指令 - Hexo</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -190,7 +191,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="MMDetection1"></span>
+            <span id="subtitle" data-typed-text="8086转移指令"></span>
           
         </div>
 
@@ -201,8 +202,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-03-28 21:12" pubdate>
-          2024年3月28日 晚上
+        <time datetime="2024-05-26 14:29" pubdate>
+          2024年5月26日 下午
         </time>
       </span>
     
@@ -213,7 +214,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          731 字
+          791 字
         
       </span>
     
@@ -261,36 +262,55 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">MMDetection1</h1>
+            <h1 id="seo-header">8086转移指令</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="mmdection教程1"><a class="markdownIt-Anchor" href="#mmdection教程1"></a> MMDection教程(1)</h1>
-<h2 id="框架整体流程"><a class="markdownIt-Anchor" href="#框架整体流程"></a> 框架整体流程</h2>
-<p>​	我们将 Pytorch 训练流程和 MMDection 训练流程做对比：</p>
-<h3 id="pytorch"><a class="markdownIt-Anchor" href="#pytorch"></a> Pytorch</h3>
-<p>我们使用Pytorch构建一个新算法时，通常包含如下几步：</p>
+                <h1 id="8086转移指令"><a class="markdownIt-Anchor" href="#8086转移指令"></a> 8086转移指令</h1>
+<p>​	8086的控制转移指令可以由如下表表示：</p>
+<p><img src="/2024/05/26/%E5%AD%A6%E4%B9%A0/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/%E6%B1%87%E7%BC%96/8086%E8%BD%AC%E7%A7%BB%E6%8C%87%E4%BB%A4/image-20240526143906906.png" srcset="/img/loading.gif" lazyload alt="控制转移指令"></p>
+<p>​	本文重点解析<code>JMP</code>，<code>CALL</code>与<code>INT</code>指令</p>
+<h2 id="补充内容"><a class="markdownIt-Anchor" href="#补充内容"></a> 补充内容</h2>
+<h3 id="ptr指令"><a class="markdownIt-Anchor" href="#ptr指令"></a> <code>PTR</code>指令：</h3>
+<p>​	<code>PTR</code>是一个伪指令（pseudo-instruction），用于指示编译器或汇编器如何解释后续的内存操作数的类型和大小。举例：<code>PTR</code>用于指定操作数是字节（BYTE）、字（WORD）、双字（DWORD）等不同大小，从而帮助汇编程序正确生成访问内存所需的有效地址和操作码</p>
+<h3 id="far类型"><a class="markdownIt-Anchor" href="#far类型"></a> <code>FAR</code>类型</h3>
+<p>​	FAR 是一个源自早期计算机体系结构和编程环境（6位系统）的指针类型修饰符：</p>
 <ul>
-<li><strong>构建数据集</strong>：新建一个类，并继承<code>Dataset</code>类，重写<code>__getitem__()</code>方法实现数据和标签的加载和遍历功能，并以pipeline的方式定义数据预处理流程</li>
-<li><strong>构建数据加载器</strong>：传入相应的参数实例化DataLoader</li>
-<li><strong>构建模型</strong>：新建一个类，并继承<code>Module</code>类，重写<code>forward()</code>函数定义模型的前向过程</li>
-<li><strong>定义损失函数和优化器</strong>：根据算法选择合适和损失函数和优化器</li>
-<li><strong>训练和验证</strong>：循环从DataLoader中获取数据和标签，送入网络模型，计算loss，根据反传的梯度使用优化器进行迭代优化</li>
-<li><strong>其他操作</strong>：在主调函数里可以任意穿插训练Tricks、日志打印、检查点保存等操作</li>
+<li><strong>Far Pointer</strong>: 在16位系统中，由于寻址能力的限制，内存访问被分为“段:偏移”形式。<strong>一个“far”指针包含一个段地址和一个偏移地址</strong>，能够访问整个1MB的地址空间，即所谓的“远”地址空间</li>
 </ul>
-<h3 id="mmdetection"><a class="markdownIt-Anchor" href="#mmdetection"></a> MMDetection</h3>
-<p>使用Pytorch构建一个新算法时，通常包含如下几步：</p>
+<p>随着32位系统的出现，使得所有指针都自然具有了“far”指针的寻址范围。因此，在32位及以上的体系结构中，<code>far</code>和<code>near</code>（原本指只能访问64KB段内地址的指针）失去了原有的意义，成为了兼容性的残留，通常被编译器忽略或者仅仅作为符号保留，没有实际的内存访问大小影响</p>
+<h2 id="转移指令"><a class="markdownIt-Anchor" href="#转移指令"></a> 转移指令</h2>
+<h3 id="jmp指令解析"><a class="markdownIt-Anchor" href="#jmp指令解析"></a> <code>JMP</code>指令解析</h3>
+<p>​	<code>JMP</code>指令可以有下面几种调用方式：</p>
+<p><img src="/2024/05/26/%E5%AD%A6%E4%B9%A0/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/%E6%B1%87%E7%BC%96/8086%E8%BD%AC%E7%A7%BB%E6%8C%87%E4%BB%A4/image-20240526144452498.png" srcset="/img/loading.gif" lazyload alt="JMP指令分类"></p>
 <ul>
-<li><strong>注册数据集</strong>：<code>CustomDataset</code>是MMDetection在原始的<code>Dataset</code>基础上的再次封装，其<code>__getitem__()</code>方法会根据训练和测试模式分别重定向到<code>prepare_train_img()</code>和<code>prepare_test_img()</code>函数。用户以继承<code>CustomDataset</code>类的方式构建自己的数据集时，需要重写<code>load_annotations()</code>和<code>get_ann_info()</code>函数，定义数据和标签的加载及遍历方式。完成数据集类的定义后，还需要使用<code>DATASETS.register_module()</code>进行模块注册</li>
-<li><strong>注册模型</strong>：模型构建的方式和Pytorch类似，都是新建一个<code>Module</code>的子类然后重写<code>forward()</code>函数。唯一的区别在于MMDetection中需要继承<code>BaseModule</code>而不是<code>Module</code>，<code>BaseModule</code>是<code>Module</code>的子类，MMLab中的任何模型都必须继承此类。另外，MMDetection将一个完整的模型拆分为backbone、neck和head三部分进行管理，所以用户需要按照这种方式，将算法模型拆解成3个类，分别使用<code>BACKBONES.register_module()</code>、<code>NECKS.register_module()</code>和<code>HEADS.register_module()</code>完成模块注册</li>
-<li><strong>构建配置文件</strong>：配置文件用于配置算法各个组件的运行参数，大体上可以包含四个部分：datasets、models、schedules和runtime。完成相应模块的定义和注册后，在配置文件中配置好相应的运行参数，然后MMDetection就会通过<code>Registry</code>类读取并解析配置文件，完成模块的实例化。另外，配置文件可以通过<code>_base_</code>字段实现继承功能，以提高代码复用率</li>
-<li><strong>训练和验证</strong>：在完成各模块的代码实现、模块的注册、配置文件的编写后，就可以使用<code>./tools/train.py</code>和<code>./tools/test.py</code>对模型进行训练和验证，不需要用户编写额外的代码</li>
+<li>若需要调用的过程与调用前的代码在同一个代码段，就可以直接使用段内转移方式
+<ul>
+<li>如果调用方式为<strong>直接使用需要调用的标号</strong>，那么就是直接转移方式，直接转移方式可以进一步分为短转移与近转移方式</li>
+<li>如果调用方式为<strong>地址表示</strong>，那么可以通过类似于<code>MOV</code>指令寻址的方式把这种间接转移分为寄存器与存储器</li>
 </ul>
-<h3 id="23-流程对比"><a class="markdownIt-Anchor" href="#23-流程对比"></a> 2.3 流程对比</h3>
-<p>虽然从步骤上看MMDetection相比Pytorch的算法实现步骤存在挺大差异，但底层的逻辑实现和Pytorch本质上还是一样的，可以参考下图对照着进行理解，其中蓝色部分表示Pytorch流程，橙色部分表示MMDetection流程，绿色部分表示和算法框架无关的通用流程。</p>
-<p><img src="https://img-blog.csdnimg.cn/a13afdb1195f46148843a818cc8f5bbf.png" srcset="/img/loading.gif" lazyload alt="img"></p>
-<p></p>
+</li>
+</ul>
+<h4 id="注意"><a class="markdownIt-Anchor" href="#注意"></a> 注意</h4>
+<p>​	在存储器取数据中，由于存储器不知道究竟需要多少位的数据，因此需要使用<code>PTR</code>指令声明要从存储器中拿出多少位长的数据：</p>
+<ul>
+<li><code>JMP WORD PTR 5[BX]</code>声明了从存储器取出一个字节的地址</li>
+<li><code>JMP DWORD PTR [DI]</code>声明了从存储器取出两个字节的地址</li>
+</ul>
+<p>​	对于标号转移命令，类似存储器数据，由于也需要区分标号是否在同一个段内，因此需要也给标号前面加上<code>NEAR PTR</code>或者<code>FAR PTR</code></p>
+<h4 id="对寄存器的影响"><a class="markdownIt-Anchor" href="#对寄存器的影响"></a> 对寄存器的影响</h4>
+<ul>
+<li>对于段内转移，会更改<code>IP</code>的值，让<code>IP</code>的值直接修改为对应调用过程的段内偏移地址</li>
+<li>对于段间转移，会同时修改<code>CS</code>与<code>IP</code>的值，让它们指向对应调用过程的段地址与偏移地址</li>
+<li><code>JMP</code>指令不改变堆栈段的<code>SS</code>与<code>SP</code>，因为不须要返回，因此就不需要存下调用前的代码地址</li>
+</ul>
+<h3 id="call指令解析"><a class="markdownIt-Anchor" href="#call指令解析"></a> <code>CALL</code>指令解析</h3>
+<p>​	类似于<code>JMP</code>指令调用的方式，就是将<code>JMP</code>改为<code>CALL</code>即可，但是这个指令会改变<code>SS</code>与<code>SP</code>：</p>
+<ul>
+<li>对于段内转移指令，会执行<code>SP &lt;- SP-2</code>将<code>IP</code>入栈，再执行<code>RET</code>指令的时候让<code>IP</code>出栈</li>
+<li>对于段内转移指令，会执行<code>SP &lt;- SP-2</code>将<code>CS</code>入栈，再执行执行<code>SP &lt;- SP-2</code>将<code>IP</code>入栈（先<code>CS</code>再<code>IP</code>），<code>RET</code>指令的时候让<code>IP,CS</code>先后出栈</li>
+</ul>
 
                 
               </div>
@@ -305,9 +325,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/03/30/%E5%AD%A6%E4%B9%A0/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/%E6%B1%87%E7%BC%96/8086%E5%AF%84%E5%AD%98%E5%99%A8/" title="8086内部寄存器">
+                      <a href="/2024/05/26/8086%E8%BD%AC%E7%A7%BB%E6%8C%87%E4%BB%A4/" title="8086转移指令">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">8086内部寄存器</span>
+                        <span class="hidden-mobile">8086转移指令</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -315,8 +335,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/03/28/%E5%AE%9E%E7%94%A8%E7%BD%91%E7%AB%99/" title="实用网站">
-                        <span class="hidden-mobile">实用网站</span>
+                      <a href="/2024/05/22/%E5%AD%A6%E4%B9%A0/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/Gymnasium/Gymnasium-1/" title="Gymnasium-1">
+                        <span class="hidden-mobile">Gymnasium-1</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
