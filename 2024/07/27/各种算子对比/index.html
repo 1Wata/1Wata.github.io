@@ -16,23 +16,19 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Mask Encoding for Single Shot Instance Segmentation精读 ​	文章最大的创新点在于把图像分割（Instance Segmentation）的mask进行压缩成一个低维向量表示，通过将原来分割网络的输出改为预测这个低维向量来减少网络的计算开销  Mask Encoding ​	为什么能够对mask进行compact? 因为对于mask来说，图像信息">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Mask Encoding精读">
-<meta property="og:url" content="http://example.com/2024/04/28/%E8%AE%BA%E6%96%87%E7%B2%BE%E8%AF%BB/Mask-Encoding%E7%B2%BE%E8%AF%BB/index.html">
+    <meta property="og:type" content="article">
+<meta property="og:title" content="各种算子对比">
+<meta property="og:url" content="http://example.com/2024/07/27/%E5%90%84%E7%A7%8D%E7%AE%97%E5%AD%90%E5%AF%B9%E6%AF%94/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Mask Encoding for Single Shot Instance Segmentation精读 ​	文章最大的创新点在于把图像分割（Instance Segmentation）的mask进行压缩成一个低维向量表示，通过将原来分割网络的输出改为预测这个低维向量来减少网络的计算开销  Mask Encoding ​	为什么能够对mask进行compact? 因为对于mask来说，图像信息">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/2024/04/28/%E8%AE%BA%E6%96%87%E7%B2%BE%E8%AF%BB/Mask-Encoding%E7%B2%BE%E8%AF%BB/image-20240428152624904.png">
-<meta property="article:published_time" content="2024-04-28T07:19:57.000Z">
-<meta property="article:modified_time" content="2024-04-28T08:09:02.536Z">
+<meta property="article:published_time" content="2024-07-27T05:30:47.000Z">
+<meta property="article:modified_time" content="2024-07-27T05:30:47.335Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/2024/04/28/%E8%AE%BA%E6%96%87%E7%B2%BE%E8%AF%BB/Mask-Encoding%E7%B2%BE%E8%AF%BB/image-20240428152624904.png">
   
   
   
-  <title>Mask Encoding精读 - Hexo</title>
+  <title>各种算子对比 - Hexo</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -190,7 +186,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Mask Encoding精读"></span>
+            <span id="subtitle" data-typed-text="各种算子对比"></span>
           
         </div>
 
@@ -201,8 +197,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-04-28 15:19" pubdate>
-          2024年4月28日 下午
+        <time datetime="2024-07-27 13:30" pubdate>
+          2024年7月27日 下午
         </time>
       </span>
     
@@ -213,7 +209,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          204 字
+          0 字
         
       </span>
     
@@ -224,7 +220,7 @@
         
         
         
-          3 分钟
+          1 分钟
         
       </span>
     
@@ -261,18 +257,12 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">Mask Encoding精读</h1>
+            <h1 id="seo-header">各种算子对比</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="mask-encoding-for-single-shot-instance-segmentation精读"><a class="markdownIt-Anchor" href="#mask-encoding-for-single-shot-instance-segmentation精读"></a> Mask Encoding for Single Shot Instance Segmentation精读</h1>
-<p>​	文章最大的创新点在于把图像分割（Instance Segmentation）的mask进行压缩成一个低维向量表示，通过将原来分割网络的输出改为预测这个低维向量来减少网络的计算开销</p>
-<h2 id="mask-encoding"><a class="markdownIt-Anchor" href="#mask-encoding"></a> Mask Encoding</h2>
-<p>​	为什么能够对mask进行compact? 因为对于mask来说，图像信息非常少，每个mask内部的信息几乎可以不记，因此几乎可以认为只有每个mask边界的信息，因此可以用一个高度压缩的向量来表示mask（思考可以对原图像也这样进行高度的压缩吗？），数学表示如下：</p>
-<p>​	令 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">M</mi><mo>∈</mo><msup><mi mathvariant="double-struck">R</mi><mrow><mi>H</mi><mo>×</mo><mi>W</mi></mrow></msup></mrow><annotation encoding="application/x-tex">\boldsymbol M \in \mathbb{R}^{H \times W}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.72521em;vertical-align:-0.0391em;"></span><span class="mord"><span class="mord boldsymbol" style="margin-right:0.11424em;">M</span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8413309999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord"><span class="mord mathbb">R</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413309999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.08125em;">H</span><span class="mbin mtight">×</span><span class="mord mathnormal mtight" style="margin-right:0.13889em;">W</span></span></span></span></span></span></span></span></span></span></span></span> 代表着mask，我们指定 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>∈</mo><msup><mi mathvariant="double-struck">R</mi><mi>N</mi></msup></mrow><annotation encoding="application/x-tex">v \in \mathbb{R}^N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8413309999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord"><span class="mord mathbb">R</span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413309999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.10903em;">N</span></span></span></span></span></span></span></span></span></span></span> 为压缩表示的向量，我们设置 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>≪</mo><mi>H</mi><mo>⋅</mo><mi>W</mi></mrow><annotation encoding="application/x-tex">N \ll H \cdot W</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.72243em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≪</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.08125em;">H</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">W</span></span></span></span>。需要注意的是这里的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi></mrow><annotation encoding="application/x-tex">M</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span></span></span></span> 是 class-agonstic 的且为二值的，所有 instance mask 都要 encode 一遍，mask encoding 的 pipline 示意图如下：</p>
-<p><img src="/2024/04/28/%E8%AE%BA%E6%96%87%E7%B2%BE%E8%AF%BB/Mask-Encoding%E7%B2%BE%E8%AF%BB/image-20240428152624904.png" srcset="/img/loading.gif" lazyload alt="Pipline"></p>
-
+                
                 
               </div>
             
@@ -286,9 +276,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/04/28/cuda-4-%E8%AE%A1%E6%97%B6/" title="cuda-4-计时">
+                      <a href="/2024/07/27/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AD%89%E5%BE%85%E6%98%BE%E5%8D%A1%E5%8F%AF%E7%94%A8%E7%82%BC%E4%B8%B9/" title="服务器等待显卡可用炼丹">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">cuda-4-计时</span>
+                        <span class="hidden-mobile">服务器等待显卡可用炼丹</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -296,8 +286,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/04/27/%E5%AD%A6%E4%B9%A0/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/cuda-3-%E9%94%99%E8%AF%AF/" title="cuda-3-错误">
-                        <span class="hidden-mobile">cuda-3-错误</span>
+                      <a href="/2024/07/26/DCNv1-v4/" title="DCNv1-v4">
+                        <span class="hidden-mobile">DCNv1-v4</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
