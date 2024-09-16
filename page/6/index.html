@@ -216,6 +216,138 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
+        <a href="/2024/03/06/%E5%AD%A6%E4%B9%A0/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/" target="_self">
+          网络协议浅谈
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/06/%E5%AD%A6%E4%B9%A0/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/" target="_self">
+        <div>
+          OSI参考模型: ​	OSI 七层模型 是国际标准化组织ISO提出一个网络分层模型，其大体结构以及每一层提供的功能如下图所示：  ​	它的目的是进行异构网络系统（不同制造商生产的计算机、网络设备和系统组成的网络）的互连互通，是异构网络的国际标准。每一层都专注做一件事情，并且每一层都需要使用下一层提供的功能（下层协议对上层来说是透明的），比如传输层需要使用网络层提供的路由和寻址功能，这样传输层才知
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-03-06 16:27" pubdate>
+              2024-03-06
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/03/05/%E5%AD%A6%E4%B9%A0/computer%20vision/mmcv%E7%BB%84%E4%BB%B66/" target="_self">
+          mmcv组件6
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/05/%E5%AD%A6%E4%B9%A0/computer%20vision/mmcv%E7%BB%84%E4%BB%B66/" target="_self">
+        <div>
+          MMCV核心组件Hook ​	MM的整个算法过程就像一个黑盒子：给定输入后（配置文件），黑盒子就会吐出算法结果。整个过程封装度非常高，几乎不需要手写什么代码，Hook机制的作用就是在算法执行过程中加入自定义操作呢 Hook就是一种一种触发器，可以在程序预定义的位置执行预定义的函数。MMCV根据算法的生命周期预定义了6个可以插入自定义函数的位点，用户可以在每个位点自由地插入任意数量的函数操作，如下
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-03-05 17:04" pubdate>
+              2024-03-05
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/03/05/%E5%AD%A6%E4%B9%A0/computer%20vision/mmcv%E7%BB%84%E4%BB%B65/" target="_self">
+          mmcv组件5
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/05/%E5%AD%A6%E4%B9%A0/computer%20vision/mmcv%E7%BB%84%E4%BB%B65/" target="_self">
+        <div>
+          MMCV核心组件Runner ​	在2.0.0版本以后，Runnner从mmcv中移至mmengine，大体用法不发生改变，调用方式发生如下改变： 12from mmcv.runner import Runner # &lt; 2.0.0from mmengine.runner import Runner # &gt;= 2.0.0  官方文档提示： 我们希望你在教程中更多地关注整体结构，而非具
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-03-05 16:32" pubdate>
+              2024-03-05
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/03/04/%E5%AD%A6%E4%B9%A0/computer%20vision/mmcv%E7%BB%84%E4%BB%B64/" target="_self">
+          MMCV组件4
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/04/%E5%AD%A6%E4%B9%A0/computer%20vision/mmcv%E7%BB%84%E4%BB%B64/" target="_self">
+        <div>
+          MMCV核心组件Config  配置文件读取 配置类提供了统一的接口 Config.fromfile()，来读取和解析配置文件。 合法的配置文件应该定义一系列键值对，这里举几个不同格式配置文件的例子。 Python 格式： 123test_int = 1test_list = [1, 2, 3]test_dict = dict(key1=&#x27;value1&#x27;, key2=0.1)
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-03-04 20:43" pubdate>
+              2024-03-04
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
         <a href="/2024/03/04/%E5%AD%A6%E4%B9%A0/computer%20vision/mmcv%E7%BB%84%E4%BB%B63/" target="_self">
           MMCV组件3
         </a>
@@ -443,220 +575,11 @@
     </article>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/02/23/%E5%AD%A6%E4%B9%A0/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/%E8%AF%AD%E8%A8%80%E7%89%B9%E8%89%B2%E5%8F%8A%E5%86%85%E9%83%A8%E5%8C%85/Eff-py1/" target="_self">
-          Effective Python note(1)
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/23/%E5%AD%A6%E4%B9%A0/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/%E8%AF%AD%E8%A8%80%E7%89%B9%E8%89%B2%E5%8F%8A%E5%86%85%E9%83%A8%E5%8C%85/Eff-py1/" target="_self">
-        <div>
-          Effective Python note(1)  Pythonic：  PEP8 的一些重要规范：  每行字符数不超过79 长表达式换行时，首行后每行额外缩进4个空格 文件中函数与类间用两个空行分隔 同一类内各方法间用一个空行隔开 函数、变量及属性命名使用小写字母并以下划线相连，如 lowercase_underscore 受保护实例属性以单下划线开头，例如 _leading_undersco
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-02-23 13:18" pubdate>
-              2024-02-23
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/booknotes/" class="category-chain-item">booknotes</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/booknotes/Effective-Python/" class="category-chain-item">Effective Python</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/python/">#python</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/02/21/%E5%AD%A6%E4%B9%A0/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/%E8%AF%AD%E8%A8%80%E7%89%B9%E8%89%B2%E5%8F%8A%E5%86%85%E9%83%A8%E5%8C%85/Python-glob/" target="_self">
-          Python-glob
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/21/%E5%AD%A6%E4%B9%A0/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/%E8%AF%AD%E8%A8%80%E7%89%B9%E8%89%B2%E5%8F%8A%E5%86%85%E9%83%A8%E5%8C%85/Python-glob/" target="_self">
-        <div>
-          Python 标准库——glob 模块 glob 是 Python 标准库中的一个模块，它提供了一种简单的方式来查找符合特定模式的文件路径。这个模块特别适用于在文件系统中搜索文件，它支持多种通配符：  *：匹配任意数量（包括零个）的字符 ?：匹配任意单个字符 []：匹配指定范围内的字符，例如 [a-z] 匹配任意小写字母，[0-9] 匹配任意数字 [!...]：匹配不在指定范围内的字符   gl
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-02-21 21:01" pubdate>
-              2024-02-21
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/Python/" class="category-chain-item">Python</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/02/21/%E5%AD%A6%E4%B9%A0/deep%20learning/Pytorch/Pytorch-multiGPU/" target="_self">
-          Pytorch多GPU并行
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/21/%E5%AD%A6%E4%B9%A0/deep%20learning/Pytorch/Pytorch-multiGPU/" target="_self">
-        <div>
-          Pytorch多GPU并行 ​	在PyTorch中，多GPU并行确实可以分为数据并行（Data Parallelism）和模型并行（Model Parallelism），这两种并行策略针对不同的并行化需求  数据并行（Data Parallelism）： 数据并行是最常见的并行策略，它通过将数据集分割成多个小batch，然后在多个GPU上并行处理这些部分。每个GPU上运行相同的模型副本，独立地计
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-02-21 11:15" pubdate>
-              2024-02-21
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/Pytorch%E5%AD%A6%E4%B9%A0/" class="category-chain-item">Pytorch学习</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/02/18/%E5%AD%A6%E4%B9%A0/computer%20vision/Segformer-2/" target="_self">
-          Segformer(2)
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/18/%E5%AD%A6%E4%B9%A0/computer%20vision/Segformer-2/" target="_self">
-        <div>
-          Segformer 论文详解： ​	在SegFormer提出时，transformer已经开始在图像领域展露头角。在此之前，SETR最早将transformer结构引入到了语义分割任务中。SETR采用ViT作为backbone，并结合多个CNN decoder来放大特征分辨率。但是SETR具有两个局限性：  没有利用 multi-scale 特征 具有非常高的计算消耗  为了解决上述问题，pyr
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-02-18 19:00" pubdate>
-              2024-02-18
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
 
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/page/5/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/#board">4</a><a class="page-number" href="/page/5/#board">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/#board">7</a><a class="page-number" href="/page/8/#board">8</a><a class="extend next" rel="next" href="/page/7/#board"><i class="iconfont icon-arrowright"></i></a>
+      <a class="extend prev" rel="prev" href="/page/5/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/#board">4</a><a class="page-number" href="/page/5/#board">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/#board">7</a><a class="page-number" href="/page/8/#board">8</a><a class="page-number" href="/page/9/#board">9</a><a class="extend next" rel="next" href="/page/7/#board"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
 
