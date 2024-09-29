@@ -16,21 +16,25 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Simple is better than complex. ​	Python 之禅告诉了我们优雅的代码应该如何编写：  Beautiful is better than ugly. Explicit is better than implicit. Simple is better than complex. Complex is better than complicated. Flat i">
+    <meta name="description" content="配置环境踩坑日记（1） ​	本期的主角是Efficient-Segmentation-Networks: Lightweight models for real-time semantic segmentationon PyTorch这个仓库，我想使用这个仓库的 SegNet 在 CamVid 上跑的结果，于是想要复现这个仓库，下面分析这个仓库的 README 写的问题 ​	前情提要：原仓库说环">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/2024/03/28/%E7%A7%91%E7%A0%94%E6%B2%89%E6%80%9D%E5%BD%95-1/index.html">
+<meta property="og:title" content="环境踩坑日记1">
+<meta property="og:url" content="http://example.com/2024/07/23/%E8%B8%A9%E5%9D%91%E6%97%A5%E8%AE%B0/pytorch%E7%89%88%E6%9C%AC%E5%AF%B9%E5%BA%94/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Simple is better than complex. ​	Python 之禅告诉了我们优雅的代码应该如何编写：  Beautiful is better than ugly. Explicit is better than implicit. Simple is better than complex. Complex is better than complicated. Flat i">
+<meta property="og:description" content="配置环境踩坑日记（1） ​	本期的主角是Efficient-Segmentation-Networks: Lightweight models for real-time semantic segmentationon PyTorch这个仓库，我想使用这个仓库的 SegNet 在 CamVid 上跑的结果，于是想要复现这个仓库，下面分析这个仓库的 README 写的问题 ​	前情提要：原仓库说环">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2024-03-28T10:14:47.000Z">
-<meta property="article:modified_time" content="2024-03-28T11:01:23.612Z">
+<meta property="og:image" content="http://example.com/2024/07/23/%E8%B8%A9%E5%9D%91%E6%97%A5%E8%AE%B0/pytorch%E7%89%88%E6%9C%AC%E5%AF%B9%E5%BA%94/1.png">
+<meta property="og:image" content="http://example.com/2024/07/23/%E8%B8%A9%E5%9D%91%E6%97%A5%E8%AE%B0/pytorch%E7%89%88%E6%9C%AC%E5%AF%B9%E5%BA%94/2.png">
+<meta property="og:image" content="http://example.com/2024/07/23/%E8%B8%A9%E5%9D%91%E6%97%A5%E8%AE%B0/pytorch%E7%89%88%E6%9C%AC%E5%AF%B9%E5%BA%94/3.png">
+<meta property="article:published_time" content="2024-07-23T06:20:04.000Z">
+<meta property="article:modified_time" content="2024-07-23T07:13:58.680Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2024/07/23/%E8%B8%A9%E5%9D%91%E6%97%A5%E8%AE%B0/pytorch%E7%89%88%E6%9C%AC%E5%AF%B9%E5%BA%94/1.png">
   
   
   
-  <title>Hexo</title>
+  <title>环境踩坑日记1 - Hexo</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -188,7 +192,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text=""></span>
+            <span id="subtitle" data-typed-text="环境踩坑日记1"></span>
           
         </div>
 
@@ -199,8 +203,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-03-28 18:14" pubdate>
-          2024年3月28日 晚上
+        <time datetime="2024-07-23 14:20" pubdate>
+          2024年7月23日 下午
         </time>
       </span>
     
@@ -211,7 +215,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          685 字
+          547 字
         
       </span>
     
@@ -222,7 +226,7 @@
         
         
         
-          7 分钟
+          6 分钟
         
       </span>
     
@@ -259,47 +263,117 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header"></h1>
+            <h1 id="seo-header">环境踩坑日记1</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="simple-is-better-than-complex"><a class="markdownIt-Anchor" href="#simple-is-better-than-complex"></a> Simple is better than complex.</h1>
-<p>​	Python 之禅告诉了我们优雅的代码应该如何编写：</p>
-<blockquote>
-<p>Beautiful is better than ugly.<br>
-Explicit is better than implicit.<br>
-Simple is better than complex.<br>
-Complex is better than complicated.<br>
-Flat is better than nested.<br>
-Sparse is better than dense.<br>
-Readability counts.<br>
-Special cases aren’t special enough to break the rules.<br>
-Although practicality beats purity.<br>
-Errors should never pass silently.<br>
-Unless explicitly silenced.<br>
-In the face of ambiguity, refuse the temptation to guess.<br>
-There should be one-- and preferably only one --obvious way to do it.<br>
-Although that way may not be obvious at first unless you’re Dutch.<br>
-Now is better than never.<br>
-Although never is often better than <em>right</em> now.<br>
-If the implementation is hard to explain, it’s a bad idea.<br>
-If the implementation is easy to explain, it may be a good idea.<br>
-Namespaces are one honking great idea – let’s do more of those!</p>
-</blockquote>
-<p>​	最近读到了一篇名为 FeatUp 的论文，受这篇论文震惊之余，更理解了 Python 之禅的精神，FeatUp 论文提出了一个有效的采样算子，在投第一版的时候因为其本身的性能不够好，因而被拒稿了，在第二版的时候在第一版上的基础上加入了各种技巧，把性能硬生生拉到了 SOTA 的效果。但是在我眼里，它反而因为引入了过多的奇技淫巧牺牲了整片论文的 elegance。相比于之前的 dysample 和 SAPA 等论文，它们可能没有过多的技巧，但是通过最简单的方式改善性能。再加上最近因为审稿而读的 Beyond CARAFE 论文（这篇论文纯属灌水），我把论文分为三类：</p>
+                <h1 id="配置环境踩坑日记1"><a class="markdownIt-Anchor" href="#配置环境踩坑日记1"></a> 配置环境踩坑日记（1）</h1>
+<p>​	本期的主角是<a target="_blank" rel="noopener" href="https://github.com/xiaoyufenfei/Efficient-Segmentation-Networks">Efficient-Segmentation-Networks: Lightweight models for real-time semantic segmentationon PyTorch</a>这个仓库，我想使用这个仓库的 SegNet 在 CamVid 上跑的结果，于是想要复现这个仓库，下面分析这个仓库的 README 写的问题</p>
+<p>​	前情提要：原仓库说环境配置步骤为：</p>
+<p><img src="/2024/07/23/%E8%B8%A9%E5%9D%91%E6%97%A5%E8%AE%B0/pytorch%E7%89%88%E6%9C%AC%E5%AF%B9%E5%BA%94/1.png" srcset="/img/loading.gif" lazyload alt="installation"></p>
+<h2 id="python版本的问题"><a class="markdownIt-Anchor" href="#python版本的问题"></a> Python版本的问题：</h2>
+<p>​	原仓库最开头的就说了 Python 版本：</p>
+<p><img src="/2024/07/23/%E8%B8%A9%E5%9D%91%E6%97%A5%E8%AE%B0/pytorch%E7%89%88%E6%9C%AC%E5%AF%B9%E5%BA%94/2.png" srcset="/img/loading.gif" lazyload alt="Python Version"></p>
+<p>​	但是一开始我轻易地相信了这个仓库，没有看 Pytorch 版本与 Python 版本间的依赖，就随手装了一个3.8版本的 Python（装 Pytorch 一定要查版本对应！<a target="_blank" rel="noopener" href="https://github.com/pytorch/vision#installation">Python &amp; torch,torchvision</a>），但是装好之后运行 <code>pip3 install -r requirements.txt</code>这个命令后报错：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">ERROR: No matching distribution found <span class="hljs-keyword">for</span> torch==1.1.0<br></code></pre></td></tr></table></figure>
+<p>查了官方文档后可以发现版本对应：</p>
+<table>
+<thead>
+<tr>
+<th><code>torch</code></th>
+<th><code>torchvision</code></th>
+<th>Python</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>1.13</code></td>
+<td><code>0.14</code></td>
+<td><code>&gt;=3.7.2</code>, <code>&lt;=3.10</code></td>
+</tr>
+<tr>
+<td><code>1.12</code></td>
+<td><code>0.13</code></td>
+<td><code>&gt;=3.7</code>, <code>&lt;=3.10</code></td>
+</tr>
+<tr>
+<td><code>1.11</code></td>
+<td><code>0.12</code></td>
+<td><code>&gt;=3.7</code>, <code>&lt;=3.10</code></td>
+</tr>
+<tr>
+<td><code>1.10</code></td>
+<td><code>0.11</code></td>
+<td><code>&gt;=3.6</code>, <code>&lt;=3.9</code></td>
+</tr>
+<tr>
+<td><code>1.9</code></td>
+<td><code>0.10</code></td>
+<td><code>&gt;=3.6</code>, <code>&lt;=3.9</code></td>
+</tr>
+<tr>
+<td><code>1.8</code></td>
+<td><code>0.9</code></td>
+<td><code>&gt;=3.6</code>, <code>&lt;=3.9</code></td>
+</tr>
+<tr>
+<td><code>1.7</code></td>
+<td><code>0.8</code></td>
+<td><code>&gt;=3.6</code>, <code>&lt;=3.9</code></td>
+</tr>
+<tr>
+<td><code>1.6</code></td>
+<td><code>0.7</code></td>
+<td><code>&gt;=3.6</code>, <code>&lt;=3.8</code></td>
+</tr>
+<tr>
+<td><code>1.5</code></td>
+<td><code>0.6</code></td>
+<td><code>&gt;=3.5</code>, <code>&lt;=3.8</code></td>
+</tr>
+<tr>
+<td><code>1.4</code></td>
+<td><code>0.5</code></td>
+<td><code>==2.7</code>, <code>&gt;=3.5</code>, <code>&lt;=3.8</code></td>
+</tr>
+<tr>
+<td><code>1.3</code></td>
+<td><code>0.4.2</code> / <code>0.4.3</code></td>
+<td><code>==2.7</code>, <code>&gt;=3.5</code>, <code>&lt;=3.7</code></td>
+</tr>
+<tr>
+<td><code>1.2</code></td>
+<td><code>0.4.1</code></td>
+<td><code>==2.7</code>, <code>&gt;=3.5</code>, <code>&lt;=3.7</code></td>
+</tr>
+<tr>
+<td><code>1.1</code></td>
+<td><code>0.3</code></td>
+<td><code>==2.7</code>, <code>&gt;=3.5</code>, <code>&lt;=3.7</code></td>
+</tr>
+<tr>
+<td><code>&lt;=1.0</code></td>
+<td><code>0.2</code></td>
+<td><code>==2.7</code>, <code>&gt;=3.5</code>, <code>&lt;=3.7</code></td>
+</tr>
+</tbody>
+</table>
+<p>​	坑的离谱！如果安装 Pytorch 为 1.1.0 的版本不能用 3.8 的 Python，我又把原来的环境卸了重新安了 3.7 版本的，这样可以正常运行<code>pip3 install -r requirements.txt</code>这条命令，但是环境还远远没算配完</p>
+<h2 id="pytorch版本太低的bug"><a class="markdownIt-Anchor" href="#pytorch版本太低的bug"></a> Pytorch版本太低的Bug：</h2>
+<p>​	我的服务器使用的显卡是3090，Pytorch 在版本低的情况下在3090显卡会出现一个 bug：<strong>代码中使用<code>.cuda()</code>语句会使整个进程卡死！！！</strong>，详情情况参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_45215296/article/details/127381420">3090显卡服务器使用torch中的.cuda()语句会卡死问题解决方法_.cuda() 卡住-CSDN博客</a></p>
+<p>​	于是我按照他的解决办法提升了 Pytorch 的版本（原仓库生成 Pytorch 版本1.1以上都可以运行），安装了 pytorch1.7.1 版本，虽然解决了 <code>.cuda()</code>语句卡死的问题，但是报错又引出了下面一个问题：</p>
+<p><img src="/2024/07/23/%E8%B8%A9%E5%9D%91%E6%97%A5%E8%AE%B0/pytorch%E7%89%88%E6%9C%AC%E5%AF%B9%E5%BA%94/3.png" srcset="/img/loading.gif" lazyload alt="算力不匹配报错"></p>
+<h2 id="显卡架构与cuda算力不匹配报错"><a class="markdownIt-Anchor" href="#显卡架构与cuda算力不匹配报错"></a> 显卡架构与cuda算力不匹配报错</h2>
+<p>​	一旦出现 <code>RuntimeError: CUDA error: no kernel image is available for execution on the device</code> 这样的报错，就代表出现了 cuda 或 pytorch 与显卡算力不区配的问题，参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_42642296/article/details/115598760">pytorch 报错 RuntimeError: CUDA error: no kernel image is available for execution on the device-CSDN博客</a></p>
+<p>​	于是我去寻找3090显卡支持什么版本的 Pytorch，看到了这篇文章：<a target="_blank" rel="noopener" href="https://blog.csdn.net/chumingqian/article/details/125387959">ubuntu中安装pytorch版本与 RTX3090(4090) 对应关系_rtx4090安装什么pytroch-CSDN博客</a>，照着他一样装了 1.8.1 的 torch 和对应的 torchvision</p>
+<p>​	然后终于可以正常地跑代码了！！！全程总共让我配了六个小时的环境！！！（鄙视这个仓库，要不是我非要用这个代码我早就不鸟他了，可能是因为这个仓库太老了没有维护，才导致我配得这么麻烦）</p>
+<h2 id="版本对应的官方文档"><a class="markdownIt-Anchor" href="#版本对应的官方文档"></a> 版本对应的官方文档：</h2>
 <ul>
-<li>可有可无的论文：所有灌水的论文都属于这一类（Beyond CARAFE），论文所作的贡献可有可无。如果拒稿理所当然，如果接受该论文就会迅速被人遗忘</li>
-<li>很好地 work 的论文：FeatUp 就是属于这一类的论文，它通过一些暴力的方法（技巧）把性能硬生生拉成 SOTA，它可以给许多人提供 idea，但它绝不是属于最好的论文</li>
-<li>不失性能而且优雅的论文：UNet，Transformer 等经典论文都是属于这一类，用最简单朴素的 idea 达到最好的性能。我相信大道至简，大巧若拙</li>
+<li>Python 与 torch, torchvision：<a target="_blank" rel="noopener" href="https://github.com/pytorch/vision#installation">pytorch/vision: Datasets, Transforms and Models specific to Computer Vision</a></li>
+<li>cuda 与 torch：<a target="_blank" rel="noopener" href="https://pytorch.org/get-started/previous-versions/">Previous PyTorch Versions | PyTorch</a></li>
+<li>nvidia显卡与cuda：<a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html">CUDA Toolkit Release Notes</a></li>
 </ul>
-<h2 id="再读python之禅"><a class="markdownIt-Anchor" href="#再读python之禅"></a> 再读Python之禅</h2>
-<ol>
-<li><strong>优美胜于丑陋</strong>（Beautiful is better than ugly）——科研工作不只是寻找答案，更是追求一种内在逻辑之美，简洁而富有力量的理论往往比繁复混乱的解释更能体现科学的价值。优美的实验设计、清晰的数据呈现和优雅的结论推理，都是科研人员应当追求的目标</li>
-<li><strong>明了胜于晦涩</strong>（Explicit is better than implicit）——在科研交流与报告中，直截了当、明确清晰的表述优于隐晦难懂的语言。这意味着研究成果应当清楚地阐述假设、方法、数据和结论，避免读者产生误解，确保可重复性和可验证性</li>
-<li><strong>简单胜于复杂</strong>（Simple is better than complex）——解决问题时，寻求简单的解决方案常常更为有效。科研过程中应尽量简化模型、优化实验步骤，减少不必要的变量干扰，以便更准确地把握事物的本质。</li>
-<li><strong>复杂胜过过度复杂</strong>（Complex is better than complicated）——虽然科学研究不可避免地涉及复杂性，但应避免不必要的复杂化。在复杂系统中找到秩序和规律，构建起结构化的理论框架，才是科研智慧的体现</li>
-</ol>
 
                 
               </div>
@@ -314,9 +388,9 @@ Namespaces are one honking great idea – let’s do more of those!</p>
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/03/28/%E5%AE%9E%E7%94%A8%E7%BD%91%E7%AB%99/" title="实用网站">
+                      <a href="/2024/07/24/%E5%AD%A6%E4%B9%A0/%E4%BB%A3%E7%A0%81%E6%AC%A3%E8%B5%8F/segformer/" title="Segformer">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">实用网站</span>
+                        <span class="hidden-mobile">Segformer</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -324,8 +398,8 @@ Namespaces are one honking great idea – let’s do more of those!</p>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/03/27/%E7%A7%91%E7%A0%94/cv%E5%8A%A8%E6%80%81%E9%87%87%E6%A0%B7%E7%AE%97%E5%AD%90/FeatUp/" title="FeatUp(1)">
-                        <span class="hidden-mobile">FeatUp(1)</span>
+                      <a href="/2024/06/10/%E6%95%B0%E5%AD%A6/%E5%A4%96%E5%BE%AE%E5%88%86/" title="外微分">
+                        <span class="hidden-mobile">外微分</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

@@ -16,24 +16,24 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="代码欣赏-1 ​	代码来自 lucidrains&#x2F;segformer-pytorch 这个仓库（Lucidrains 的代码写的太漂亮了，我的 VIT 代码也是抄他的） ​	本仓库是用于复现 Segformer 的，只写了模型部分，Segformer 的模型结构图如下：  ​	先不看赏析的代码，如果是自己写代码，那我们该如何优美地设计模块？  整个模型分为 Encoder 与 Decoder，那">
+    <meta name="description" content="Segformer ​	代码来自 lucidrains&#x2F;segformer-pytorch 这个仓库（Lucidrains 的代码写的太漂亮了，我的 VIT 代码也是抄他的） ​	本仓库是用于复现 Segformer 的，只写了模型部分，Segformer 的模型结构图如下：  ​	先不看赏析的代码，如果是自己写代码，那我们该如何优美地设计模块？  整个模型分为 Encoder 与 Decode">
 <meta property="og:type" content="article">
-<meta property="og:title" content="代码欣赏1">
-<meta property="og:url" content="http://example.com/2024/07/24/%E5%AD%A6%E4%B9%A0/%E4%BB%A3%E7%A0%81%E6%AC%A3%E8%B5%8F/%E4%BB%A3%E7%A0%81%E6%AC%A3%E8%B5%8F1/index.html">
+<meta property="og:title" content="Segformer">
+<meta property="og:url" content="http://example.com/2024/07/24/%E5%AD%A6%E4%B9%A0/%E4%BB%A3%E7%A0%81%E6%AC%A3%E8%B5%8F/segformer/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="代码欣赏-1 ​	代码来自 lucidrains&#x2F;segformer-pytorch 这个仓库（Lucidrains 的代码写的太漂亮了，我的 VIT 代码也是抄他的） ​	本仓库是用于复现 Segformer 的，只写了模型部分，Segformer 的模型结构图如下：  ​	先不看赏析的代码，如果是自己写代码，那我们该如何优美地设计模块？  整个模型分为 Encoder 与 Decoder，那">
+<meta property="og:description" content="Segformer ​	代码来自 lucidrains&#x2F;segformer-pytorch 这个仓库（Lucidrains 的代码写的太漂亮了，我的 VIT 代码也是抄他的） ​	本仓库是用于复现 Segformer 的，只写了模型部分，Segformer 的模型结构图如下：  ​	先不看赏析的代码，如果是自己写代码，那我们该如何优美地设计模块？  整个模型分为 Encoder 与 Decode">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/2024/07/24/%E5%AD%A6%E4%B9%A0/%E4%BB%A3%E7%A0%81%E6%AC%A3%E8%B5%8F/%E4%BB%A3%E7%A0%81%E6%AC%A3%E8%B5%8F1/1.png">
-<meta property="og:image" content="http://example.com/2024/07/24/%E5%AD%A6%E4%B9%A0/%E4%BB%A3%E7%A0%81%E6%AC%A3%E8%B5%8F/%E4%BB%A3%E7%A0%81%E6%AC%A3%E8%B5%8F1/2.png">
+<meta property="og:image" content="http://example.com/2024/07/24/%E5%AD%A6%E4%B9%A0/%E4%BB%A3%E7%A0%81%E6%AC%A3%E8%B5%8F/segformer/1.png">
+<meta property="og:image" content="http://example.com/2024/07/24/%E5%AD%A6%E4%B9%A0/%E4%BB%A3%E7%A0%81%E6%AC%A3%E8%B5%8F/segformer/2.png">
 <meta property="article:published_time" content="2024-07-24T09:06:39.000Z">
-<meta property="article:modified_time" content="2024-07-25T02:50:49.459Z">
+<meta property="article:modified_time" content="2024-09-29T08:16:44.325Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/2024/07/24/%E5%AD%A6%E4%B9%A0/%E4%BB%A3%E7%A0%81%E6%AC%A3%E8%B5%8F/%E4%BB%A3%E7%A0%81%E6%AC%A3%E8%B5%8F1/1.png">
+<meta name="twitter:image" content="http://example.com/2024/07/24/%E5%AD%A6%E4%B9%A0/%E4%BB%A3%E7%A0%81%E6%AC%A3%E8%B5%8F/segformer/1.png">
   
   
   
-  <title>代码欣赏1 - Hexo</title>
+  <title>Segformer - Hexo</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -191,7 +191,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="代码欣赏1"></span>
+            <span id="subtitle" data-typed-text="Segformer"></span>
           
         </div>
 
@@ -214,7 +214,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          756 字
+          752 字
         
       </span>
     
@@ -262,15 +262,15 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">代码欣赏1</h1>
+            <h1 id="seo-header">Segformer</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="代码欣赏-1"><a class="markdownIt-Anchor" href="#代码欣赏-1"></a> 代码欣赏-1</h1>
+                <h1 id="segformer"><a class="markdownIt-Anchor" href="#segformer"></a> Segformer</h1>
 <p>​	代码来自 <a target="_blank" rel="noopener" href="https://github.com/lucidrains/segformer-pytorch/blob/main/segformer_pytorch/segformer_pytorch.py">lucidrains/segformer-pytorch </a>这个仓库（Lucidrains 的代码写的太漂亮了，我的 VIT 代码也是抄他的）</p>
 <p>​	本仓库是用于复现 Segformer 的，只写了模型部分，Segformer 的模型结构图如下：</p>
-<p><img src="/2024/07/24/%E5%AD%A6%E4%B9%A0/%E4%BB%A3%E7%A0%81%E6%AC%A3%E8%B5%8F/%E4%BB%A3%E7%A0%81%E6%AC%A3%E8%B5%8F1/1.png" srcset="/img/loading.gif" lazyload alt="Segformer"></p>
+<p><img src="/2024/07/24/%E5%AD%A6%E4%B9%A0/%E4%BB%A3%E7%A0%81%E6%AC%A3%E8%B5%8F/segformer/1.png" srcset="/img/loading.gif" lazyload alt="Segformer"></p>
 <p>​	先不看赏析的代码，如果是自己写代码，那我们该如何优美地设计模块？</p>
 <ul>
 <li>整个模型分为 Encoder 与 Decoder，那么总的来看模块可以分成两个</li>
@@ -286,7 +286,7 @@
 <li><code>einops</code>操作同时触发求和和广播操作：<code>sim = einsum('b i d, b j d -&gt; b i j', q, k) * self.scale</code></li>
 </ul>
 <h2 id="实现mitdecoder"><a class="markdownIt-Anchor" href="#实现mitdecoder"></a> 实现MiT（Decoder）：</h2>
-<p><img src="/2024/07/24/%E5%AD%A6%E4%B9%A0/%E4%BB%A3%E7%A0%81%E6%AC%A3%E8%B5%8F/%E4%BB%A3%E7%A0%81%E6%AC%A3%E8%B5%8F1/2.png" srcset="/img/loading.gif" lazyload alt="Decoder"></p>
+<p><img src="/2024/07/24/%E5%AD%A6%E4%B9%A0/%E4%BB%A3%E7%A0%81%E6%AC%A3%E8%B5%8F/segformer/2.png" srcset="/img/loading.gif" lazyload alt="Decoder"></p>
 <p>​	下面代码<code>__init__()</code>部分大循环实现的是多个 stage 之间的模块（Transformer Block），小循环实现的是 Transformer Block 的内部模块</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MiT</span>(nn.Module):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, *, channels, dims, heads, ff_expansion, reduction_ratio, num_layers</span>):<br>        <span class="hljs-built_in">super</span>().__init__()<br>        stage_kernel_stride_pad = ((<span class="hljs-number">7</span>, <span class="hljs-number">4</span>, <span class="hljs-number">3</span>), (<span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>), (<span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>), (<span class="hljs-number">3</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>))<br><br>        <span class="hljs-comment"># 这一步写 dim_pairs 好优美</span><br>        dims = (channels, *dims)<br>        dim_pairs = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">zip</span>(dims[:-<span class="hljs-number">1</span>], dims[<span class="hljs-number">1</span>:]))<br><br>        self.stages = nn.ModuleList([])<br><br>        <span class="hljs-keyword">for</span> (dim_in, dim_out), (kernel, stride, padding), num_layers, ff_expansion, heads, reduction_ratio <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(dim_pairs, stage_kernel_stride_pad, num_layers, ff_expansion, heads, reduction_ratio):<br>            get_overlap_patches = nn.Unfold(kernel, stride = stride, padding = padding)<br>            <span class="hljs-comment"># get_overlap_patches: (N, C * kernel_size[0] * kernel_size[1], output_size[0]*output_size[1])</span><br>            overlap_patch_embed = nn.Conv2d(dim_in * kernel ** <span class="hljs-number">2</span>, dim_out, <span class="hljs-number">1</span>)<br><br>            layers = nn.ModuleList([])<br><br>            <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(num_layers):<br>                layers.append(nn.ModuleList([<br>                    PreNorm(dim_out, EfficientSelfAttention(dim = dim_out, heads = heads, reduction_ratio = reduction_ratio)),<br>                    PreNorm(dim_out, MixFeedForward(dim = dim_out, expansion_factor = ff_expansion)),<br>                ]))<br><br>            <span class="hljs-comment"># 每个 stage 的层都卸载一个 nn.ModuleList 中一起保存在 self.stages 中</span><br>            self.stages.append(nn.ModuleList([<br>                get_overlap_patches,<br>                overlap_patch_embed,<br>                layers<br>            ]))<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">forward</span>(<span class="hljs-params">self, x, return_layer_outputs=<span class="hljs-literal">False</span></span>):<br>        h, w = x.shape[-<span class="hljs-number">2</span>:]<br><br>        layer_outputs = []<br>        <span class="hljs-keyword">for</span> (get_overlap_patches, overlap_embed, layers) <span class="hljs-keyword">in</span> self.stages:<br>            x = get_overlap_patches(x)<br><br>            <br>            num_patches = x.shape[-<span class="hljs-number">1</span>]<br>            ratio = <span class="hljs-built_in">int</span>(sqrt((h * w) / num_patches))    <span class="hljs-comment"># ratio是在nn.Unfold操作后，特征图在高度和宽度上的缩减比例</span><br>            x = rearrange(x, <span class="hljs-string">&#x27;b c (h w) -&gt; b c h w&#x27;</span>, h = h//ratio)  <span class="hljs-comment"># x 为 Unfold 后新的特征图</span><br><br>            x = overlap_embed(x)<br>            <span class="hljs-keyword">for</span> (attn, ff) <span class="hljs-keyword">in</span> layers:<br>                x = attn(x) + x<br>                x = ff(x) + x<br><br>            layer_outputs.append(x)<br><br>        ret = x <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> return_layer_outputs <span class="hljs-keyword">else</span> layer_outputs<br>        <span class="hljs-keyword">return</span> ret<br></code></pre></td></tr></table></figure>
 <h3 id="一些可模仿之处-2"><a class="markdownIt-Anchor" href="#一些可模仿之处-2"></a> 一些可模仿之处：</h3>
@@ -311,9 +311,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/07/26/DCNv1-v4/" title="DCNv1-v4">
+                      <a href="/2024/07/27/%E5%90%84%E7%A7%8D%E7%AE%97%E5%AD%90%E5%AF%B9%E6%AF%94/" title="各种算子对比">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">DCNv1-v4</span>
+                        <span class="hidden-mobile">各种算子对比</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -321,7 +321,7 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/07/23/%E7%A7%91%E7%A0%94/%E8%B8%A9%E5%9D%91%E6%97%A5%E8%AE%B0/%E7%8E%AF%E5%A2%83%E8%B8%A9%E5%9D%91%E6%97%A5%E8%AE%B01/" title="环境踩坑日记1">
+                      <a href="/2024/07/23/%E8%B8%A9%E5%9D%91%E6%97%A5%E8%AE%B0/pytorch%E7%89%88%E6%9C%AC%E5%AF%B9%E5%BA%94/" title="环境踩坑日记1">
                         <span class="hidden-mobile">环境踩坑日记1</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
