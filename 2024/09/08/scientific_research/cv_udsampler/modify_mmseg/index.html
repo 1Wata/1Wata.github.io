@@ -1,0 +1,588 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/w.png">
+  <link rel="icon" href="/img/w.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="合并mmseg的backbone和encoder  问题来源 ​	由于我的这段科研工作主要围绕上下采样同时建模（协同上下采样）来展开的，我在小模型上跑出了很好的效果，想在大模型大数据集上进一步验证他的有效性，我选择了 mask2former 模型作为分割任务的 baseline，我尝试从 mask2former 官方 repo 下载代码后在他上面修改，但是这个代码封装极其深而且工程化，这个仓库是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="合并mmseg的backbone和encoder">
+<meta property="og:url" content="http://example.com/2024/09/08/scientific_research/cv_udsampler/modify_mmseg/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="合并mmseg的backbone和encoder  问题来源 ​	由于我的这段科研工作主要围绕上下采样同时建模（协同上下采样）来展开的，我在小模型上跑出了很好的效果，想在大模型大数据集上进一步验证他的有效性，我选择了 mask2former 模型作为分割任务的 baseline，我尝试从 mask2former 官方 repo 下载代码后在他上面修改，但是这个代码封装极其深而且工程化，这个仓库是">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2024/09/08/scientific_research/cv_udsampler/modify_mmseg/image-20240908195421739.png">
+<meta property="article:published_time" content="2024-09-08T08:44:13.000Z">
+<meta property="article:modified_time" content="2024-10-06T02:41:17.394Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2024/09/08/scientific_research/cv_udsampler/modify_mmseg/image-20240908195421739.png">
+  
+  
+  
+  <title>合并mmseg的backbone和encoder - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.6","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/katex@0.11.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Wataの锟斤拷</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="合并mmseg的backbone和encoder"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-09-08 16:44" pubdate>
+          2024年9月8日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          802 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          9 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">合并mmseg的backbone和encoder</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="合并mmseg的backbone和encoder"><a class="markdownIt-Anchor" href="#合并mmseg的backbone和encoder"></a> 合并mmseg的backbone和encoder</h1>
+<h2 id="问题来源"><a class="markdownIt-Anchor" href="#问题来源"></a> 问题来源</h2>
+<p>​	由于我的这段科研工作主要围绕上下采样同时建模（协同上下采样）来展开的，我在小模型上跑出了很好的效果，想在大模型大数据集上进一步验证他的有效性，我选择了 mask2former 模型作为分割任务的 baseline，我尝试从 mask2former 官方 <a target="_blank" rel="noopener" href="https://github.com/facebookresearch/Mask2Former">repo</a> 下载代码后在他上面修改，但是这个代码封装极其深而且工程化，这个仓库是基于一个 detectron2 这个算法框架库开发的，首先解析这个算法框架库就极其耗时，而且由于耦合极其深也不好修改。这时候我发现 mmseg 这个框架库内有 mask2former 模型而且这个框架更好理解一些（但也是耦合太深封装过度），我就决定在 mmseg 这个算法框架下修改代码加入协同算子</p>
+<p>​	这里引出了第二个问题，如果我只是单纯地做一个上采样算子就非常好说了，但是我将上下采样算子同时建模了，而 mmseg 这个框架库实例化模型的时候是将 backbone(ResNet50) 和 encoder(MSDeformableAttentionPixelDecoder) 分别生成的（解耦了），而我的协同算子既不能单独属于 backbone 也不能单独属于 encoder，这就意味着我的 <code>Sampler</code>  需要和 backbone 和 encoder 平级来实例化（<strong>因为不想改动最顶层的接口，也就是 <code>EncoderDecoder</code> 类，如果要改最顶层工作量会奇大无比</strong>）</p>
+<p>​	因此<strong>最终设计是将 backbone 和 sampler，pixel decoder 封装为一个新的 backbone，并将原来的 encoder 内部把 pixel decoder 给除去作为一个新的 decode_head</strong>。这样能最大化减少工作量</p>
+<h2 id="修改方案实现"><a class="markdownIt-Anchor" href="#修改方案实现"></a> 修改方案实现</h2>
+<p>​	我们先看在 mmseg 内部 mask2former 的 Config 配置：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs python">model = <span class="hljs-built_in">dict</span>(<br>    <span class="hljs-built_in">type</span>=<span class="hljs-string">&#x27;EncoderDecoder&#x27;</span>,<br>    data_preprocessor=data_preprocessor,<br>    backbone=<span class="hljs-built_in">dict</span>(<br>        <span class="hljs-built_in">type</span>=<span class="hljs-string">&#x27;ResNet&#x27;</span>,<br>        ...<br>    ),<br>    decode_head=<span class="hljs-built_in">dict</span>(<br>        <span class="hljs-built_in">type</span>=<span class="hljs-string">&#x27;Mask2FormerHead&#x27;</span>,<br>        ...,<br>        pixel_decoder=<span class="hljs-built_in">dict</span>(<br>            <span class="hljs-built_in">type</span>=<span class="hljs-string">&#x27;mmdet.MSDeformAttnPixelDecoder&#x27;</span>,<br>            ...<br>        ),<br>        enforce_decoder_input_project=<span class="hljs-literal">False</span>,<br>        positional_encoding=<span class="hljs-built_in">dict</span>(  <span class="hljs-comment"># SinePositionalEncoding</span><br>            num_feats=<span class="hljs-number">128</span>, normalize=<span class="hljs-literal">True</span>),<br>        transformer_decoder=<span class="hljs-built_in">dict</span>(<br>            ...<br>        )<br>    )<br></code></pre></td></tr></table></figure>
+<p>对应的论文中网络结构图如下：</p>
+<p><img src="/2024/09/08/scientific_research/cv_udsampler/modify_mmseg/image-20240908195421739.png" srcset="/img/loading.gif" lazyload alt="network"></p>
+<p>​	可以看到上面的结构是非常不适合我们修改的，论文把 ResNet 称为 backbone 而不是 ResNet+Pixel Decoder，对应 config 的层级关系是：<code>backbone - Pixel Decoder - Transformer Decoder</code>，而我们需要将 backbone 与 Pixel Decoder 同时考虑进来（因为要加入上下采样管理），因此我们需要的层级关系是 <code>(backbone - Pixel Decoder) - Transformer Decoder</code>，即把 backbone 与 pixel decoder 合起来的一级和 Transformer Decoder 同级</p>
+<p>​	**那么最简单的设计就是把Backbone和Pixel Decoder封装为一个新的Backbone，Transfomer Decoder就当做唯一的Decoder就行了！**修改配置文件结构如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs python">backbone=<span class="hljs-built_in">dict</span>(<br>        <span class="hljs-built_in">type</span>=<span class="hljs-string">&#x27;ResNetWithPixelDecoder&#x27;</span>,<br>        backbone=<span class="hljs-built_in">dict</span>(<br>            <span class="hljs-built_in">type</span>=<span class="hljs-string">&#x27;MyResNetV2&#x27;</span>,<br>            ...<br>        ),<br>        samplers=<span class="hljs-built_in">dict</span>(<br>            <span class="hljs-built_in">type</span>=<span class="hljs-string">&#x27;Sample&#x27;</span>,<br>            style=<span class="hljs-string">&#x27;conv-deconv&#x27;</span>,<br>            ...<br>        ),<br>        decode_head=<span class="hljs-built_in">dict</span>(<br>            <span class="hljs-built_in">type</span>=<span class="hljs-string">&#x27;mmdet.MyMSDeformAttnPixelDecoder&#x27;</span>,<br>            ...<br>    ),<br>decode_head=<span class="hljs-built_in">dict</span>(<br>    <span class="hljs-built_in">type</span>=<span class="hljs-string">&#x27;MyMask2FormerHead&#x27;</span>,<br>	<span class="hljs-comment"># 没有 pixel decoder 配置文件</span><br>    ...<br>),<br></code></pre></td></tr></table></figure>
+<p>​	其中我重写的 <code>ResNetWithPixelDecoder</code> 类如下，其实只要熟悉一下 mmcv 框架写得就会很简单，会用 <code>build_from_cfg</code> 函数就好了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-meta">@MODELS.register_module()</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">ResNetWithPixelDecoder</span>(<span class="hljs-title class_ inherited__">BaseModule</span>):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, backbone, samplers, decode_head</span>):<br>        <span class="hljs-built_in">super</span>().__init__()<br>        self.backbone = build_from_cfg(backbone, MODELS)<br>        <span class="hljs-comment"># self.samplers = nn.ModuleList()</span><br>        self.samplers = build_from_cfg(samplers, MODELS)<br>        self.decode_head = build_from_cfg(decode_head, MODELS)<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">forward</span>(<span class="hljs-params">self, x</span>):<br>        x, latent_kernel = self.backbone(x, self.samplers)<br>        mask_feature, multi_scale_features = self.decode_head(x, latent_kernel, self.samplers)<br>        <span class="hljs-keyword">return</span> [mask_feature] + multi_scale_features<br></code></pre></td></tr></table></figure>
+<h2 id="代码经验"><a class="markdownIt-Anchor" href="#代码经验"></a> 代码经验</h2>
+<ul>
+<li>mmcv 框架使用方式自定义模块的一些注意事项：
+<ul>
+<li>类继承于 <code>BaseModule</code> 而不是<code>nn.Module</code>（目的是不改变训练框架的情况下调用父类的初始化函数）</li>
+<li>如果要使用一个 <code>list</code> 装内部的多个模块，使用 <code>nn.ModuleList</code> 而不用 <code>List</code>，因为这个涉及 <code>build_from_cfg</code> 的内部实现，他会遍历模块内部的所有 <code>nn.Module</code> 对象进行初始化，使用 <code>list</code> 就不算 <code>nn.Module</code>，就不能触发内部的初始化方式</li>
+<li>创建自定义模块使用 <code>config</code> 和 <code>registry</code> 机制就行了，注意在 <code>__init__.py</code> 中加上对应的模块</li>
+</ul>
+</li>
+<li>对于陌生的框架，发生了无法理解的错误的话多 debug 一步一步找问题是什么，要学会去看源码（理解工程代码也是一个重要的能力）</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+			
+			
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/09/09/%E7%A1%AC%E5%95%83CARAFE-cuda/" title="硬啃CARAFE_cuda">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">硬啃CARAFE_cuda</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/08/24/%E5%AD%A6%E4%B9%A0/Pytorch/torch-autograd-Function/" title="torch.autograd.Function">
+                        <span class="hidden-mobile">torch.autograd.Function</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <i class="iconfont icon-love"></i> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

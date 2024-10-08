@@ -216,15 +216,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/07/31/%E8%87%AA%E5%B7%B1%E5%88%9B%E5%BB%BAPython%E5%BA%93/" target="_self">
-          自己创建Python库
+        <a href="/2024/09/08/scientific_research/cv_udsampler/modify_mmseg/" target="_self">
+          合并mmseg的backbone和encoder
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/07/31/%E8%87%AA%E5%B7%B1%E5%88%9B%E5%BB%BAPython%E5%BA%93/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/09/08/scientific_research/cv_udsampler/modify_mmseg/" target="_self">
         <div>
-          自己创建Python库  写法模板 ​	我们直接介绍正规写一个Python库的模板是什么，假设我们要创建一个名为 mylib 的简单库，它的目录结构可能如下所示： 123456789101112131415mylib/    mylib/        __init__.py        module1.py        module2.py    tests/        __init_
+          合并mmseg的backbone和encoder  问题来源 ​	由于我的这段科研工作主要围绕上下采样同时建模（协同上下采样）来展开的，我在小模型上跑出了很好的效果，想在大模型大数据集上进一步验证他的有效性，我选择了 mask2former 模型作为分割任务的 baseline，我尝试从 mask2former 官方 repo 下载代码后在他上面修改，但是这个代码封装极其深而且工程化，这个仓库是
         </div>
       </a>
 
@@ -232,8 +232,74 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-07-31 10:13" pubdate>
-              2024-07-31
+            <time datetime="2024-09-08 16:44" pubdate>
+              2024-09-08
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/08/24/%E5%AD%A6%E4%B9%A0/Pytorch/torch-autograd-Function/" target="_self">
+          torch.autograd.Function
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/08/24/%E5%AD%A6%E4%B9%A0/Pytorch/torch-autograd-Function/" target="_self">
+        <div>
+          torch.autograd.Function解析 ​	pytorch的灵活性体现在它可以任意拓展我们所需要的内容，包括自定义模型（nn.Module）、自定义函数（nn.Function）、自定义损失函数（nn.Module）、自定义求导方式（torch.autograd.Function），本节内容介绍torch.autograd.Function自定义求导的使用方法 ​	为什么需要torc
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-08-24 18:23" pubdate>
+              2024-08-24
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/08/12/%E5%AD%A6%E4%B9%A0/computer%20vision/%E5%B7%AE%E5%88%86%E5%8D%B7%E7%A7%AF%E2%80%94%E2%80%94%E8%BE%B9%E7%BC%98%E6%A3%80%E6%B5%8B/" target="_self">
+          差分卷积——边缘检测
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/08/12/%E5%AD%A6%E4%B9%A0/computer%20vision/%E5%B7%AE%E5%88%86%E5%8D%B7%E7%A7%AF%E2%80%94%E2%80%94%E8%BE%B9%E7%BC%98%E6%A3%80%E6%B5%8B/" target="_self">
+        <div>
+          差分卷积——边缘检测  参考论文：   Searching central difference convolutional networks for face anti-spoofing   Pixel Difference Networks for Efficient Edge Detection   ​	这两篇论文是同一个作者的工作，后面一篇论文是前面论文的延续和拓展工作，我们直接介绍后面
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-08-12 10:32" pubdate>
+              2024-08-12
             </time>
           </div>
         
@@ -282,72 +348,6 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/07/27/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AD%89%E5%BE%85%E6%98%BE%E5%8D%A1%E5%8F%AF%E7%94%A8%E7%82%BC%E4%B8%B9/" target="_self">
-          服务器等待显卡可用炼丹
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/07/27/%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AD%89%E5%BE%85%E6%98%BE%E5%8D%A1%E5%8F%AF%E7%94%A8%E7%82%BC%E4%B8%B9/" target="_self">
-        <div>
-          服务器脚本——等待显卡可用炼丹  subprocess模块  subprocess模块概述  subprocess模块是Python标准库的一部分，它为创建和管理子进程提供了强大的接口。在Python 2.4中引入以取代旧的模块（如os.system和os.spawn*等），并提供了更复杂的进程管理功能，比如超时控制、I/O管道通信等   subprocess.check_output 1res
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-07-27 16:09" pubdate>
-              2024-07-27
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/07/27/%E5%90%84%E7%A7%8D%E7%AE%97%E5%AD%90%E5%AF%B9%E6%AF%94/" target="_self">
-          各种算子对比
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/07/27/%E5%90%84%E7%A7%8D%E7%AE%97%E5%AD%90%E5%AF%B9%E6%AF%94/" target="_self">
-        <div>
-          算子名称 是否有高分辨率特征引导 亚像素   计算开销     dysample × ✓   很小   sapa ✓ ✓   很大   fade ✓ ×   大   indexnet ✓ ×   很大   CARAFE × ×   很大     dysample，FADE，SAPA 在Segmentation上mIoU的表现差不多，但是FADE的bIoU非常高  首先，
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-07-27 13:30" pubdate>
-              2024-07-27
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
         <a href="/2024/07/24/%E5%AD%A6%E4%B9%A0/%E4%BB%A3%E7%A0%81%E6%AC%A3%E8%B5%8F/segformer/" target="_self">
           Segformer
         </a>
@@ -381,13 +381,13 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/07/23/%E8%B8%A9%E5%9D%91%E6%97%A5%E8%AE%B0/pytorch%E7%89%88%E6%9C%AC%E5%AF%B9%E5%BA%94/" target="_self">
+        <a href="/2024/07/23/setups/pytorch%E7%89%88%E6%9C%AC%E5%AF%B9%E5%BA%94/" target="_self">
           环境踩坑日记1
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/07/23/%E8%B8%A9%E5%9D%91%E6%97%A5%E8%AE%B0/pytorch%E7%89%88%E6%9C%AC%E5%AF%B9%E5%BA%94/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/07/23/setups/pytorch%E7%89%88%E6%9C%AC%E5%AF%B9%E5%BA%94/" target="_self">
         <div>
           配置环境踩坑日记（1） ​	本期的主角是Efficient-Segmentation-Networks: Lightweight models for real-time semantic segmentationon PyTorch这个仓库，我想使用这个仓库的 SegNet 在 CamVid 上跑的结果，于是想要复现这个仓库，下面分析这个仓库的 README 写的问题 ​	前情提要：原仓库说环
         </div>
