@@ -25,9 +25,11 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/2024/10/10/learning/deep%20learning/GPU_arch/1.png">
 <meta property="og:image" content="http://example.com/2024/10/10/learning/deep%20learning/GPU_arch/2.png">
+<meta property="og:image" content="http://example.com/2024/10/10/learning/deep%20learning/GPU_arch/5.png">
+<meta property="og:image" content="http://example.com/2024/10/10/learning/deep%20learning/GPU_arch/4.png">
 <meta property="og:image" content="http://example.com/2024/10/10/learning/deep%20learning/GPU_arch/3.webp">
 <meta property="article:published_time" content="2024-10-10T12:21:21.000Z">
-<meta property="article:modified_time" content="2024-10-11T13:23:43.654Z">
+<meta property="article:modified_time" content="2024-10-12T07:52:29.190Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://example.com/2024/10/10/learning/deep%20learning/GPU_arch/1.png">
@@ -215,7 +217,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.4k 字
+          1.6k 字
         
       </span>
     
@@ -226,7 +228,7 @@
         
         
         
-          15 分钟
+          17 分钟
         
       </span>
     
@@ -313,7 +315,14 @@
 <li>NVLINK：NVIDIA 公司推出的、用于显卡之间的专用的超高速数据传输通道</li>
 </ul>
 <p>​	在磁盘/硬盘（Disk/SSD）上面的数据传入到 <strong>GPU 的内存要经过：硬盘 -&gt; 系统内存 -&gt; GPU 内存的过程。这个速度非常慢，要极力避免这种传输</strong></p>
+<p><img src="/2024/10/10/learning/deep%20learning/GPU_arch/5.png" srcset="/img/loading.gif" lazyload alt="GPU分层cache"></p>
 <h3 id="gpu内部架构"><a class="markdownIt-Anchor" href="#gpu内部架构"></a> GPU内部架构</h3>
+<p><img src="/2024/10/10/learning/deep%20learning/GPU_arch/4.png" srcset="/img/loading.gif" lazyload alt="GPU"></p>
+<p>​	在 GPU 编程中，<code>Kernel</code> 是一个特殊的函数，它定义了需要并行执行的计算任务。为了高效地利用 GPU 的并行处理能力，这个 <code>Kernel</code> 会被分解成多个执行单元，称为 <code>Block</code>。这种结构允许 GPU 高度并行地处理大量数据，通过将一个大型计算任务分解成众多小型并行任务，GPU 能够实现显著的性能提升</p>
+<ul>
+<li><code>Kernel</code> ：是程序员编写的核心算法，它描述了每个并行执行单元应该执行的操作。。这段代码被设计为在大量 <code>Thread</code> 上执行相同的操作。</li>
+<li><code>Block</code>：GPU 会将这个 <code>Kernel</code> 任务划分成多个 <code>Block</code>，每个 <code>Block</code> 内部包含许多 <code>Thread</code>(线程)。这些 <code>Thread</code> 同时运行，各自处理一部分数据，但都执行相同的<code>Kernel</code>代码</li>
+</ul>
 <p><img src="/2024/10/10/learning/deep%20learning/GPU_arch/3.webp" srcset="/img/loading.gif" lazyload alt="memory"></p>
 <p>​	从GPU的结构来看，是分成 Grid-&gt;Block-&gt;Thread，所以，GPU也是针对这个层次来设计存储结构的，从上面的表格中可以看到。register 和 local memory 是针对 Thread 来设计的，shared memory是针对 Block 来设计，而其他的三个是针对 Grid 来进行设计的。为了提高更进一步的访问速度，Constant Memory，Texture Memory和Global Memory也都针对Block提供了Cache的解决方案</p>
 <h4 id="寄存器"><a class="markdownIt-Anchor" href="#寄存器"></a> 寄存器</h4>
