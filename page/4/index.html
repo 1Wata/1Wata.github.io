@@ -216,6 +216,39 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
+        <a href="/2024/04/27/learning/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/cuda-3-%E9%94%99%E8%AF%AF/" target="_self">
+          cuda-3-错误
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/27/learning/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/cuda-3-%E9%94%99%E8%AF%AF/" target="_self">
+        <div>
+          cuda  CUDA运行时API大多支持返回错误代码，返回值类型：cudaError_t 运行时API成功执行，返回值为cudaSuccess 运行时API返回的执行状态值是枚举变量，对应官方文档查看错误代码可以知道错误来源   捕捉主机函数错误： ​	CUDA代码在主机端（CPU）和设备端（GPU）的错误检测方法并不相同  在主机端（CPU）执行的CUDA代码主要包括对CUDA API函数的调
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-04-27 20:05" pubdate>
+              2024-04-27
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
         <a href="/2024/04/26/learning/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Java/Java-GUI/" target="_self">
           Java GUI
         </a>
@@ -348,15 +381,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/04/19/learning/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/cuda-2-%E7%A8%8B%E5%BA%8F%E6%A1%86%E6%9E%B6/" target="_self">
+        <a href="/2024/04/19/learning/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/2_frame/" target="_self">
           cuda-2-程序框架
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/19/learning/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/cuda-2-%E7%A8%8B%E5%BA%8F%E6%A1%86%E6%9E%B6/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/19/learning/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/2_frame/" target="_self">
         <div>
-          cuda程序框架 12345678910111213头文件包含常量定义（或者宏定义）C++ 自定义函数和CUDA核函数的声明（原型）int main(void)&#123;    分配主机与设备内存    初始化主机中的数据    将某些数据从主机复制到设备    调用核函数在设备中进行计算    将某些数据从设备复制到主机    释放主机与设备内存&#125;C++自定义函数与CUDA核函数的
+          cuda 程序框架 12345678910111213头文件包含常量定义（或者宏定义）C++ 自定义函数和CUDA核函数的声明（原型）int main(void)&#123;    分配主机与设备内存    初始化主机中的数据    将某些数据从主机复制到设备    调用核函数在设备中进行计算    将某些数据从设备复制到主机    释放主机与设备内存&#125;C++自定义函数与CUDA核函数
         </div>
       </a>
 
@@ -381,13 +414,13 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/04/19/learning/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/cuda-1-%E5%85%BC%E5%AE%B9%E6%80%A7/" target="_self">
+        <a href="/2024/04/19/learning/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/1_compile/" target="_self">
           cuda-1(兼容性)
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/19/learning/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/cuda-1-%E5%85%BC%E5%AE%B9%E6%80%A7/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/19/learning/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/1_compile/" target="_self">
         <div>
           cuda程序兼容性问题 先了解cuda程序编译的流程：先从C/C++代码编译为PTX，再从PTX编译为cudin代码   C/C++源码转化为PTX这一步骤与硬件无关   PTX指令转化为二进制cubin代码与具体的GPU架构有关    指定虚拟架构计算能力  C/C++源码编译为PTX时，可以指定虚拟架构的计算能力，用于确定代码中可以使用的CUDA功能 编译指令（指定虚拟架构计算能力）：  1
         </div>
@@ -498,39 +531,6 @@
             <i class="iconfont icon-date"></i>
             <time datetime="2024-04-12 18:47" pubdate>
               2024-04-12
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/04/09/learning/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Java/Java%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7/" target="_self">
-          Java高级特性
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/09/learning/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Java/Java%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7/" target="_self">
-        <div>
-          Java高级特性  Static关键字  静态变量（Static Variables）：  当 static 修饰一个成员变量时，这个变量就成为静态变量，也称为类变量。静态变量存储在Java方法区中，且仅有一个副本，供所有类的实例共享 静态变量在类加载时初始化，其生命周期贯穿整个程序执行过程，直到JVM停止运行（类似于全局变量） 可以通过类名直接访问静态变量，无需创建类的实例   静态方法（St
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-04-09 14:53" pubdate>
-              2024-04-09
             </time>
           </div>
         
