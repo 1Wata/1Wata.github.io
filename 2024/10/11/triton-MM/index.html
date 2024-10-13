@@ -29,7 +29,7 @@
 <meta property="og:image" content="http://example.com/2024/10/11/triton-MM/4.webp">
 <meta property="og:image" content="http://example.com/2024/10/11/triton-MM/5.webp">
 <meta property="article:published_time" content="2024-10-11T11:23:01.000Z">
-<meta property="article:modified_time" content="2024-10-12T10:25:09.210Z">
+<meta property="article:modified_time" content="2024-10-12T13:01:56.749Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://example.com/2024/10/11/triton-MM/1.png">
@@ -217,7 +217,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.4k 字
+          2.5k 字
         
       </span>
     
@@ -382,8 +382,10 @@
 <p>​	上面的代码中进行了分块和分组的操作，分块（block）和分组（group）的设计是为了优化并行性和内存访问效率，使用了多级的 cache 提高效率：</p>
 <ul>
 <li>分块的目的：为了高效使用 L1 缓存。将大矩阵分解成较小的块，每个块由一个线程块（block）处理。这样可以减少内存带宽的需求，并提高缓存利用率。每个线程块内部的线程可以并行执行</li>
-<li>分组的目的：为了高效使用 L2 缓存。将多个线程块组织成组，以促进 L2 缓存的重用。通过分组，可以确保同一组内的线程块在处理相同的数据时能够有效地重用 L2 缓存中的数据，从而减少内存访问延迟。<strong>同一组内的块可以并行执行，不同组之间的块也可以并行执行</strong></li>
+<li>分组的目的：为了高效使用 L2 缓存。将多个线程块组织成组，以促进 L2 缓存的重用。通过分组，可以确保同一组内的线程块在处理相同的数据时能够有效地重用 L2 缓存中的数据，从而减少内存访问延迟。<strong>同一组内的块可以并行执行，不同组之间的块也可以并行执行</strong>，分组使用 L2 cache 在代码中体现为：</li>
 </ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs python">GROUP_SIZE_M = <span class="hljs-number">8</span><br>pid = tl.program_id(axis=<span class="hljs-number">0</span>)<br>num_pid_m = tl.cdiv(M, BLOCK_SIZE_M)<br>num_pid_n = tl.cdiv(N, BLOCK_SIZE_N)<br>num_pid_in_group = GROUP_SIZE_M * num_pid_n<br>group_id = pid // num_pid_in_group<br>first_pid_m = group_id * GROUP_SIZE_M<br>group_size_m = <span class="hljs-built_in">min</span>(num_pid_m - first_pid_m, GROUP_SIZE_M)<br>pid_m = first_pid_m + ((pid % num_pid_in_group) % group_size_m)<br>pid_n = (pid % num_pid_in_group) // group_size_m<br></code></pre></td></tr></table></figure>
+<p>​	注意：数据的加载和存储都是通过 <code>tl.load</code> 和 <code>tl.store</code> 指令完成的，而 L2 缓存的管理是由硬件自动处理的</p>
 <h3 id="避免竞争冒险"><a class="markdownIt-Anchor" href="#避免竞争冒险"></a> 避免竞争冒险</h3>
 <p>​	可以思考这样一个问题：<code>for k in range(0, tl.cdiv(K, BLOCK_SIZE_K))</code>：为什么这个计算不并行呢？</p>
 <p>​	这个循环是我们求每一块内的数据结果的时候，对 K 维度进行分块，我们最终的结果是要<strong>遍历整个 K 维度累加数据，才能把最终结果给正确算出来的</strong>，在累加的过程中，多个线程块之间容易出现竞争冒险的问题，因此使用顺序执行而非并行执行</p>
