@@ -1,0 +1,621 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/w.png">
+  <link rel="icon" href="/img/w.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="并行组织线程 ​  使用块和线程建立矩阵索引 ​	为了简便起见，我们先只从二维线程块进行介绍而不是使用三维 ​	线程模型前面文章中已经有个大概的介绍，但是下图可以非常形象的反应线程模型，不过注意硬件实际的执行和存储不是按照图中的模型来的：  ​	这里 (ix,iy)(ix,iy)(ix,iy) 就是整个线程模型中任意一个线程的索引，或者叫做全局地址，局部地址就是 (threadIdx.x,thr">
+<meta property="og:type" content="article">
+<meta property="og:title" content="thread_parallel">
+<meta property="og:url" content="http://example.com/2024/10/14/learning/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/thread-parallel/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="并行组织线程 ​  使用块和线程建立矩阵索引 ​	为了简便起见，我们先只从二维线程块进行介绍而不是使用三维 ​	线程模型前面文章中已经有个大概的介绍，但是下图可以非常形象的反应线程模型，不过注意硬件实际的执行和存储不是按照图中的模型来的：  ​	这里 (ix,iy)(ix,iy)(ix,iy) 就是整个线程模型中任意一个线程的索引，或者叫做全局地址，局部地址就是 (threadIdx.x,thr">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2024/10/14/learning/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/thread-parallel/cuda_thread.png">
+<meta property="og:image" content="http://example.com/2024/10/14/learning/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/thread-parallel/memory.png">
+<meta property="article:published_time" content="2024-10-14T08:35:26.000Z">
+<meta property="article:modified_time" content="2024-10-14T13:12:44.504Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2024/10/14/learning/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/thread-parallel/cuda_thread.png">
+  
+  
+  
+  <title>thread_parallel - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.6","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/katex@0.11.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Wataの锟斤拷</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="thread_parallel"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-10-14 16:35" pubdate>
+          2024年10月14日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          597 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          6 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">thread_parallel</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="并行组织线程"><a class="markdownIt-Anchor" href="#并行组织线程"></a> 并行组织线程</h1>
+<p>​</p>
+<h2 id="使用块和线程建立矩阵索引"><a class="markdownIt-Anchor" href="#使用块和线程建立矩阵索引"></a> 使用块和线程建立矩阵索引</h2>
+<p>​	为了简便起见，我们先只从二维线程块进行介绍而不是使用三维</p>
+<p>​	线程模型前面文章中已经有个大概的介绍，但是下图可以非常形象的反应线程模型，不过注意硬件实际的执行和存储不是按照图中的模型来的：</p>
+<p><img src="/2024/10/14/learning/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/thread-parallel/cuda_thread.png" srcset="/img/loading.gif" lazyload alt="thread"></p>
+<p>​	这里 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>i</mi><mi>x</mi><mo separator="true">,</mo><mi>i</mi><mi>y</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(ix,iy)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">i</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">i</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span></span></span></span> 就是整个线程模型中任意一个线程的索引，或者叫做<strong>全局地址</strong>，<strong>局部地址</strong>就是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>t</mi><mi>h</mi><mi>r</mi><mi>e</mi><mi>a</mi><mi>d</mi><mi>I</mi><mi>d</mi><mi>x</mi><mi mathvariant="normal">.</mi><mi>x</mi><mo separator="true">,</mo><mi>t</mi><mi>h</mi><mi>r</mi><mi>e</mi><mi>a</mi><mi>d</mi><mi>I</mi><mi>d</mi><mi>x</mi><mi mathvariant="normal">.</mi><mi>y</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(threadIdx.x,threadIdx.y)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">t</span><span class="mord mathnormal">h</span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">e</span><span class="mord mathnormal">a</span><span class="mord mathnormal">d</span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mord mathnormal">d</span><span class="mord mathnormal">x</span><span class="mord">.</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">t</span><span class="mord mathnormal">h</span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">e</span><span class="mord mathnormal">a</span><span class="mord mathnormal">d</span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mord mathnormal">d</span><span class="mord mathnormal">x</span><span class="mord">.</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span></span></span></span> 了：</p>
+<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>i</mi><mi>x</mi><mo>=</mo><mi>t</mi><mi>h</mi><mi>r</mi><mi>e</mi><mi>a</mi><mi>d</mi><mi>I</mi><mi>d</mi><mi>x</mi><mi mathvariant="normal">.</mi><mi>x</mi><mo>+</mo><mi>b</mi><mi>l</mi><mi>o</mi><mi>c</mi><mi>k</mi><mi>I</mi><mi>d</mi><mi>x</mi><mi mathvariant="normal">.</mi><mi>x</mi><mo>×</mo><mi>b</mi><mi>l</mi><mi>o</mi><mi>c</mi><mi>k</mi><mi>D</mi><mi>i</mi><mi>m</mi><mi mathvariant="normal">.</mi><mi>x</mi><mspace linebreak="newline"></mspace><mi>i</mi><mi>y</mi><mo>=</mo><mi>t</mi><mi>h</mi><mi>r</mi><mi>e</mi><mi>a</mi><mi>d</mi><mi>I</mi><mi>d</mi><mi>x</mi><mi mathvariant="normal">.</mi><mi>y</mi><mo>+</mo><mi>b</mi><mi>l</mi><mi>o</mi><mi>c</mi><mi>k</mi><mi>I</mi><mi>d</mi><mi>x</mi><mi mathvariant="normal">.</mi><mi>y</mi><mo>×</mo><mi>b</mi><mi>l</mi><mi>o</mi><mi>c</mi><mi>k</mi><mi>D</mi><mi>i</mi><mi>m</mi><mi mathvariant="normal">.</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">ix = threadIdx.x + blockIdx.x \times blockDim.x \\
+iy = threadIdx.y + blockIdx.y \times blockDim.y
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.65952em;vertical-align:0em;"></span><span class="mord mathnormal">i</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.77777em;vertical-align:-0.08333em;"></span><span class="mord mathnormal">t</span><span class="mord mathnormal">h</span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">e</span><span class="mord mathnormal">a</span><span class="mord mathnormal">d</span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mord mathnormal">d</span><span class="mord mathnormal">x</span><span class="mord">.</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.77777em;vertical-align:-0.08333em;"></span><span class="mord mathnormal">b</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal">c</span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mord mathnormal">d</span><span class="mord mathnormal">x</span><span class="mord">.</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal">b</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal">c</span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mord mathnormal">i</span><span class="mord mathnormal">m</span><span class="mord">.</span><span class="mord mathnormal">x</span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height:0.85396em;vertical-align:-0.19444em;"></span><span class="mord mathnormal">i</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal">t</span><span class="mord mathnormal">h</span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">e</span><span class="mord mathnormal">a</span><span class="mord mathnormal">d</span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mord mathnormal">d</span><span class="mord mathnormal">x</span><span class="mord">.</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal">b</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal">c</span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mord mathnormal">d</span><span class="mord mathnormal">x</span><span class="mord">.</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal">b</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal">c</span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mord mathnormal">i</span><span class="mord mathnormal">m</span><span class="mord">.</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span></span></span></span></span></p>
+<p>​	这样我们就得到了每个线程的唯一标号，并且在运行时 kernel 是可以访问这个标号的。前面讲过 CUDA 每一个线程执行相同的代码，也就是异构计算中说的多线程单指令，如果每个不同的线程执行同样的代码，又处理同一组数据，将会得到多个相同的结果，显然这是没意义的，为了让不同线程处理不同的数据，CUDA 常用的做法是让不同的线程对应不同的数据，也就是用线程的全局标号对应不同组的数据</p>
+<p>​	设备内存或者主机内存都是线性存在的，比如一个二维矩阵 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mn>8</mn><mo>×</mo><mn>6</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(8×6)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">8</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">6</span><span class="mclose">)</span></span></span></span>，存储在内存中是这样的：<br>
+<img src="/2024/10/14/learning/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/thread-parallel/memory.png" srcset="/img/loading.gif" lazyload alt="memory"></p>
+<p><font color="red" size="5"> 我们要做管理的就是：</font></p>
+<ul>
+<li>线程和块索引（来计算线程的全局索引）</li>
+<li>矩阵中给定点的坐标 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>i</mi><mi>x</mi><mo separator="true">,</mo><mi>i</mi><mi>y</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(ix,iy)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">i</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">i</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span></span></span></span></li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>i</mi><mi>x</mi><mo separator="true">,</mo><mi>i</mi><mi>y</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(ix,iy)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">i</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">i</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span></span></span></span> 对应的线性内存的位置</li>
+</ul>
+<p>​	线性位置的计算方法是：</p>
+<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>i</mi><mi>d</mi><mi>x</mi><mo>=</mo><mi>i</mi><mi>x</mi><mo>+</mo><mi>i</mi><mi>y</mi><mo>×</mo><mi>n</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">idx=ix+iy \times nx
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal">i</span><span class="mord mathnormal">d</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.74285em;vertical-align:-0.08333em;"></span><span class="mord mathnormal">i</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.85396em;vertical-align:-0.19444em;"></span><span class="mord mathnormal">i</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">n</span><span class="mord mathnormal">x</span></span></span></span></span></p>
+<p>​	我们上面已经计算出了线程的全局坐标，<strong>用线程的全局坐标对应矩阵的坐标</strong>，也就是说，线程的坐标 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>i</mi><mi>x</mi><mo separator="true">,</mo><mi>i</mi><mi>y</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(ix,iy)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">i</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">i</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span></span></span></span> 对应矩阵中 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>i</mi><mi>x</mi><mo separator="true">,</mo><mi>i</mi><mi>y</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(ix,iy)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">i</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">i</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span></span></span></span> 的元素，这样就形成了一一对应，不同的线程处理矩阵中不同的数据，例如，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mi>x</mi><mo>=</mo><mn>10</mn><mo separator="true">,</mo><mi>i</mi><mi>y</mi><mo>=</mo><mn>10</mn></mrow><annotation encoding="application/x-tex">ix=10,iy=10</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.65952em;vertical-align:0em;"></span><span class="mord mathnormal">i</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.85396em;vertical-align:-0.19444em;"></span><span class="mord">1</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">i</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord">0</span></span></span></span> 的线程去处理矩阵中 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mn>10</mn><mo separator="true">,</mo><mn>10</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(10,10)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">1</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">1</span><span class="mord">0</span><span class="mclose">)</span></span></span></span> 的数据，当然也可以设计别的对应模式，但是这种方法是最简单出错可能最低的</p>
+<h2 id="代码实现"><a class="markdownIt-Anchor" href="#代码实现"></a> 代码实现</h2>
+<p>​	代码中计算 block 和 dim 的过程就是在显示地指定 idx 和 坐标之间的一一对应关系</p>
+<ul>
+<li>想象一下，先对二维的矩阵先划分为 block 组成的矩阵，再对这个 block 组成的矩阵划分小 grid</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function">dim3 <span class="hljs-title">block_0</span><span class="hljs-params">(dimx, dimy)</span></span>;<br><span class="hljs-function">dim3 <span class="hljs-title">grid_0</span><span class="hljs-params">((nx - <span class="hljs-number">1</span>) / block_0.x + <span class="hljs-number">1</span>, (ny - <span class="hljs-number">1</span>) / block_0.y + <span class="hljs-number">1</span>)</span></span>;<br>    <br><span class="hljs-function">dim3 <span class="hljs-title">block_1</span><span class="hljs-params">(dimx)</span></span>;<br><span class="hljs-function">dim3 <span class="hljs-title">grid_1</span><span class="hljs-params">((nxy - <span class="hljs-number">1</span>) / block_1.x + <span class="hljs-number">1</span>)</span></span>;<br><br><span class="hljs-function">dim3 <span class="hljs-title">block_2</span><span class="hljs-params">(dimx)</span></span>;<br><span class="hljs-function">dim3 <span class="hljs-title">grid_2</span><span class="hljs-params">((nx - <span class="hljs-number">1</span>) / block_2.x + <span class="hljs-number">1</span>, ny)</span></span>;<br></code></pre></td></tr></table></figure>
+<p>完整代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cuda_runtime.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stdlib.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;sys/time.h&gt;</span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> CHECK(call) \</span><br><span class="hljs-meta">do &#123; \</span><br><span class="hljs-meta">    cudaError_t err = call; \</span><br><span class="hljs-meta">    <span class="hljs-keyword">if</span> (err != cudaSuccess) &#123; \</span><br><span class="hljs-meta">        fprintf(stderr, <span class="hljs-string">&quot;CUDA error: %s in %s at line %d\n&quot;</span>, cudaGetErrorString(err), __FILE__, __LINE__); \</span><br><span class="hljs-meta">        exit(EXIT_FAILURE); \</span><br><span class="hljs-meta">    &#125; \</span><br><span class="hljs-meta">&#125; while (0)</span><br><br><span class="hljs-function">__global__ <span class="hljs-type">void</span> <span class="hljs-title">sumMatrix</span><span class="hljs-params">(<span class="hljs-type">float</span> *MatA, <span class="hljs-type">float</span> *MatB, <span class="hljs-type">float</span> *MatC, <span class="hljs-type">int</span> nx, <span class="hljs-type">int</span> ny)</span> </span>&#123;<br>    <span class="hljs-type">int</span> ix = threadIdx.x + blockDim.x * blockIdx.x;<br>    <span class="hljs-type">int</span> iy = threadIdx.y + blockDim.y * blockIdx.y;<br>    <span class="hljs-type">int</span> idx = ix + iy * ny;<br>    <span class="hljs-keyword">if</span> (ix &lt; nx &amp;&amp; iy &lt; ny) &#123;<br>        MatC[idx] = MatA[idx] + MatB[idx];<br>    &#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">initialData</span><span class="hljs-params">(<span class="hljs-type">float</span> *ip, <span class="hljs-type">int</span> size)</span> </span>&#123;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; size; i++) &#123;<br>        ip[i] = (<span class="hljs-type">float</span>)(<span class="hljs-built_in">rand</span>() &amp; <span class="hljs-number">0xFF</span>) / <span class="hljs-number">10.0f</span>;<br>    &#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">checkResult</span><span class="hljs-params">(<span class="hljs-type">float</span> *hostRef, <span class="hljs-type">float</span> *gpuRef, <span class="hljs-type">const</span> <span class="hljs-type">int</span> N)</span> </span>&#123;<br>    <span class="hljs-type">double</span> epsilon = <span class="hljs-number">1.0E-8</span>;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; N; i++) &#123;<br>        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">abs</span>(hostRef[i] - gpuRef[i]) &gt; epsilon) &#123;<br>            <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Arrays do not match!\n&quot;</span>);<br>            <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;host %f gpu %f at current %d\n&quot;</span>, hostRef[i], gpuRef[i], i);<br>            <span class="hljs-keyword">return</span>;<br>        &#125;<br>    &#125;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Arrays match.\n&quot;</span>);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">double</span> <span class="hljs-title">cpuSecond</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-keyword">struct</span> <span class="hljs-title class_">timeval</span> tp;<br>    <span class="hljs-built_in">gettimeofday</span>(&amp;tp, <span class="hljs-literal">NULL</span>);<br>    <span class="hljs-keyword">return</span> ((<span class="hljs-type">double</span>)tp.tv_sec + (<span class="hljs-type">double</span>)tp.tv_usec * <span class="hljs-number">1.e-6</span>);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">initDevice</span><span class="hljs-params">(<span class="hljs-type">int</span> devNum)</span> </span>&#123;<br>    <span class="hljs-type">int</span> dev = devNum;<br>    cudaDeviceProp deviceProp;<br>    <span class="hljs-built_in">CHECK</span>(<span class="hljs-built_in">cudaGetDeviceProperties</span>(&amp;deviceProp, dev));<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Using Device %d: %s\n&quot;</span>, dev, deviceProp.name);<br>    <span class="hljs-built_in">CHECK</span>(<span class="hljs-built_in">cudaSetDevice</span>(dev));<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">sumMatrixOnCPU</span><span class="hljs-params">(<span class="hljs-type">float</span> *A, <span class="hljs-type">float</span> *B, <span class="hljs-type">float</span> *C, <span class="hljs-type">int</span> nx, <span class="hljs-type">int</span> ny)</span> </span>&#123;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; nx * ny; i++) &#123;<br>        C[i] = A[i] + B[i];<br>    &#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-built_in">initDevice</span>(<span class="hljs-number">0</span>);<br>    <span class="hljs-type">int</span> nx = <span class="hljs-number">1</span> &lt;&lt; <span class="hljs-number">12</span>;<br>    <span class="hljs-type">int</span> ny = <span class="hljs-number">1</span> &lt;&lt; <span class="hljs-number">12</span>;<br>    <span class="hljs-type">int</span> nxy = nx * ny;<br>    <span class="hljs-type">int</span> nBytes = nxy * <span class="hljs-built_in">sizeof</span>(<span class="hljs-type">float</span>);<br><br>    <span class="hljs-comment">// Malloc</span><br>    <span class="hljs-type">float</span> *A_host = (<span class="hljs-type">float</span> *)<span class="hljs-built_in">malloc</span>(nBytes);<br>    <span class="hljs-type">float</span> *B_host = (<span class="hljs-type">float</span> *)<span class="hljs-built_in">malloc</span>(nBytes);<br>    <span class="hljs-type">float</span> *C_host = (<span class="hljs-type">float</span> *)<span class="hljs-built_in">malloc</span>(nBytes);<br>    <span class="hljs-type">float</span> *C_from_gpu = (<span class="hljs-type">float</span> *)<span class="hljs-built_in">malloc</span>(nBytes);<br>    <span class="hljs-built_in">initialData</span>(A_host, nxy);<br>    <span class="hljs-built_in">initialData</span>(B_host, nxy);<br><br>    <span class="hljs-comment">// cudaMalloc</span><br>    <span class="hljs-type">float</span> *A_dev = <span class="hljs-literal">NULL</span>;<br>    <span class="hljs-type">float</span> *B_dev = <span class="hljs-literal">NULL</span>;<br>    <span class="hljs-type">float</span> *C_dev = <span class="hljs-literal">NULL</span>;<br>    <span class="hljs-built_in">CHECK</span>(<span class="hljs-built_in">cudaMalloc</span>((<span class="hljs-type">void</span> **)&amp;A_dev, nBytes));<br>    <span class="hljs-built_in">CHECK</span>(<span class="hljs-built_in">cudaMalloc</span>((<span class="hljs-type">void</span> **)&amp;B_dev, nBytes));<br>    <span class="hljs-built_in">CHECK</span>(<span class="hljs-built_in">cudaMalloc</span>((<span class="hljs-type">void</span> **)&amp;C_dev, nBytes));<br><br>    <span class="hljs-built_in">CHECK</span>(<span class="hljs-built_in">cudaMemcpy</span>(A_dev, A_host, nBytes, cudaMemcpyHostToDevice));<br>    <span class="hljs-built_in">CHECK</span>(<span class="hljs-built_in">cudaMemcpy</span>(B_dev, B_host, nBytes, cudaMemcpyHostToDevice));<br><br>    <span class="hljs-type">int</span> dimx = <span class="hljs-number">32</span>;<br>    <span class="hljs-type">int</span> dimy = <span class="hljs-number">32</span>;<br><br>    <span class="hljs-comment">// CPU computation</span><br>    <span class="hljs-type">double</span> iStart = <span class="hljs-built_in">cpuSecond</span>();<br>    <span class="hljs-built_in">sumMatrixOnCPU</span>(A_host, B_host, C_host, nx, ny);<br>    <span class="hljs-type">double</span> iElaps = <span class="hljs-built_in">cpuSecond</span>() - iStart;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;CPU Execution Time elapsed %f sec\n&quot;</span>, iElaps);<br><br><br>    <span class="hljs-comment">// 2d block and 2d grid</span><br>    <span class="hljs-function">dim3 <span class="hljs-title">block_0</span><span class="hljs-params">(dimx, dimy)</span></span>;<br>    <span class="hljs-function">dim3 <span class="hljs-title">grid_0</span><span class="hljs-params">((nx - <span class="hljs-number">1</span>) / block_0.x + <span class="hljs-number">1</span>, (ny - <span class="hljs-number">1</span>) / block_0.y + <span class="hljs-number">1</span>)</span></span>;<br>    iStart = <span class="hljs-built_in">cpuSecond</span>();<br>    sumMatrix&lt;&lt;&lt;grid_0, block_0&gt;&gt;&gt;(A_dev, B_dev, C_dev, nx, ny);<br>    <span class="hljs-built_in">CHECK</span>(<span class="hljs-built_in">cudaDeviceSynchronize</span>());<br>    iElaps = <span class="hljs-built_in">cpuSecond</span>() - iStart;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;GPU Execution configuration&lt;&lt;&lt;(%d,%d),(%d,%d)&gt;&gt;&gt; Time elapsed %f sec\n&quot;</span>,<br>           grid_0.x, grid_0.y, block_0.x, block_0.y, iElaps);<br>    <span class="hljs-built_in">CHECK</span>(<span class="hljs-built_in">cudaMemcpy</span>(C_from_gpu, C_dev, nBytes, cudaMemcpyDeviceToHost));<br>    <span class="hljs-built_in">checkResult</span>(C_host, C_from_gpu, nxy);<br><br>    <span class="hljs-comment">// 1d block and 1d grid</span><br>    dimx = <span class="hljs-number">32</span>;<br>    <span class="hljs-function">dim3 <span class="hljs-title">block_1</span><span class="hljs-params">(dimx)</span></span>;<br>    <span class="hljs-function">dim3 <span class="hljs-title">grid_1</span><span class="hljs-params">((nxy - <span class="hljs-number">1</span>) / block_1.x + <span class="hljs-number">1</span>)</span></span>;<br>    iStart = <span class="hljs-built_in">cpuSecond</span>();<br>    sumMatrix&lt;&lt;&lt;grid_1, block_1&gt;&gt;&gt;(A_dev, B_dev, C_dev, nx * ny, <span class="hljs-number">1</span>);<br>    <span class="hljs-built_in">CHECK</span>(<span class="hljs-built_in">cudaDeviceSynchronize</span>());<br>    iElaps = <span class="hljs-built_in">cpuSecond</span>() - iStart;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;GPU Execution configuration&lt;&lt;&lt;(%d,%d),(%d,%d)&gt;&gt;&gt; Time elapsed %f sec\n&quot;</span>,<br>           grid_1.x, grid_1.y, block_1.x, block_1.y, iElaps);<br>    <span class="hljs-built_in">CHECK</span>(<span class="hljs-built_in">cudaMemcpy</span>(C_from_gpu, C_dev, nBytes, cudaMemcpyDeviceToHost));<br>    <span class="hljs-built_in">checkResult</span>(C_host, C_from_gpu, nxy);<br><br>    <span class="hljs-comment">// 2d block and 1d grid</span><br>    dimx = <span class="hljs-number">32</span>;<br>    <span class="hljs-function">dim3 <span class="hljs-title">block_2</span><span class="hljs-params">(dimx)</span></span>;<br>    <span class="hljs-function">dim3 <span class="hljs-title">grid_2</span><span class="hljs-params">((nx - <span class="hljs-number">1</span>) / block_2.x + <span class="hljs-number">1</span>, ny)</span></span>;<br>    iStart = <span class="hljs-built_in">cpuSecond</span>();<br>    sumMatrix&lt;&lt;&lt;grid_2, block_2&gt;&gt;&gt;(A_dev, B_dev, C_dev, nx, ny);<br>    <span class="hljs-built_in">CHECK</span>(<span class="hljs-built_in">cudaDeviceSynchronize</span>());<br>    iElaps = <span class="hljs-built_in">cpuSecond</span>() - iStart;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;GPU Execution configuration&lt;&lt;&lt;(%d,%d),(%d,%d)&gt;&gt;&gt; Time elapsed %f sec\n&quot;</span>,<br>           grid_2.x, grid_2.y, block_2.x, block_2.y, iElaps);<br>    <span class="hljs-built_in">CHECK</span>(<span class="hljs-built_in">cudaMemcpy</span>(C_from_gpu, C_dev, nBytes, cudaMemcpyDeviceToHost));<br>    <span class="hljs-built_in">checkResult</span>(C_host, C_from_gpu, nxy);<br><br>    <br><br>    <span class="hljs-built_in">cudaFree</span>(A_dev);<br>    <span class="hljs-built_in">cudaFree</span>(B_dev);<br>    <span class="hljs-built_in">cudaFree</span>(C_dev);<br>    <span class="hljs-built_in">free</span>(A_host);<br>    <span class="hljs-built_in">free</span>(B_host);<br>    <span class="hljs-built_in">free</span>(C_host);<br>    <span class="hljs-built_in">free</span>(C_from_gpu);<br>    <span class="hljs-built_in">cudaDeviceReset</span>();<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>在 3090 显卡下测试结果如下：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">线程配置</th>
+<th style="text-align:center">执行时间</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">CPU单线程</td>
+<td style="text-align:center">0.119901</td>
+</tr>
+<tr>
+<td style="text-align:center">(128,128),(32,32)</td>
+<td style="text-align:center">0.000307</td>
+</tr>
+<tr>
+<td style="text-align:center">(524288,1),(32,1)</td>
+<td style="text-align:center">0.000401</td>
+</tr>
+<tr>
+<td style="text-align:center">(128,4096),(32,1)</td>
+<td style="text-align:center">0.000422</td>
+</tr>
+</tbody>
+</table>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+			
+			
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/10/14/learning/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/excute-model/" title="excute_model">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">excute_model</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/10/13/Pytorch_cuda_ext/" title="Pytorch_cuda拓展(1)">
+                        <span class="hidden-mobile">Pytorch_cuda拓展(1)</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <i class="iconfont icon-love"></i> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

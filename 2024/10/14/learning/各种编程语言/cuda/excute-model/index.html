@@ -16,21 +16,24 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="cuda程序兼容性问题 先了解cuda程序编译的流程：先从C&#x2F;C++代码编译为PTX，再从PTX编译为cudin代码   C&#x2F;C++源码转化为PTX这一步骤与硬件无关   PTX指令转化为二进制cubin代码与具体的GPU架构有关    指定虚拟架构计算能力  C&#x2F;C++源码编译为PTX时，可以指定虚拟架构的计算能力，用于确定代码中可以使用的CUDA功能 编译指令（指定虚拟架构计算能力）：  1">
+    <meta name="description" content="CUDA编程的组件与逻辑 ​	下图从逻辑角度和硬件角度描述了CUDA编程模型对应的组件。  ​	SM 中共享内存，和寄存器是关键的资源，线程块中线程通过共享内存和寄存器相互通信协调。寄存器和共享内存的分配可以严重影响性能！ ​	因为SM有限，虽然我们的编程模型层面看所有线程都是并行执行的，但是在微观上看，所有线程块也是分批次的在物理层面的机器上执行，线程块里不同的线程可能进度都不一样，但是同一个">
 <meta property="og:type" content="article">
-<meta property="og:title" content="cuda-1(兼容性)">
-<meta property="og:url" content="http://example.com/2024/04/19/learning/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/1_compile/index.html">
+<meta property="og:title" content="excute_model">
+<meta property="og:url" content="http://example.com/2024/10/14/learning/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/excute-model/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="cuda程序兼容性问题 先了解cuda程序编译的流程：先从C&#x2F;C++代码编译为PTX，再从PTX编译为cudin代码   C&#x2F;C++源码转化为PTX这一步骤与硬件无关   PTX指令转化为二进制cubin代码与具体的GPU架构有关    指定虚拟架构计算能力  C&#x2F;C++源码编译为PTX时，可以指定虚拟架构的计算能力，用于确定代码中可以使用的CUDA功能 编译指令（指定虚拟架构计算能力）：  1">
+<meta property="og:description" content="CUDA编程的组件与逻辑 ​	下图从逻辑角度和硬件角度描述了CUDA编程模型对应的组件。  ​	SM 中共享内存，和寄存器是关键的资源，线程块中线程通过共享内存和寄存器相互通信协调。寄存器和共享内存的分配可以严重影响性能！ ​	因为SM有限，虽然我们的编程模型层面看所有线程都是并行执行的，但是在微观上看，所有线程块也是分批次的在物理层面的机器上执行，线程块里不同的线程可能进度都不一样，但是同一个">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2024-04-19T12:26:15.000Z">
-<meta property="article:modified_time" content="2024-10-14T12:59:34.166Z">
+<meta property="og:image" content="http://example.com/2024/10/14/learning/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/excute-model/3_2.png">
+<meta property="og:image" content="http://example.com/2024/10/14/learning/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/excute-model/fermi_sm.png">
+<meta property="article:published_time" content="2024-10-14T13:15:51.000Z">
+<meta property="article:modified_time" content="2024-10-14T13:25:35.500Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2024/10/14/learning/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/excute-model/3_2.png">
   
   
   
-  <title>cuda-1(兼容性) - Hexo</title>
+  <title>excute_model - Hexo</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -188,7 +191,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="cuda-1(兼容性)"></span>
+            <span id="subtitle" data-typed-text="excute_model"></span>
           
         </div>
 
@@ -199,8 +202,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-04-19 20:26" pubdate>
-          2024年4月19日 晚上
+        <time datetime="2024-10-14 21:15" pubdate>
+          2024年10月14日 晚上
         </time>
       </span>
     
@@ -211,7 +214,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          504 字
+          850 字
         
       </span>
     
@@ -222,7 +225,7 @@
         
         
         
-          6 分钟
+          9 分钟
         
       </span>
     
@@ -259,66 +262,42 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">cuda-1(兼容性)</h1>
+            <h1 id="seo-header">excute_model</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="cuda程序兼容性问题"><a class="markdownIt-Anchor" href="#cuda程序兼容性问题"></a> cuda程序兼容性问题</h1>
-<p>先了解cuda程序编译的流程：先从C/C++代码编译为PTX，再从PTX编译为cudin代码</p>
+                <h2 id="cuda编程的组件与逻辑"><a class="markdownIt-Anchor" href="#cuda编程的组件与逻辑"></a> CUDA编程的组件与逻辑</h2>
+<p>​	下图从逻辑角度和硬件角度描述了CUDA编程模型对应的组件。</p>
+<p><img src="/2024/10/14/learning/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/excute-model/3_2.png" srcset="/img/loading.gif" lazyload alt="correspond"></p>
+<p>​	SM 中共享内存，和寄存器是关键的资源，线程块中线程通过共享内存和寄存器相互通信协调。寄存器和共享内存的分配可以严重影响性能！</p>
+<p>​	因为SM有限，虽然我们的编程模型层面看所有线程都是并行执行的，但是在微观上看，所有线程块也是分批次的在物理层面的机器上执行，线程块里不同的线程可能进度都不一样，但是同一个线程束内的线程拥有相同的进度。<br>
+​	并行就会引起竞争，多线程以未定义的顺序访问同一个数据，就导致了不可预测的行为，CUDA只提供了一种块内同步的方式，块之间没办法同步！<br>
+​	同一个 SM上可以有不止一个常驻的线程束，有些在执行，有些在等待，他们之间状态的转换是不需要开销的。</p>
+<h2 id="sm-架构"><a class="markdownIt-Anchor" href="#sm-架构"></a> SM 架构</h2>
+<p>​	GPU 架构是围绕一个流式多处理器（SM）的扩展阵列搭建的。通过复制这种结构来实现GPU的硬件并行。<br>
+<img src="/2024/10/14/learning/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/excute-model/fermi_sm.png" srcset="/img/loading.gif" lazyload alt="sm"></p>
+<p>上图包括关键组件：</p>
 <ul>
-<li>
-<p><strong>C/C++源码转化为PTX这一步骤与硬件无关</strong></p>
-</li>
-<li>
-<p><strong>PTX指令转化为二进制cubin代码与具体的GPU架构有关</strong></p>
-</li>
+<li>CUDA核心</li>
+<li>共享内存/一级缓存（L1 cache 也称 shared memory）</li>
+<li>寄存器文件</li>
+<li>加载/存储单元</li>
+<li>特殊功能单元</li>
+<li>线程束调度器</li>
 </ul>
-<h2 id="指定虚拟架构计算能力"><a class="markdownIt-Anchor" href="#指定虚拟架构计算能力"></a> 指定虚拟架构计算能力</h2>
-<ul>
-<li>C/C++源码编译为PTX时，可以指定虚拟架构的计算能力，用于确定代码中可以使用的CUDA功能</li>
-<li>编译指令（指定虚拟架构计算能力）：</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">-arch-compute_XY<br></code></pre></td></tr></table></figure>
-<p>​	<code>XY</code>：第一个数字<code>X</code>代表计算能力的主版本号，第二个数字<code>Y</code>代表计算能力的次版本号</p>
-<ul>
-<li><strong>PTX的指令只能在更高的计算能力的GPU使用</strong></li>
-</ul>
-<p>例如假设我们cuda显卡的计算能力为6.2：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">test.cu -o test61 -arch-compute_61<br>test.cu -o test61 -arch-compute_70<br></code></pre></td></tr></table></figure>
-<p>这样·生成的<code>test61</code>文件是可以正常执行的，但是<code>test70</code>就不能正常运行</p>
-<p>​	如果能知道显卡的真实计算能力，那么最好就设置显卡的虚拟机算能力为真实计算能力</p>
-<h2 id="指定真实架构的计算能力"><a class="markdownIt-Anchor" href="#指定真实架构的计算能力"></a> 指定真实架构的计算能力</h2>
-<ul>
-<li>编译指令（指定真实架构计算能力）：</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">-code=sm_XY<br></code></pre></td></tr></table></figure>
-<p>​	sm代表流式多处理器架构（Streaming Multiprocessor, SM），<code>XY</code>的含义同上</p>
-<blockquote>
-<p>注意：</p>
+<p>​	GPU 中每个 SM 都能支持数百个线程并发执行，每个 GPU 通常有多个 SM，当一个核函数的网格被启动的时候，多个 block 会被同时分配给可用的 SM 上执行</p>
+<p>​	<font color="red"><strong>注意:</strong> 当一个block被分配给一个 SM 后，他就只能在这个 SM 上执行了，不可能重新分配到其他 SM 上了，多个线程块可以被分配到同一个 SM 上</font></p>
+<p>​	在SM上同一个块内的多个线程进行线程级别并行，而同一线程内，指令利用指令级并行将单个线程处理成流水线。</p>
+<h3 id="simd-vs-simt"><a class="markdownIt-Anchor" href="#simd-vs-simt"></a> SIMD vs SIMT</h3>
+<p>​	单指令多数据的执行属于向量机，比如我们有四个数字要加上四个数字，那么我们可以用这种单指令多数据的指令来一次完成本来要做四次的运算。这种机制的问题就是过于死板，不允许每个分支有不同的操作，所有分支必须同时执行相同的指令，必须执行没有例外<br>
+​	相比之下单指令多线程 SIMT 就更加灵活了，虽然两者都是将相同指令广播给多个执行单元，但是SIMT的某些线程可以选择不执行，也就是说同一时刻所有线程被分配给相同的指令，SIMD规定所有人必须执行，而SIMT则规定有些人可以根据需要不执行，这样 SIMT 就保证了线程级别的并行，而 SIMD 更像是指令级别的并行。SIMT 包括以下 SIMD 不具有的关键特性：</p>
 <ol>
-<li>对于二进制cubin代码，大版本之间是不兼容的！</li>
-<li>指定真实架构计算能力必须大于虚拟架构计算能力</li>
-<li>指定真实架构计算能力的时候必须指定虚拟架构的计算能力</li>
+<li>每个线程都有自己的指令地址计数器</li>
+<li>每个线程都有自己的寄存器状态</li>
+<li>每个线程可以有一个独立的执行路径</li>
 </ol>
-</blockquote>
-<h2 id="指定多gpu版本编译"><a class="markdownIt-Anchor" href="#指定多gpu版本编译"></a> 指定多GPU版本编译</h2>
-<p>​	为了能够使可执行文件能够在多GPU上运行，我们可以同时指定多种GPU版本进行编译</p>
-<p>编译选项<code>-gencode arch=computeXY-code=sm_XY</code><br>
-例如：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell">-gencode=arch=compute_35,code=sm_35<br>-gencode=arch=compute_50,code=sm_50<br>-gencode=arch=compute_60,code=sm_60<br>-gencode=arch=compute_70,code=sm_70<br></code></pre></td></tr></table></figure>
-<p>开普勒架构麦克斯韦架构帕斯卡架构伏特架构编译出的可执行文件包含4个二进制版本，生成的可执行文件称为胖二进制文件（fatbinary)</p>
-<blockquote>
-<p>注意：</p>
-<ol>
-<li>执行上述指令必须CUDA版本支持7.0计算能力，否则会报错</li>
-<li>过多指定计算能力，会增加编译时间和可执行文件的大小</li>
-</ol>
-</blockquote>
-<h2 id="nvcc即时编译"><a class="markdownIt-Anchor" href="#nvcc即时编译"></a> nvcc即时编译</h2>
-<p>不管</p>
-<h2 id="设置-device"><a class="markdownIt-Anchor" href="#设置-device"></a> 设置 device</h2>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">initDevice</span><span class="hljs-params">(<span class="hljs-type">int</span> devNum)</span> </span>&#123;<br>    <span class="hljs-type">int</span> dev = devNum;<br>    cudaDeviceProp deviceProp;<br>    <span class="hljs-built_in">CHECK</span>(<span class="hljs-built_in">cudaGetDeviceProperties</span>(&amp;deviceProp, dev));<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Using Device %d: %s\n&quot;</span>, dev, deviceProp.name);<br>    <span class="hljs-built_in">CHECK</span>(<span class="hljs-built_in">cudaSetDevice</span>(dev));<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>而上面这三个特性在编程模型可用的方式就是给每个线程一个唯一的标号 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>b</mi><mi>l</mi><mi>o</mi><mi>c</mi><mi>k</mi><mi>I</mi><mi>d</mi><mi>x</mi><mo separator="true">,</mo><mi>t</mi><mi>h</mi><mi>r</mi><mi>e</mi><mi>a</mi><mi>d</mi><mi>I</mi><mi>d</mi><mi>x</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(blockIdx,threadIdx)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">b</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal">c</span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mord mathnormal">d</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">t</span><span class="mord mathnormal">h</span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">e</span><span class="mord mathnormal">a</span><span class="mord mathnormal">d</span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mord mathnormal">d</span><span class="mord mathnormal">x</span><span class="mclose">)</span></span></span></span>，并且这三个特性保证了各线程之间的独立</p>
 
                 
               </div>
@@ -333,18 +312,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/04/19/learning/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/2_frame/" title="cuda-2-程序框架">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">cuda-2-程序框架</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/04/13/learning/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Java/Java%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" title="Java面向对象细碎知识">
-                        <span class="hidden-mobile">Java面向对象细碎知识</span>
+                      <a href="/2024/10/14/learning/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/thread-parallel/" title="thread_parallel">
+                        <span class="hidden-mobile">thread_parallel</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

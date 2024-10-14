@@ -216,6 +216,72 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
+        <a href="/2024/10/14/learning/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/excute-model/" target="_self">
+          excute_model
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/10/14/learning/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/excute-model/" target="_self">
+        <div>
+          CUDA编程的组件与逻辑 ​	下图从逻辑角度和硬件角度描述了CUDA编程模型对应的组件。  ​	SM 中共享内存，和寄存器是关键的资源，线程块中线程通过共享内存和寄存器相互通信协调。寄存器和共享内存的分配可以严重影响性能！ ​	因为SM有限，虽然我们的编程模型层面看所有线程都是并行执行的，但是在微观上看，所有线程块也是分批次的在物理层面的机器上执行，线程块里不同的线程可能进度都不一样，但是同一个
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-10-14 21:15" pubdate>
+              2024-10-14
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/10/14/learning/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/thread-parallel/" target="_self">
+          thread_parallel
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/10/14/learning/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/thread-parallel/" target="_self">
+        <div>
+          并行组织线程 ​  使用块和线程建立矩阵索引 ​	为了简便起见，我们先只从二维线程块进行介绍而不是使用三维 ​	线程模型前面文章中已经有个大概的介绍，但是下图可以非常形象的反应线程模型，不过注意硬件实际的执行和存储不是按照图中的模型来的：  ​	这里 (ix,iy)(ix,iy)(ix,iy) 就是整个线程模型中任意一个线程的索引，或者叫做全局地址，局部地址就是 (threadIdx.x,thr
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-10-14 16:35" pubdate>
+              2024-10-14
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
         <a href="/2024/10/13/Pytorch_cuda_ext/" target="_self">
           Pytorch_cuda拓展(1)
         </a>
@@ -267,39 +333,6 @@
             <i class="iconfont icon-date"></i>
             <time datetime="2024-10-12 16:09" pubdate>
               2024-10-12
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/10/11/triton-MM/" target="_self">
-          triton-MM
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/10/11/triton-MM/" target="_self">
-        <div>
-          triton Matrix Multiplication  triton入门：Matrix Multiplication ​	直接从 Triton 的官方教程入手。对 MM  做优化, 不论用的是 Triton, 还是 CUDA 目标都是一样的，一句话概括：计算一般是没办法省的, 主要是优化内存的使用, 尽可能的用高速但是比较小的 shared memory  驱动程序（Driver Progr
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-10-11 19:23" pubdate>
-              2024-10-11
             </time>
           </div>
         
@@ -498,39 +531,6 @@
             <i class="iconfont icon-date"></i>
             <time datetime="2024-09-29 12:53" pubdate>
               2024-09-29
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/09/24/setups/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%98%BE%E5%AD%98%E4%B8%8E%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" target="_self">
-          多线程显存与内存管理
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/09/24/setups/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%98%BE%E5%AD%98%E4%B8%8E%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" target="_self">
-        <div>
-          多线程显存与内存管理  问题背景： ​	需求是要制作一个文本模态和语音模态对齐的数据集，我需要做的仅仅是选一个效果很好的 TTS 模型将文本转语音就行了，我们需要从 1000k 条 conversation 里面挑选 40k 条数据进行转换（格式类似于 llava_instruct_150k.json 文件，是 human 和 gpt 文本对话的格式），由于单个模型一条一条地转化太耗时了，而且模
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-09-24 15:00" pubdate>
-              2024-09-24
             </time>
           </div>
         
