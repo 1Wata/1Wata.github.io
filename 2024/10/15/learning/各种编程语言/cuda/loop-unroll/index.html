@@ -1,0 +1,617 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/w.png">
+  <link rel="icon" href="/img/w.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="循环展开（Loop Unrolling）  循环展开的概念 ​	GPU 编程偏向于使用确定的代码，GPU没有分支预测能力，所有每一个分支都是要执行的，所以在内核里尽量别写分支，分支包括什么？包括 if 还有 for 之类的循环语句，例如： 123for (itn i&#x3D;0;i&lt;tid;i++) &#123;    &#x2F;&#x2F; to do something&#125; ​	如果上面这段代码出现在内">
+<meta property="og:type" content="article">
+<meta property="og:title" content="loop_unroll">
+<meta property="og:url" content="http://example.com/2024/10/15/learning/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/loop-unroll/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="循环展开（Loop Unrolling）  循环展开的概念 ​	GPU 编程偏向于使用确定的代码，GPU没有分支预测能力，所有每一个分支都是要执行的，所以在内核里尽量别写分支，分支包括什么？包括 if 还有 for 之类的循环语句，例如： 123for (itn i&#x3D;0;i&lt;tid;i++) &#123;    &#x2F;&#x2F; to do something&#125; ​	如果上面这段代码出现在内">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2024/10/15/learning/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/loop-unroll/1.png">
+<meta property="article:published_time" content="2024-10-15T11:01:01.000Z">
+<meta property="article:modified_time" content="2024-10-15T11:49:29.448Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2024/10/15/learning/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/loop-unroll/1.png">
+  
+  
+  
+  <title>loop_unroll - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.6","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/katex@0.11.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Wataの锟斤拷</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="loop_unroll"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-10-15 19:01" pubdate>
+          2024年10月15日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          19 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">loop_unroll</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="循环展开loop-unrolling"><a class="markdownIt-Anchor" href="#循环展开loop-unrolling"></a> 循环展开（Loop Unrolling）</h1>
+<h2 id="循环展开的概念"><a class="markdownIt-Anchor" href="#循环展开的概念"></a> 循环展开的概念</h2>
+<p>​	GPU 编程偏向于使用确定的代码，GPU没有分支预测能力，所有每一个分支都是要执行的，所以在内核里尽量别写分支，分支包括什么？包括 <code>if</code> 还有 <code>for</code> 之类的循环语句，例如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">for</span> (itn i=<span class="hljs-number">0</span>;i&lt;tid;i++) &#123;<br>    <span class="hljs-comment">// to do something</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>​	如果上面这段代码出现在内核中，就会有分支，因为一个线程束第一个线程和最后一个线程 <code>tid</code> 相差32（如果线程束大小是32的话） 那么每个线程执行的时候，<code>for</code> 终止时完成的计算量都不同，这就有线程要等待，这也就产生了分支</p>
+<blockquote>
+<p>循环展开是一个尝试通过减少分支出现的频率和循环维护指令来优化循环的技术<br>
+上面这句属于书上的官方说法，我们来看看例子，不止并行算法可以展开，传统串行代码展开后效率也能一定程度的提高，因为省去了判断和分支预测失败所带来的迟滞</p>
+</blockquote>
+<p>循环控制部分的开销可以分为 3 类：</p>
+<ul>
+<li>一次性的开销，例如 <code>i=0</code> 初始化；</li>
+<li>每次循环的控制开销，例如 <code>i&lt;n</code> 判断；</li>
+<li>每次循环后的操作，例如 <code>i++</code> 递增。</li>
+</ul>
+<p>因此，在循环体之外，这些循环控制的开销很多时候不能无视，因为它们也将在 SM 上执行，占用计算资源。能否将这些额外的控制占用的成本降低到最小，则是取得性能提升的一个关键因素</p>
+<h3 id="手动循环展开"><a class="markdownIt-Anchor" href="#手动循环展开"></a> 手动循环展开</h3>
+<p>​	以内核中的 C++ 循环展开为例：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;<span class="hljs-number">100</span>;i++) &#123;<br>    a[i]=b[i]+c[i];<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>​	这个是最传统的写法，我们下面进行循环展开：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;<span class="hljs-number">100</span>;i+=<span class="hljs-number">4</span>) &#123;<br>    a[i+<span class="hljs-number">0</span>]=b[i+<span class="hljs-number">0</span>]+c[i+<span class="hljs-number">0</span>];<br>    a[i+<span class="hljs-number">1</span>]=b[i+<span class="hljs-number">1</span>]+c[i+<span class="hljs-number">1</span>];<br>    a[i+<span class="hljs-number">2</span>]=b[i+<span class="hljs-number">2</span>]+c[i+<span class="hljs-number">2</span>];<br>    a[i+<span class="hljs-number">3</span>]=b[i+<span class="hljs-number">3</span>]+c[i+<span class="hljs-number">3</span>];<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>​	很简单，代码的改动就是修改循环体的内容，把本来循环自己搞定的东西，我们自己列出来了，<strong>这样做的好处，从串行较多来看是减少了条件判断的次数</strong>。但是如果把这段代码拿到电脑上跑，其实看不出来啥效果，因为现代编译器会自动帮我们做循环展开优化<br>
+​	不过值得注意的是：<strong>目前CUDA的编译器还不能帮我们做这种优化，人为的展开核函数内的循环，能够非常大的提升内核性能</strong></p>
+<h2 id="展开的归约"><a class="markdownIt-Anchor" href="#展开的归约"></a> 展开的归约</h2>
+<p>​	在前面的归约问题中，核函数中每个线程块只处理对应那部分的数据，<strong>我们现在的想法是能不能用一个线程块处理多块数据</strong>，其实这是可以实现的，<strong>如果在对这块数据进行求和前（因为总是一个线程对应一个数据）使用每个线程进行一次加法，从别的块取数据，相当于先做一个向量加法，然后再归约，这样将会用一句指令，完成之前一半的计算量</strong>，这个性价比看起来太诱人了</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function">__global__ <span class="hljs-type">void</span> <span class="hljs-title">reduceUnroll2</span><span class="hljs-params">(<span class="hljs-type">int</span> * g_idata, <span class="hljs-type">int</span> * g_odata, <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> n)</span> </span>&#123;<br>	<span class="hljs-comment">//set thread ID</span><br>	<span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> tid = threadIdx.x;<br>	<span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> idx = blockDim.x * blockIdx.x * <span class="hljs-number">2</span> + threadIdx.x;<br>	<span class="hljs-comment">//boundary check</span><br>	<span class="hljs-keyword">if</span> (tid &gt;= n) <span class="hljs-keyword">return</span>;<br>	<span class="hljs-comment">//input data pointer</span><br>	<span class="hljs-type">int</span> *idata = g_idata + blockIdx.x * blockDim.x * <span class="hljs-number">2</span>;<br>	<span class="hljs-keyword">if</span>(idx + blockDim.x&lt;n) &#123;<br>		g_idata[idx] += g_idata[idx+blockDim.x];<br>	&#125;<br>	__syncthreads();<br>	<span class="hljs-comment">//in-place reduction in global memory</span><br>	<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> stride = blockDim.x/<span class="hljs-number">2</span>; stride&gt;<span class="hljs-number">0</span> ; stride &gt;&gt;=<span class="hljs-number">1</span>) &#123;<br>		<span class="hljs-keyword">if</span> (tid &lt; stride) &#123;<br>			idata[tid] += idata[tid + stride];<br>		&#125;<br>		<span class="hljs-comment">//synchronize within block</span><br>		__syncthreads();<br>	&#125;<br>	<span class="hljs-comment">//write result for this block to global mem</span><br>	<span class="hljs-keyword">if</span> (tid == <span class="hljs-number">0</span>)<br>		g_odata[blockIdx.x] = idata[<span class="hljs-number">0</span>];<br><br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li><code>unsigned int idx = blockDim.x * blockIdx.x * 2 + threadIdx.x</code>：前线程在全局数据中的索引。由于每个块处理的数据是 <code>2 * blockDim.x</code>，所以乘以2（由于是一维块 block size = blockDim.x）</li>
+<li><code>idx + blockDim.x&lt;n</code>：如果下一个块对应的地址还有数据的话，就进行向量加法（<code>idx</code>这个值是不可能计算指向靠后的一个 block 的）</li>
+<li><code>for (int stride = blockDim.x/2; stride&gt;0 ; stride &gt;&gt;=1)</code>：使用交叉归约的方式</li>
+</ul>
+<p><img src="/2024/10/15/learning/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/loop-unroll/1.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>​	上图就是我们循环展开归约的代码</p>
+<h2 id="完全展开的归约"><a class="markdownIt-Anchor" href="#完全展开的归约"></a> 完全展开的归约</h2>
+<p>​	接着我们的目标是最后那 32 个线程，因为归约运算是个倒金字塔，最后的结果是一个数，所以每个线程最后 64 个计算得到一个数字结果的过程，每执行一步，线程的利用率就降低一倍，因为从 64 到 32，然后 16。。这样到 1 的，我们现在像个办法，展开最后的6步迭代（64，32，16，8，4，2，1）使用下面的核函数来展开最后6步分支计算：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function">__global__ <span class="hljs-type">void</span> <span class="hljs-title">reduceUnrollWarp8</span><span class="hljs-params">(<span class="hljs-type">int</span> * g_idata,<span class="hljs-type">int</span> * g_odata,<span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> n)</span> </span>&#123;<br>	<span class="hljs-comment">//set thread ID</span><br>	<span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> tid = threadIdx.x;<br>	<span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> idx = blockDim.x*blockIdx.x*<span class="hljs-number">8</span>+threadIdx.x;<br>	<span class="hljs-comment">//boundary check</span><br>	<span class="hljs-keyword">if</span> (tid &gt;= n) <span class="hljs-keyword">return</span>;<br>	<span class="hljs-comment">//convert global data pointer to the</span><br>	<span class="hljs-type">int</span> *idata = g_idata + blockIdx.x*blockDim.x*<span class="hljs-number">8</span>;<br>	<span class="hljs-comment">//unrolling 8;</span><br>	<span class="hljs-keyword">if</span>(idx+<span class="hljs-number">7</span> * blockDim.x&lt;n) &#123;<br>		<span class="hljs-type">int</span> a1=g_idata[idx];<br>		<span class="hljs-type">int</span> a2=g_idata[idx+blockDim.x];<br>		<span class="hljs-type">int</span> a3=g_idata[idx+<span class="hljs-number">2</span>*blockDim.x];<br>		<span class="hljs-type">int</span> a4=g_idata[idx+<span class="hljs-number">3</span>*blockDim.x];<br>		<span class="hljs-type">int</span> a5=g_idata[idx+<span class="hljs-number">4</span>*blockDim.x];<br>		<span class="hljs-type">int</span> a6=g_idata[idx+<span class="hljs-number">5</span>*blockDim.x];<br>		<span class="hljs-type">int</span> a7=g_idata[idx+<span class="hljs-number">6</span>*blockDim.x];<br>		<span class="hljs-type">int</span> a8=g_idata[idx+<span class="hljs-number">7</span>*blockDim.x];<br>		g_idata[idx]=a1+a2+a3+a4+a5+a6+a7+a8;<br><br>	&#125;<br>	__syncthreads();<br>	<span class="hljs-comment">//in-place reduction in global memory</span><br>	<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> stride = blockDim.x/<span class="hljs-number">2</span>; stride&gt;<span class="hljs-number">32</span>; stride &gt;&gt;=<span class="hljs-number">1</span>) &#123;<br>		<span class="hljs-keyword">if</span> (tid &lt;stride) &#123;<br>			idata[tid] += idata[tid + stride];<br>		&#125;<br>		<span class="hljs-comment">//synchronize within block</span><br>		__syncthreads();<br>	&#125;<br>	<span class="hljs-comment">//write result for this block to global mem</span><br>	<span class="hljs-keyword">if</span>(tid&lt;<span class="hljs-number">32</span>) &#123;<br>		<span class="hljs-keyword">volatile</span> <span class="hljs-type">int</span> *vmem = idata;<br>		vmem[tid]+=vmem[tid+<span class="hljs-number">32</span>];<br>		vmem[tid]+=vmem[tid+<span class="hljs-number">16</span>];<br>		vmem[tid]+=vmem[tid+<span class="hljs-number">8</span>];<br>		vmem[tid]+=vmem[tid+<span class="hljs-number">4</span>];<br>		vmem[tid]+=vmem[tid+<span class="hljs-number">2</span>];<br>		vmem[tid]+=vmem[tid+<span class="hljs-number">1</span>];<br><br>	&#125;<br><br>	<span class="hljs-keyword">if</span> (tid == <span class="hljs-number">0</span>)<br>		g_odata[blockIdx.x] = idata[<span class="hljs-number">0</span>];<br><br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>上面这段代码将循环展开的归约进一步展开了，刚才是一个线程负责两个 block_size 大小的数据，现在一个线程负责 8 个 block_size 大小的数据。然后进行交叉归约操作，到最后一步又使用了一次归约的操作（在线程数小于 32 的情况下，直接把所有的数据直接加起来）</li>
+</ul>
+<h3 id="warp-level-reduction最重要的一步"><a class="markdownIt-Anchor" href="#warp-level-reduction最重要的一步"></a> warp-level reduction（最重要的一步）</h3>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">if</span> (tid &lt; <span class="hljs-number">32</span>) &#123;<br>    <span class="hljs-keyword">volatile</span> <span class="hljs-type">int</span> *vmem = idata;<br>    vmem[tid] += vmem[tid + <span class="hljs-number">32</span>];<br>    vmem[tid] += vmem[tid + <span class="hljs-number">16</span>];<br>    vmem[tid] += vmem[tid + <span class="hljs-number">8</span>];<br>    vmem[tid] += vmem[tid + <span class="hljs-number">4</span>];<br>    vmem[tid] += vmem[tid + <span class="hljs-number">2</span>];<br>    vmem[tid] += vmem[tid + <span class="hljs-number">1</span>];<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>对于 <code>tid &lt; 32</code> 的线程，使用 <code>volatile</code> 关键字确保编译器不会优化掉这些内存访问</li>
+<li>通过多次迭代，逐步将32个线程内的数据归约为一个值</li>
+<li>当只剩下最后下面三角部分，从 64 个数合并到一个数，首先将前 32 个数，按照步长为 32，进行并行加法，前 32 个 <code>tid</code> 得到 64 个数字的两两和，存在前 32 个数字中</li>
+<li>然后这 32 个数加上步长为 16 的变量，理论上，这样能得到 16 个数，这 16 个数的和就是最后这个块的归约结果</li>
+</ul>
+<p>​	<font color="red">这一步可能产生疑惑的另一个原因是既然是同步执行，会不会比如线程 17 加上了线程 33 后写入 17 号的内存了，这时候 1 号才来加 17 号的结果，这样结果就不对了，因为我们的 CUDA 内核从内存中读数据到寄存器，然后进行加法都是同步进行的，也就是 17 号线程和 1 号线程同时读 33 号和 17 号的内存，这样 17 号即便在下一步修改，也不影响1号线程寄存器里面的值了</font></p>
+<ul>
+<li>这样继续计算，得到最后的一个有效的结果就是 <code>tid[0]</code></li>
+</ul>
+<p>​	<code>volatile int</code> 类型变量是控制变量结果写回到内存，而不是存在共享内存，或者缓存中，因为下一步的计算马上要用到它，如果写入缓存，可能造成下一步的读取会读到错误的数据</p>
+<h2 id="真正完全展开的归约"><a class="markdownIt-Anchor" href="#真正完全展开的归约"></a> 真正完全展开的归约</h2>
+<p>​	根据上面展开最后64个数据，我们可以直接就展开最后128个，256个，512个，1024个，下面代码可以将 <code>tid&lt;512</code> 的归约计算完全展开：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function">__global__ <span class="hljs-type">void</span> <span class="hljs-title">reduceCompleteUnrollWarp8</span><span class="hljs-params">(<span class="hljs-type">int</span> * g_idata,<span class="hljs-type">int</span> * g_odata,<span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> n)</span></span><br><span class="hljs-function"></span>&#123;<br>	<span class="hljs-comment">//set thread ID</span><br>	<span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> tid = threadIdx.x;<br>	<span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> idx = blockDim.x*blockIdx.x*<span class="hljs-number">8</span>+threadIdx.x;<br>	<span class="hljs-comment">//boundary check</span><br>	<span class="hljs-keyword">if</span> (tid &gt;= n) <span class="hljs-keyword">return</span>;<br>	<span class="hljs-comment">//convert global data pointer to the</span><br>	<span class="hljs-type">int</span> *idata = g_idata + blockIdx.x*blockDim.x*<span class="hljs-number">8</span>;<br>	<span class="hljs-keyword">if</span>(idx+<span class="hljs-number">7</span> * blockDim.x&lt;n) &#123;<br>		<span class="hljs-type">int</span> a1=g_idata[idx];<br>		<span class="hljs-type">int</span> a2=g_idata[idx+blockDim.x];<br>		<span class="hljs-type">int</span> a3=g_idata[idx+<span class="hljs-number">2</span>*blockDim.x];<br>		<span class="hljs-type">int</span> a4=g_idata[idx+<span class="hljs-number">3</span>*blockDim.x];<br>		<span class="hljs-type">int</span> a5=g_idata[idx+<span class="hljs-number">4</span>*blockDim.x];<br>		<span class="hljs-type">int</span> a6=g_idata[idx+<span class="hljs-number">5</span>*blockDim.x];<br>		<span class="hljs-type">int</span> a7=g_idata[idx+<span class="hljs-number">6</span>*blockDim.x];<br>		<span class="hljs-type">int</span> a8=g_idata[idx+<span class="hljs-number">7</span>*blockDim.x];<br>		g_idata[idx]=a1+a2+a3+a4+a5+a6+a7+a8;<br><br>	&#125;<br>	__syncthreads();<br>	<span class="hljs-comment">//in-place reduction in global memory</span><br>	<span class="hljs-keyword">if</span>(blockDim.x&gt;=<span class="hljs-number">1024</span> &amp;&amp; tid &lt;<span class="hljs-number">512</span>)<br>		idata[tid]+=idata[tid+<span class="hljs-number">512</span>];<br>	__syncthreads();<br>	<span class="hljs-keyword">if</span>(blockDim.x&gt;=<span class="hljs-number">512</span> &amp;&amp; tid &lt;<span class="hljs-number">256</span>)<br>		idata[tid]+=idata[tid+<span class="hljs-number">256</span>];<br>	__syncthreads();<br>	<span class="hljs-keyword">if</span>(blockDim.x&gt;=<span class="hljs-number">256</span> &amp;&amp; tid &lt;<span class="hljs-number">128</span>)<br>		idata[tid]+=idata[tid+<span class="hljs-number">128</span>];<br>	__syncthreads();<br>	<span class="hljs-keyword">if</span>(blockDim.x&gt;=<span class="hljs-number">128</span> &amp;&amp; tid &lt;<span class="hljs-number">64</span>)<br>		idata[tid]+=idata[tid+<span class="hljs-number">64</span>];<br>	__syncthreads();<br>	<span class="hljs-comment">//write result for this block to global mem</span><br>	<span class="hljs-keyword">if</span>(tid&lt;<span class="hljs-number">32</span>) &#123;<br>		<span class="hljs-keyword">volatile</span> <span class="hljs-type">int</span> *vmem = idata;<br>		vmem[tid]+=vmem[tid+<span class="hljs-number">32</span>];<br>		vmem[tid]+=vmem[tid+<span class="hljs-number">16</span>];<br>		vmem[tid]+=vmem[tid+<span class="hljs-number">8</span>];<br>		vmem[tid]+=vmem[tid+<span class="hljs-number">4</span>];<br>		vmem[tid]+=vmem[tid+<span class="hljs-number">2</span>];<br>		vmem[tid]+=vmem[tid+<span class="hljs-number">1</span>];<br><br>	&#125;<br><br>	<span class="hljs-keyword">if</span> (tid == <span class="hljs-number">0</span>)<br>		g_odata[blockIdx.x] = idata[<span class="hljs-number">0</span>];<br><br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="pargma-unroll-指令"><a class="markdownIt-Anchor" href="#pargma-unroll-指令"></a> <code>#pargma unroll</code> 指令</h2>
+<p>​	<strong>针对已知循环次数的小循环语句，编译器通常会默认将循环展开。此外，还可以通过 <code>#pragma unroll</code> 指令控制任何给定的循环语句在编译时展开。该指令必须放在循环语句之前并且紧接着循环语句，仅对该循环适用</strong></p>
+<p>​	当一个循环的次数非常大时，往往不可能完全展开，例如有 1000 次循环，展开后代码量可能超过设备上的代码缓存，所以 <code>#pragma unroll</code> 指令后面允许跟随一个整数常量表达式 ICE，此参数是可选的。例如，在指定 ICE 为 20 的情况下，总循环次数 1000 次，每 20 次展开，这样从原本的 1000 次循环，每次完成 1 个任务，变成了循环 50 次 (1000/20=50)，每次完成 20 个任务，虽然不能完全展开，但控制成本变成了原本的1/20，同时编译器生成的目标代码体积，也只增加了 20 倍，是一种不错的折中方法</p>
+<p>​	假设 ICE 缺省，如果循环次数是个恒定值，则循环将完全展开；如果 ICE 计算结果为 1，编译器将不会展开循环；如果 ICE 计算结果为非正整数或大于 <code>int</code> 数据类型可表示的最大值的整数，则该 <code>#pragma unroll</code> 指令将被忽略。</p>
+<p>示例代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">S1_t</span> &#123; <span class="hljs-type">static</span> <span class="hljs-type">const</span> <span class="hljs-type">int</span> value = <span class="hljs-number">4</span>; &#125;;<br><span class="hljs-keyword">template</span> &lt;<span class="hljs-type">int</span> X, <span class="hljs-keyword">typename</span> T2&gt;<br><span class="hljs-function">__device__ <span class="hljs-type">void</span> <span class="hljs-title">foo</span><span class="hljs-params">(<span class="hljs-type">int</span> *p1, <span class="hljs-type">int</span> *p2)</span> </span>&#123;<br><br>    <span class="hljs-comment">// no argument specified, loop will be completely unrolled</span><br>    <span class="hljs-meta">#<span class="hljs-keyword">pragma</span> unroll</span><br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">12</span>; ++i)<br>        p1[i] += p2[i]*<span class="hljs-number">2</span>;<br><br>    <span class="hljs-comment">// unroll value = 8</span><br>    <span class="hljs-meta">#<span class="hljs-keyword">pragma</span> unroll (X+1)</span><br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">12</span>; ++i)<br>        p1[i] += p2[i]*<span class="hljs-number">4</span>;<br><br>    <span class="hljs-comment">// unroll value = 1, loop unrolling disabled</span><br>    <span class="hljs-meta">#<span class="hljs-keyword">pragma</span> unroll 1</span><br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">12</span>; ++i)<br>        p1[i] += p2[i]*<span class="hljs-number">8</span>;<br><br>    <span class="hljs-comment">// unroll value = 4</span><br>    <span class="hljs-meta">#<span class="hljs-keyword">pragma</span> unroll (T2::value)</span><br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">12</span>; ++i)<br>        p1[i] += p2[i]*<span class="hljs-number">16</span>;<br>&#125;<br><br><br><span class="hljs-function">__global__ <span class="hljs-type">void</span> <span class="hljs-title">bar</span><span class="hljs-params">(<span class="hljs-type">int</span> *p1, <span class="hljs-type">int</span> *p2)</span> </span>&#123;<br>    <span class="hljs-built_in">foo</span>&lt;<span class="hljs-number">7</span>, S1_t&gt;(p1, p2);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+			
+			
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/10/15/learning/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/reduction/" title="reduction">
+                        <span class="hidden-mobile">reduction</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <i class="iconfont icon-love"></i> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -216,6 +216,72 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
+        <a href="/2024/10/15/learning/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/loop-unroll/" target="_self">
+          loop_unroll
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/10/15/learning/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/loop-unroll/" target="_self">
+        <div>
+          循环展开（Loop Unrolling）  循环展开的概念 ​	GPU 编程偏向于使用确定的代码，GPU没有分支预测能力，所有每一个分支都是要执行的，所以在内核里尽量别写分支，分支包括什么？包括 if 还有 for 之类的循环语句，例如： 123for (itn i=0;i&lt;tid;i++) &#123;    // to do something&#125; ​	如果上面这段代码出现在内
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-10-15 19:01" pubdate>
+              2024-10-15
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/10/15/learning/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/reduction/" target="_self">
+          reduction
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/10/15/learning/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/reduction/" target="_self">
+        <div>
+          归约问题  并行归约问题 ​	在串行编程中，、最常见的一个问题就是一组特别多数字通过计算变成一个数字，比如加法，也就是求这一组数据的和，这种计算当具有交换律和结合律的时候，我们可以用并行归约的方法处理他们 ​	为什么叫归约，归约是一种常见的计算方式（串并行都可以），归约的归有递归的意思，约就是减少，这样就很明显了，每次迭代计算方式都是相同的（归），从一组多个数据最后得到一个数（约） 归约的方式基
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-10-15 17:56" pubdate>
+              2024-10-15
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
         <a href="/2024/10/14/learning/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/excute-model/" target="_self">
           excute_model
         </a>
@@ -465,72 +531,6 @@
             <i class="iconfont icon-date"></i>
             <time datetime="2024-10-03 16:32" pubdate>
               2024-10-03
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/09/30/learning/%E4%BB%A3%E7%A0%81%E6%AC%A3%E8%B5%8F/swin-backbone/" target="_self">
-          swin_backbone
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/09/30/learning/%E4%BB%A3%E7%A0%81%E6%AC%A3%E8%B5%8F/swin-backbone/" target="_self">
-        <div>
-          Swin Transformer ​	Swin Transformer 是一种用于 CV 的通用的 backbone。与传统的卷积神经网络（CNN）不同，Swin Transformer 综合了 CNN 和 VIT 的优点，在局部区域进行 self-attention 计算，捕捉长距离依赖关系也注重于局部信息。 ​	Swin Transformer 的名称来源于其核心组件——滑动窗口（Slidi
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-09-30 19:41" pubdate>
-              2024-09-30
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/09/29/learning/%E4%BB%A3%E7%A0%81%E6%AC%A3%E8%B5%8F/DeformableAttention/" target="_self">
-          Deformable Attention
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/09/29/learning/%E4%BB%A3%E7%A0%81%E6%AC%A3%E8%B5%8F/DeformableAttention/" target="_self">
-        <div>
-          Deformable Attention ​	Deformable Attention 是一种改进的注意力机制，传统的 CNN 和注意力机制在处理图像数据时，通常使用固定的网格或窗口来提取特征，这限制了模型对不同尺度和形状的目标进行有效建模的能力。Deformable Attention 就是将 deformable convolution 和 VIT 缝合在一起了，以更好地捕捉目标的形状和结构
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-09-29 12:53" pubdate>
-              2024-09-29
             </time>
           </div>
         
