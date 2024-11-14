@@ -216,93 +216,6 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/02/21/learning/Pytorch/Pytorch-multiGPU/" target="_self">
-          Pytorch多GPU并行
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/21/learning/Pytorch/Pytorch-multiGPU/" target="_self">
-        <div>
-          Pytorch多GPU并行 ​	在PyTorch中，多GPU并行确实可以分为数据并行（Data Parallelism）和模型并行（Model Parallelism），这两种并行策略针对不同的并行化需求  数据并行（Data Parallelism）： 数据并行是最常见的并行策略，它通过将数据集分割成多个小batch，然后在多个GPU上并行处理这些部分。每个GPU上运行相同的模型副本，独立地计
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-02-21 11:15" pubdate>
-              2024-02-21
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/Pytorch%E5%AD%A6%E4%B9%A0/" class="category-chain-item">Pytorch学习</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/02/18/learning/computer%20vision/Segformer-2/" target="_self">
-          Segformer(2)
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/18/learning/computer%20vision/Segformer-2/" target="_self">
-        <div>
-          Segformer 论文详解： ​	在SegFormer提出时，transformer已经开始在图像领域展露头角。在此之前，SETR最早将transformer结构引入到了语义分割任务中。SETR采用ViT作为backbone，并结合多个CNN decoder来放大特征分辨率。但是SETR具有两个局限性：  没有利用 multi-scale 特征 具有非常高的计算消耗  为了解决上述问题，pyr
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-02-18 19:00" pubdate>
-              2024-02-18
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
         <a href="/2024/02/17/learning/computer%20vision/segformer-1/" target="_self">
           segformer(1)
         </a>
@@ -738,6 +651,128 @@
 
           </div>
         
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/01/19/learning/Pytorch/Pytorch%E5%8F%AF%E5%A4%8D%E7%8E%B0%E6%80%A7/" target="_self">
+          Pytorch可复现性
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/01/19/learning/Pytorch/Pytorch%E5%8F%AF%E5%A4%8D%E7%8E%B0%E6%80%A7/" target="_self">
+        <div>
+          Pytorch结果可复现性问题 ​	在我比较不同的采样过程对评价指标的影响时，发现由于计算机的随机性对评价指标有着很大的影响，这种影响带来的不确定性在下游任务中大到根本分辨不出来哪种采样过程效果更好。这篇文章专门用于解决控制 Pytorch 中的随机性问题  随机性的产生：  非确定性操作： 有些操作在 GPU 上可能是非确定性的，即使设置了随机种子也无法完全确保结果的一致性。一些涉及CUDA加
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-01-19 11:19" pubdate>
+              2024-01-19
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Pytorch%E5%AD%A6%E4%B9%A0/" class="category-chain-item">Pytorch学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/pytorch/">#pytorch</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2023/12/10/learning/Pytorch/einops/" target="_self">
+          einops
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/12/10/learning/Pytorch/einops/" target="_self">
+        <div>
+          einops 和 einsum 的使用——einops ​	einops 库操作可以替代全部的张量形状变换操作，注：类似于 Pytorch 中 torch.nn 和 torch.nn.function 的关系，如果像把 rearrange 操作放在 __init__ 中就规定，可以使用 einops.layers.torch 模块中的 Rearrange 函数  einops.rearrange
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-12-10 15:20" pubdate>
+              2023-12-10
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Pytorch/" class="category-chain-item">Pytorch</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Pytorch%E5%BC%A0%E9%87%8F%E9%AB%98%E6%95%88%E6%93%8D%E4%BD%9C%E8%AE%A1%E7%AE%97/">#Pytorch张量高效操作计算</a>
+            
+          </div>
         
       </div>
     </article>
