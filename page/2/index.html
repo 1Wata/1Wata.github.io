@@ -216,13 +216,277 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/10/06/learning/Pytorch/torch-compile/" target="_self">
+        <a href="/2024/10/17/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/shared-memory/" target="_self">
+          shared_memory
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/10/17/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/shared-memory/" target="_self">
+        <div>
+          CUDA共享内存概述 GPU内存按照类型（物理上的位置）可以分为  板载内存 片上内存  全局内存是较大的板载内存，延迟高，共享内存是片上的较小的内存，延迟低，带宽高。前面我我们讲过工厂的例子，全局内存就是原料工厂，要用车来运输原料，共享内存是工厂内存临时存放原料的房间，取原料路程短速度快。 共享内存是一种可编程的缓存，共享内存通常的用途有：  块内线程通信的通道 用于全局内存数据的可编程管理的
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-10-17 15:49" pubdate>
+              2024-10-17
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/10/15/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/loop-unroll/" target="_self">
+          loop_unroll
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/10/15/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/loop-unroll/" target="_self">
+        <div>
+          循环展开（Loop Unrolling）  循环展开的概念 ​	GPU 编程偏向于使用确定的代码，GPU没有分支预测能力，所有每一个分支都是要执行的，所以在内核里尽量别写分支，分支包括什么？包括 if 还有 for 之类的循环语句，例如： 123for (itn i=0;i&lt;tid;i++) &#123;    // to do something&#125; ​	如果上面这段代码出现在内
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-10-15 19:01" pubdate>
+              2024-10-15
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/10/15/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/reduction/" target="_self">
+          reduction
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/10/15/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/reduction/" target="_self">
+        <div>
+          归约问题  并行归约问题 ​	在串行编程中，、最常见的一个问题就是一组特别多数字通过计算变成一个数字，比如加法，也就是求这一组数据的和，这种计算当具有交换律和结合律的时候，我们可以用并行归约的方法处理他们 ​	为什么叫归约，归约是一种常见的计算方式（串并行都可以），归约的归有递归的意思，约就是减少，这样就很明显了，每次迭代计算方式都是相同的（归），从一组多个数据最后得到一个数（约） 归约的方式基
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-10-15 17:56" pubdate>
+              2024-10-15
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/10/14/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/excute-model/" target="_self">
+          excute_model
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/10/14/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/excute-model/" target="_self">
+        <div>
+          CUDA编程的组件与逻辑 ​	下图从逻辑角度和硬件角度描述了CUDA编程模型对应的组件。  ​	SM 中共享内存，和寄存器是关键的资源，线程块中线程通过共享内存和寄存器相互通信协调。寄存器和共享内存的分配可以严重影响性能！ ​	因为SM有限，虽然我们的编程模型层面看所有线程都是并行执行的，但是在微观上看，所有线程块也是分批次的在物理层面的机器上执行，线程块里不同的线程可能进度都不一样，但是同一个
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-10-14 21:15" pubdate>
+              2024-10-14
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/10/14/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/thread-parallel/" target="_self">
+          thread_parallel
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/10/14/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/thread-parallel/" target="_self">
+        <div>
+          并行组织线程 ​  使用块和线程建立矩阵索引 ​	为了简便起见，我们先只从二维线程块进行介绍而不是使用三维 ​	线程模型前面文章中已经有个大概的介绍，但是下图可以非常形象的反应线程模型，不过注意硬件实际的执行和存储不是按照图中的模型来的：  ​	这里 (ix,iy)(ix,iy)(ix,iy) 就是整个线程模型中任意一个线程的索引，或者叫做全局地址，局部地址就是 (threadIdx.x,thr
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-10-14 16:35" pubdate>
+              2024-10-14
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/10/13/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/Pytorch_cuda_ext/" target="_self">
+          Pytorch_cuda拓展(1)
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/10/13/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/Pytorch_cuda_ext/" target="_self">
+        <div>
+          Pytorch_cuda拓展(1)  什么情况下需要扩展  原生 Pytorch 和 Python 提供的 API 操作无法进行非平行计算，例如：For each batch, do an operation that depends on the data length (s.g. volume rendering) 可化简的大量的串列计算，例如：x=f1(x),x=f2(x),…,f=fn(
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-10-13 10:28" pubdate>
+              2024-10-13
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/10/11/ai/tools/triton-MM/" target="_self">
+          triton-MM
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/10/11/ai/tools/triton-MM/" target="_self">
+        <div>
+          triton Matrix Multiplication  triton入门：Matrix Multiplication ​	直接从 Triton 的官方教程入手。对 MM  做优化, 不论用的是 Triton, 还是 CUDA 目标都是一样的，一句话概括：计算一般是没办法省的, 主要是优化内存的使用, 尽可能的用高速但是比较小的 shared memory  驱动程序（Driver Progr
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-10-11 19:23" pubdate>
+              2024-10-11
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/10/10/ai/deep%20learning/GPU_arch/" target="_self">
+          GPU
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/10/10/ai/deep%20learning/GPU_arch/" target="_self">
+        <div>
+          GPU 工作原理 ​	本节首先讲解 CPU 和 GPU 架构的区别，之后以 AX+YAX+YAX+Y 这个例子来探究 GPU 是如何做并行计算的，为了更好地了解 GPU 并行计算，对并发和并行这两个概念进行了区分。此外会讲解 GPU 的缓存机制，因为这将涉及到 GPU 的缓存（Cache）和线程（Thread）。  CPU vs GPU  ​	先探讨一下 CPU 和 GPU 在架构方面的主要区别
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-10-10 20:21" pubdate>
+              2024-10-10
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/10/06/ai/Pytorch/torch-compile/" target="_self">
           torch_compile
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/10/06/learning/Pytorch/torch-compile/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/10/06/ai/Pytorch/torch-compile/" target="_self">
         <div>
           torch.compile解析 ​	torch.compile是PyTorch 2.2版本中的一个重要新特性。它是一种新的 PyTorch 编译器，它可以将 Python 和 TorchScript 模型编译成 TorchDynamo 图，从而提高模型的运行效率。是加速 PyTorch 代码速度的最新方法！ torch.compile 通过将 PyTorch 代码 JIT（just in tim
         </div>
@@ -276,275 +540,11 @@
     </article>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/09/30/learning/%E4%BB%A3%E7%A0%81%E6%AC%A3%E8%B5%8F/swin-backbone/" target="_self">
-          swin_backbone
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/09/30/learning/%E4%BB%A3%E7%A0%81%E6%AC%A3%E8%B5%8F/swin-backbone/" target="_self">
-        <div>
-          Swin Transformer ​	Swin Transformer 是一种用于 CV 的通用的 backbone。与传统的卷积神经网络（CNN）不同，Swin Transformer 综合了 CNN 和 VIT 的优点，在局部区域进行 self-attention 计算，捕捉长距离依赖关系也注重于局部信息。 ​	Swin Transformer 的名称来源于其核心组件——滑动窗口（Slidi
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-09-30 19:41" pubdate>
-              2024-09-30
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/09/29/learning/%E4%BB%A3%E7%A0%81%E6%AC%A3%E8%B5%8F/DeformableAttention/" target="_self">
-          Deformable Attention
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/09/29/learning/%E4%BB%A3%E7%A0%81%E6%AC%A3%E8%B5%8F/DeformableAttention/" target="_self">
-        <div>
-          Deformable Attention ​	Deformable Attention 是一种改进的注意力机制，传统的 CNN 和注意力机制在处理图像数据时，通常使用固定的网格或窗口来提取特征，这限制了模型对不同尺度和形状的目标进行有效建模的能力。Deformable Attention 就是将 deformable convolution 和 VIT 缝合在一起了，以更好地捕捉目标的形状和结构
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-09-29 12:53" pubdate>
-              2024-09-29
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/09/24/setups/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%98%BE%E5%AD%98%E4%B8%8E%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" target="_self">
-          多线程显存与内存管理
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/09/24/setups/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%98%BE%E5%AD%98%E4%B8%8E%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" target="_self">
-        <div>
-          多线程显存与内存管理  问题背景： ​	需求是要制作一个文本模态和语音模态对齐的数据集，我需要做的仅仅是选一个效果很好的 TTS 模型将文本转语音就行了，我们需要从 1000k 条 conversation 里面挑选 40k 条数据进行转换（格式类似于 llava_instruct_150k.json 文件，是 human 和 gpt 文本对话的格式），由于单个模型一条一条地转化太耗时了，而且模
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-09-24 15:00" pubdate>
-              2024-09-24
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/09/16/learning/deep%20learning/multimodal_learning_across_languages%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" target="_self">
-          MULTIMODAL LEARNING ACROSS LANGUAGES论文阅读
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/09/16/learning/deep%20learning/multimodal_learning_across_languages%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" target="_self">
-        <div>
-          MULTIMODAL LEARNING ACROSS LANGUAGES ​	本文提出了一种有效的训练范式MPM（Multilingual language models can Pivot zero-shot Multimodal learning across languages），用于非英语语言的大规模多模态模型训练。MPM展示了如何利用强大的多语言大语言模型，使得仅在英文图像文本数据上预
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-09-16 19:49" pubdate>
-              2024-09-16
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/09/16/learning/deep%20learning/LLama-Omni%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" target="_self">
-          LLama-Omni论文阅读
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/09/16/learning/deep%20learning/LLama-Omni%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" target="_self">
-        <div>
-          LLama-Omni论文阅读 ​	论文介绍了 LLaMA-Omni 模型，这是一种新颖的模型架构，设计用于实现与大型语言模型（LLMs）之间的低延迟（low latency）、高质量语音交互。LLaMA-Omni 集成了预训练的 audio encoder、audio adaptor、LLM 以及 streaming audio decoder（流式语音解码器），从而消除了对语音转录的需求，能够
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-09-16 15:59" pubdate>
-              2024-09-16
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/09/16/learning/deep%20learning/MMEvol%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" target="_self">
-          MMEvol论文阅读
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/09/16/learning/deep%20learning/MMEvol%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" target="_self">
-        <div>
-          MMEvol ​	论文地址：MMEvol: Empowering Multimodal Large Language Models with Evol-Instruct ​	该论文的工作在于提出 MMEvol 的新框架（有点像教师-学生模型训练方法），一个用于多模态大语言模型（MLLMs）的图像-文本指令数据进化的框架。其主要目标是通过自动化生成开放域的图像-文本指令数据，来增强现有数据集的多样
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-09-16 10:12" pubdate>
-              2024-09-16
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/09/08/scientific_research/cv_udsampler/modify_mmseg/" target="_self">
-          合并mmseg的backbone和encoder
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/09/08/scientific_research/cv_udsampler/modify_mmseg/" target="_self">
-        <div>
-          合并mmseg的backbone和encoder  问题来源 ​	由于我的这段科研工作主要围绕上下采样同时建模（协同上下采样）来展开的，我在小模型上跑出了很好的效果，想在大模型大数据集上进一步验证他的有效性，我选择了 mask2former 模型作为分割任务的 baseline，我尝试从 mask2former 官方 repo 下载代码后在他上面修改，但是这个代码封装极其深而且工程化，这个仓库是
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-09-08 16:44" pubdate>
-              2024-09-08
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/08/24/learning/Pytorch/torch-autograd-Function/" target="_self">
-          torch.autograd.Function
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/08/24/learning/Pytorch/torch-autograd-Function/" target="_self">
-        <div>
-          torch.autograd.Function解析 ​	pytorch的灵活性体现在它可以任意拓展我们所需要的内容，包括自定义模型（nn.Module）、自定义函数（nn.Function）、自定义损失函数（nn.Module）、自定义求导方式（torch.autograd.Function），本节内容介绍torch.autograd.Function自定义求导的使用方法 ​	为什么需要torc
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-08-24 18:23" pubdate>
-              2024-08-24
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
 
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/#board">3</a><a class="page-number" href="/page/4/#board">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/#board">9</a><a class="extend next" rel="next" href="/page/3/#board"><i class="iconfont icon-arrowright"></i></a>
+      <a class="extend prev" rel="prev" href="/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/#board">3</a><a class="page-number" href="/page/4/#board">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/#board">10</a><a class="extend next" rel="next" href="/page/3/#board"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
 

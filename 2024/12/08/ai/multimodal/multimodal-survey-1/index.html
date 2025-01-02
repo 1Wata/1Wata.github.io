@@ -1,0 +1,664 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/w.png">
+  <link rel="icon" href="/img/w.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="多模态综述——模型架构 ​	过去三年多模态模型获得了巨大的发展  从模型输入输出的视角：  输入单图 + 文本，输出文本 ​	在多模态发展的早期阶段，模型的输入和输出主要集中在图像加文本的形式上，且输出通常是文本。这种设计主要是由于当时的技术限制，特别是缺乏有效的图像生成模型和技术（diffusion，consistency models 等）。因此，研究焦点更多地放在如何有效地将图像信息映射到">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多模态论文综述">
+<meta property="og:url" content="http://example.com/2024/12/08/ai/multimodal/multimodal-survey-1/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="多模态综述——模型架构 ​	过去三年多模态模型获得了巨大的发展  从模型输入输出的视角：  输入单图 + 文本，输出文本 ​	在多模态发展的早期阶段，模型的输入和输出主要集中在图像加文本的形式上，且输出通常是文本。这种设计主要是由于当时的技术限制，特别是缺乏有效的图像生成模型和技术（diffusion，consistency models 等）。因此，研究焦点更多地放在如何有效地将图像信息映射到">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2024/12/08/ai/multimodal/multimodal-survey-1/image-20241208184747606.png">
+<meta property="og:image" content="http://example.com/2024/12/08/ai/multimodal/multimodal-survey-1/image-20241208195153929.png">
+<meta property="og:image" content="http://example.com/2024/12/08/ai/multimodal/multimodal-survey-1/image-20241220154859412.png">
+<meta property="og:image" content="http://example.com/2024/12/08/ai/multimodal/multimodal-survey-1/image-20241208201428229.png">
+<meta property="og:image" content="http://example.com/2024/12/08/ai/multimodal/multimodal-survey-1/image-20241208204028610.png">
+<meta property="og:image" content="http://example.com/2024/12/08/ai/multimodal/multimodal-survey-1/image-20241209102148123.png">
+<meta property="og:image" content="http://example.com/2024/12/08/ai/multimodal/multimodal-survey-1/image-20241208210338989.png">
+<meta property="og:image" content="http://example.com/2024/12/08/ai/multimodal/multimodal-survey-1/image-20241220170557753.png">
+<meta property="og:image" content="http://example.com/2024/12/08/ai/multimodal/multimodal-survey-1/image-20241220181400022.png">
+<meta property="article:published_time" content="2024-12-08T10:08:12.000Z">
+<meta property="article:modified_time" content="2024-12-20T10:46:38.303Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2024/12/08/ai/multimodal/multimodal-survey-1/image-20241208184747606.png">
+  
+  
+  
+  <title>多模态论文综述 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.6","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/katex@0.11.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Wataの锟斤拷</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="多模态论文综述"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-12-08 18:08" pubdate>
+          2024年12月8日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          24 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">多模态论文综述</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="多模态综述模型架构"><a class="markdownIt-Anchor" href="#多模态综述模型架构"></a> 多模态综述——模型架构</h1>
+<p>​	过去三年多模态模型获得了巨大的发展</p>
+<h2 id="从模型输入输出的视角"><a class="markdownIt-Anchor" href="#从模型输入输出的视角"></a> 从模型输入输出的视角：</h2>
+<h3 id="输入单图-文本输出文本"><a class="markdownIt-Anchor" href="#输入单图-文本输出文本"></a> 输入单图 + 文本，输出文本</h3>
+<p>​	在多模态发展的早期阶段，模型的输入和输出主要集中在图像加文本的形式上，且输出通常是文本。这种设计主要是由于当时的技术限制，特别是缺乏有效的图像生成模型和技术（diffusion，consistency models 等）。因此，研究焦点更多地放在如何有效地将图像信息映射到文本信息上，以完成如图像字幕生成（image captioning）、简单的视觉问答（VQA）、图像-文本检索等任务。</p>
+<p>​	早期的研究工作通常围绕着如何提取和表示图像特征，以及如何将这些特征与文本信息进行融合，从而实现对图像内容的理解和描述。这包括探索不同的视觉编码器架构，比如使用预训练的卷积神经网络（CNN）来提取图像特征，以及通过各种方式将这些特征与文本编码相结合，例如通过注意力机制或特定的多模态融合层。</p>
+<p>​	此外，在那个时期，评估模型性能的数据集也主要关注于这些文本生成任务，如COCO Captions 和 VQA 数据集</p>
+<h2 id="从模型结构的视角"><a class="markdownIt-Anchor" href="#从模型结构的视角"></a> 从模型结构的视角</h2>
+<h3 id="dual-embedding-modality-interaction"><a class="markdownIt-Anchor" href="#dual-embedding-modality-interaction"></a> dual embedding + modality interaction</h3>
+<p><img src="/2024/12/08/ai/multimodal/multimodal-survey-1/image-20241208184747606.png" srcset="/img/loading.gif" lazyload alt="image-20241208184747606"></p>
+<ul>
+<li>模态信息交互：VSE 和 CLIP 在模态融合中只是对不同模态信息进行简单的计算相似度，这是远远不够的，后续的工作发现了模态融合是非常重要的一个过程，于是到后续的 ViLT 的工作，模态交互模块的计算量逐渐增加，表明模型对模态交互的重视程度不断提高</li>
+<li>视觉与文本编码：CLIP 和 ViLT 中视觉和文本编码模块的计算量相当，而 VSE 和 ViLBERT 中视觉编码模块的计算量大于文本编码模块，直观理解上视觉模态的信息是更难编码的，因此应该使用的视觉模态 encoder 的结构应该比文本模态 embedder 结构更大</li>
+</ul>
+<p>​	总结上面的两点经验，ALBEF 的模型结构就可以提出来了，一个较大视觉的 embedder 加上一个较小文本的 embedder，最后加上一个大的模态交互融合模块，BLIP 模型也是使用了类似的思想，再加上从 VLMo 工作的启发，将不同阶段的 block 共享参数（和 transformer 架构唯一的不一样就是 FFN 结构，<strong>对于不同的模态数据有不同的 FFN 层，但是在模型前面的 self-attention 模块中，所有模态的数据是共用 weight 的</strong>）：</p>
+<p><img src="/2024/12/08/ai/multimodal/multimodal-survey-1/image-20241208195153929.png" srcset="/img/loading.gif" lazyload alt="image-20241208195153929"></p>
+<h3 id="modality-encoder-llm"><a class="markdownIt-Anchor" href="#modality-encoder-llm"></a> Modality Encoder + LLM</h3>
+<p>​	在现代多模态发展中，我们往往不再使用上面的多模态模型结构，因为基于视觉模态的数据不好用用语训练推理能力，于是后续的工作中往往使用了预训练好的 LLM（展现出一定的推理能力）为基础构建有更强推理能力的多模态模型，结构如下图所示：</p>
+<p><img src="/2024/12/08/ai/multimodal/multimodal-survey-1/image-20241220154859412.png" srcset="/img/loading.gif" lazyload alt="image-20241220154859412"></p>
+<ul>
+<li>
+<p>模型的大部分都类似 LLM，LLM 的架构大多数是采用了 decoder-only 的架构，极少数的模型使用了 encoder-decoder 的架构</p>
+</li>
+<li>
+<p>Modality Encoder 是一个对应模态预训练好的强大的模态提取器，对于视觉模态信息往往使用 VIT</p>
+<p><font color="red">值得一提的是，经验证明，对于其他模态的数据，输入 LLM 的数据的分辨率对性能有非常大的影响</font>，提高分辨率的方式分为两类：</p>
+<ul>
+<li>direct-scaling：直接提高输入的分辨率，例如 CogAgent 中的 CogVLM，通过使用 dual-encoder mechanism（对低分辨率图像使用强大的 backbone 提取丰富语义信息，再让高分辨率图像通过一个 lite-encoder 出来的图与丰富语义信息的低分辨率特征图作 cross-attention 丰富细节信息，类似 VITMatte）</li>
+<li>patch-division：将大图像分成小 patch，再将大的图像和小 patch 进行特征融合，提取特征之后输入 Connector，例如 Monkey 的工作</li>
+</ul>
+</li>
+<li>
+<p>Connector 是需要训练的一部分，他将多模态的数据对齐到文本模态，让 LLM 能够理解，Connector 有三种连接方式：</p>
+<ul>
+<li>暴力 MLP 层：基于 token 层面融合，往往对语音等模态的数据使用，例如 llama-omni 的将语音模态对齐到文本模态就是暴力 MLP 层，原因在于语音模态数据和文本模态数据天生有很强相似性，llava 也是这种方式</li>
+<li>Learnable Queries：基于 token 层面融合，往往对图像模态的数据使用，类似 DETR 的框架，使用可学习的 query 提取特征 token 输入 LLM</li>
+<li>Fusion Base：基于 feature 层面融合，将 embedding 输入 LLM 内部，在 LLM 内部进行特征融合</li>
+</ul>
+</li>
+<li>
+<p>Generator 往往是一个 diffusion</p>
+</li>
+</ul>
+<h2 id="从训练数据清洗的视角"><a class="markdownIt-Anchor" href="#从训练数据清洗的视角"></a> 从训练数据清洗的视角</h2>
+<p>​	从训练数据来看，多模态的数据集其实是非常脏的，由于多模态的数据集数据量非常大，数据集是从网络上爬下来的，因此混入了非常多的噪声数据</p>
+<h3 id="pseudo-target"><a class="markdownIt-Anchor" href="#pseudo-target"></a> pseudo target</h3>
+<p>​	从 ALBEF 开始，由于 ALBEF 的时代并没有 LAION 数据集，它的训练数据全是网络上爬取的，数据集格外 noisy，于是论文中对数据集的质量进行了考虑，使用一个动量模型预测一个 pseudo target，对 ITC loss 进行加权修改</p>
+<p><img src="/2024/12/08/ai/multimodal/multimodal-survey-1/image-20241208201428229.png" srcset="/img/loading.gif" lazyload alt="image-20241208201428229"></p>
+<p>​</p>
+<h3 id="caption-filter-model"><a class="markdownIt-Anchor" href="#caption-filter-model"></a> Caption Filter Model</h3>
+<p>​	对数据集清洗贡献最大的就是 BLIP 模型了，下图表示了 BLIP 模型对训练数据清洗的过程，BLIP模型通过整合网络爬取的图像-文本对 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><msub><mi>I</mi><mi>w</mi></msub><mo separator="true">,</mo><msub><mi>T</mi><mi>w</mi></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">{(I_w,T_w)}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.07847em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02691em;">w</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02691em;">w</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span> 与人工标注的高质量图像-文本对 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><msub><mi>I</mi><mi>h</mi></msub><mo separator="true">,</mo><msub><mi>T</mi><mi>h</mi></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">{(I_h,T_h)}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.07847em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">h</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">h</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span>，<strong>爬取的图像-文本对有非常多的不匹配，因此使用红色标注，另外手工标注的图像-文本对是精心标注的，完全匹配</strong>，干净的新数据有两个来源：</p>
+<ul>
+<li>从原数据集中过滤：先对多模态混合编码器-解码器架构进行预训练。在此基础上，使用图像引导的文本编码器筛选网络文本（计算文本图像相似度）。比如就采用一个 BLIP，先在 noisy 数据集上训练一个 BLIP，再用这个 BLIP 过滤数据，在训练一个新的效果更好的 BLIP，注意这个预训练模型还进行了一次微调（在 coco 数据集上进行的微调）</li>
+<li>从 captioner 中进行提取：即使从 noisy dataset 训练出来的 BLIP 仍然有很强的图像描述能力，BLIP 的工作中还使用了一部分 BLIP 自身生成的一些模型进行训练（不能完全保证质量，因此也要进行 filter）</li>
+</ul>
+<p><img src="/2024/12/08/ai/multimodal/multimodal-survey-1/image-20241208204028610.png" srcset="/img/loading.gif" lazyload alt="image-20241208204028610"></p>
+<p>​	LAION数据就也使用了 caption + filter 的技巧制作了一个非常强大的 LAION-coco 数据集：</p>
+<p><img src="/2024/12/08/ai/multimodal/multimodal-survey-1/image-20241209102148123.png" srcset="/img/loading.gif" lazyload alt="image-20241209102148123"></p>
+<p>​	该工作同时揭示了用模型自身产生的数据训练一个新模型，进行迭代训练，训练出一个更好的模型的可能性</p>
+<p><img src="/2024/12/08/ai/multimodal/multimodal-survey-1/image-20241208210338989.png" srcset="/img/loading.gif" lazyload alt="image-20241208210338989"></p>
+<h2 id="从训练方式的视角"><a class="markdownIt-Anchor" href="#从训练方式的视角"></a> 从训练方式的视角</h2>
+<p>​	MLLM 训练方式和 LLM 相差不大，分为三个部分：pre-training，instruction-tuning，alignment tuning</p>
+<h3 id="pre-training"><a class="markdownIt-Anchor" href="#pre-training"></a> pre-training</h3>
+<p>​	由于 MLLM 模型结构中有很多的部分参数都是需要冻结的，因此在 pre-training 阶段往往只对 connector  进行训练，在这个训练阶段往往使用大规模的 text-paired data，例如 caption data（图像模态和文本模态），但是也有一部分例外，例如 Qwen-VL 模型，它的 pre-training 阶段还训练了 VIT：</p>
+<p><img src="/2024/12/08/ai/multimodal/multimodal-survey-1/image-20241220170557753.png" srcset="/img/loading.gif" lazyload alt="image-20241220170557753"></p>
+<p>​	 pre-training 阶段一般可以认为有两个作用：</p>
+<ol>
+<li>将不同模态之间的数据进行对齐</li>
+<li>给模型提供新的反应客观物理世界的信息</li>
+</ol>
+<p>​	值得一提的是，对于 MLLM，训练数据数据的质量尤其重要，ShareGPT4V 的工作指出使用高质量的数据进行训练，即使模型架构很简单效果也可以非常好，训练数据往往分为粗粒度数据（coarse-grained data）和细粒度数据（fine-grained data）</p>
+<p>​	coarse-grained data 往往是在网络中搜集的大量信息，网络上图像的 caption 往往是简短（描述的信息不够）而且带有大量噪声；而且有时候图像信息的链接丢失，会导致只能使用 alt text，公开数据集包括：CC， SBU Captions，LAION，COYO-700M</p>
+<h3 id="instruction-tuning"><a class="markdownIt-Anchor" href="#instruction-tuning"></a> instruction-tuning</h3>
+<p>​	完成 pre-training 后，让 MLLM 去完成复杂的 VQA 任务是做不到的，在 instruction tuning 阶段，类似 LLM，训练的目标是在各个不同任务下进行训练获得强大的 zero-shot，few-shot 的能力（教会模型回答规则，怎么样进行对话，即增强模型的指令遵循能力）。MLLM 指令微调的数据 sample 可以记为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi mathvariant="script">I</mi><mo separator="true">,</mo><mi mathvariant="script">M</mi><mo separator="true">,</mo><mi mathvariant="script">R</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(\mathcal{I}, \mathcal{M}, \mathcal{R})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathcal" style="margin-right:0.07382em;">I</span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathcal">M</span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathcal">R</span></span><span class="mclose">)</span></span></span></span>，分别是 instruction，multimodal input，ground truth response，记 MLLM 返回的 predicted response 为：</p>
+<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi mathvariant="script">A</mi><mo>=</mo><mi>f</mi><mo stretchy="false">(</mo><mi mathvariant="script">I</mi><mo separator="true">,</mo><mi mathvariant="script">M</mi><mo separator="true">;</mo><mi>θ</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\mathcal{A} = f(\mathcal{I},\mathcal{M};\theta)
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord"><span class="mord mathcal">A</span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord"><span class="mord mathcal" style="margin-right:0.07382em;">I</span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathcal">M</span></span><span class="mpunct">;</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span><span class="mclose">)</span></span></span></span></span></p>
+<p>其中 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">A</mi></mrow><annotation encoding="application/x-tex">\mathcal{A}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord"><span class="mord mathcal">A</span></span></span></span></span> 是 MLLM 返回的预测值，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi></mrow><annotation encoding="application/x-tex">\theta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span></span></span></span> 为模型参数，和 LLM 训练完全一致则，loss 函数表示为：</p>
+<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi mathvariant="script">L</mi><mo stretchy="false">(</mo><mi>θ</mi><mo stretchy="false">)</mo><mo>=</mo><mo>−</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mi>log</mi><mo>⁡</mo><mi>p</mi><mo stretchy="false">(</mo><msub><mi mathvariant="script">R</mi><mi>i</mi></msub><mi mathvariant="normal">∣</mi><mi mathvariant="script">I</mi><mo separator="true">,</mo><msub><mi mathvariant="script">R</mi><mrow><mo>&lt;</mo><mi>i</mi></mrow></msub><mo separator="true">;</mo><mi>θ</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\mathcal{L}(\theta) = -\sum_{i=1}^n \log p(\mathcal{R}_i | \mathcal{I}, \mathcal{R}_{&lt;i}; \theta)
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathcal">L</span></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.929066em;vertical-align:-1.277669em;"></span><span class="mord">−</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.6513970000000002em;"><span style="top:-1.872331em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.050005em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.3000050000000005em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.277669em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">p</span><span class="mopen">(</span><span class="mord"><span class="mord"><span class="mord mathcal">R</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">∣</span><span class="mord"><span class="mord mathcal" style="margin-right:0.07382em;">I</span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord"><span class="mord mathcal">R</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mrel mtight">&lt;</span><span class="mord mathnormal mtight">i</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.17737em;"><span></span></span></span></span></span></span><span class="mpunct">;</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span><span class="mclose">)</span></span></span></span></span></p>
+<p>​	这个阶段数据的收集往往来自三种：data adaptation，self-instruction，data mixture</p>
+<ul>
+<li>data adaptation 示例如下，看上去它只是加了一些无关痛痒的东西，但是这样的输入格式是非常适合 MLLM 进行训练的，事实证明它十分有效</li>
+</ul>
+<p><img src="/2024/12/08/ai/multimodal/multimodal-survey-1/image-20241220181400022.png" srcset="/img/loading.gif" lazyload alt="data adaptation"></p>
+<ul>
+<li>self-instruction：使用 LLM 生成 instruction 和数据（用 chatgpt 生成数据，用 ai 生成的数据来训练 ai，MMEVOL 就是属于这一个工作）</li>
+</ul>
+<h3 id="alignment-tuning"><a class="markdownIt-Anchor" href="#alignment-tuning"></a> alignment tuning</h3>
+<p>​	alignment tuning 主要关注使模型的行为与人类的价值观和意图保持一致。这涉及到确保模型输出的内容符合道德、伦理和社会规范，并且可以安全地应用于现实世界中，例如，避免生成有害、不实或偏见的信息，常见的方式有 DPO，RLHF，这里不展开细讲</p>
+<h2 id="从训练-loss-的视角"><a class="markdownIt-Anchor" href="#从训练-loss-的视角"></a> 从训练 Loss 的视角</h2>
+<p>ITC，WPA，ITM，MLM，Image-Text contrastive loss</p>
+<p>Captioning Loss</p>
+<p>​	由于 ALBEF 需要多次 forward 才能进行</p>
+<p>VQ，VE，VQA</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+			
+			
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/12/22/ai/deep%20learning/3DGS/" title="3D Gaussian Splatting">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">3D Gaussian Splatting</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/11/28/ai/others/energy_based_models/" title="Energy Based Models">
+                        <span class="hidden-mobile">Energy Based Models</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <i class="iconfont icon-love"></i> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

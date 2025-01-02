@@ -1,0 +1,600 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/w.png">
+  <link rel="icon" href="/img/w.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="logger 的一些问题  logging 基础知识 ​	在需要调试复杂情况的时候，我们都会使用 logging 而不是 print，一般来说配置日志文件有两种方式，全局的 logger 或者局部的 logger，全局的 logger 可以这样配置： 12345678910import logging# level 用语过滤 INFO 严重级别以下的信息，默认值是 warninglogging.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="logger_problems">
+<meta property="og:url" content="http://example.com/2024/12/26/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/logger-problems/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="logger 的一些问题  logging 基础知识 ​	在需要调试复杂情况的时候，我们都会使用 logging 而不是 print，一般来说配置日志文件有两种方式，全局的 logger 或者局部的 logger，全局的 logger 可以这样配置： 12345678910import logging# level 用语过滤 INFO 严重级别以下的信息，默认值是 warninglogging.">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-12-26T12:27:29.000Z">
+<meta property="article:modified_time" content="2024-12-27T07:20:54.465Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>logger_problems - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.6","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/katex@0.11.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Wataの锟斤拷</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="logger_problems"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-12-26 20:27" pubdate>
+          2024年12月26日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          12 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">logger_problems</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="logger-的一些问题"><a class="markdownIt-Anchor" href="#logger-的一些问题"></a> <code>logger</code> 的一些问题</h1>
+<h2 id="logging-基础知识"><a class="markdownIt-Anchor" href="#logging-基础知识"></a> <code>logging</code> 基础知识</h2>
+<p>​	在需要调试复杂情况的时候，我们都会使用 <code>logging</code> 而不是 <code>print</code>，一般来说配置日志文件有两种方式，全局的 <code>logger</code> 或者局部的 <code>logger</code>，全局的 <code>logger</code> 可以这样配置：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> logging<br><br><span class="hljs-comment"># level 用语过滤 INFO 严重级别以下的信息，默认值是 warning</span><br>logging.basicConfig(level=logging.INFO, <span class="hljs-built_in">format</span>=<span class="hljs-string">&#x27;%(asctime)s - %(name)s - %(levelname)s - %(message)s&#x27;</span>)<br><br>logging.debug(<span class="hljs-string">&#x27;debug msg&#x27;</span>)<br>logging.info(<span class="hljs-string">&quot;info msg&quot;</span>)<br>logging.warning(<span class="hljs-string">&#x27;warning msg&#x27;</span>)<br>logging.error(<span class="hljs-string">&#x27;error msg&#x27;</span>)<br>logging.error(<span class="hljs-string">&#x27;critical msg&#x27;</span>)<br></code></pre></td></tr></table></figure>
+<p>实际上这种方法虽然没有显示配置 <code>logger</code>，但是其实是默认配置了 <code>logger.root</code></p>
+<p>​	<code>logger</code> 的配置方式一般为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> logging<br><br>logger = logging.getLogger(<span class="hljs-string">&#x27;my_logger&#x27;</span>)<br>logger.setLevel(logging.DEBUG)  <span class="hljs-comment"># 设置logger级别</span><br><br><span class="hljs-comment"># 创建handler</span><br>ch = logging.StreamHandler()<br>ch.setLevel(logging.DEBUG)<br><br><span class="hljs-comment"># 创建formatter并添加到handler</span><br>formatter = logging.Formatter(<span class="hljs-string">&#x27;%(asctime)s - %(name)s - %(levelname)s - %(message)s&#x27;</span>)<br>ch.setFormatter(formatter)<br>logger.addHandler(ch)<br>logger.debug(<span class="hljs-string">&#x27;This is a debug message from my_logger&#x27;</span>)<br></code></pre></td></tr></table></figure>
+<ul>
+<li><code>logging</code> 可决定输出到什么地方，以及输出格式。有许多的重要性别级可供选择，<code>debug、info、warning、error</code> 以及 <code>critical</code>。通过赋予 <code>logger</code> 或者 <code>handler</code> 不同的级别，你就可以只输出错误消息到特定的记录文件中，或者在调试时只记录调试信息</li>
+<li>创建 <code>logger</code> 的过程中，<code>getLogger</code> 函数返回的 <code>logger</code> 只与日志名称有关，输入相同的名称会返回同一个实例（如果是全局的 <code>logging</code>，那么 <code>logger</code> 的名字就是 <code>root</code>）</li>
+<li><code>FileHandler</code> 配置的参数和 <code>logging.basicConfig</code> 对应，他们可以配置几乎完全相同的参数，例如输出格式，输出等级（配置输出格式使用 <code>setFormatter</code> 方法）
+<ul>
+<li><strong><code>logger</code> 可配置的参数只有 <code>level</code>，其他的参数全部是属于 <code>Handeler</code> 配置</strong></li>
+</ul>
+</li>
+<li>同一个 <code>logger</code> 可以加入多个 <code>Handler</code>，同一个<code>Handler</code> 也可以给多个 <code>logger</code>（这一点和 Java 相同）</li>
+</ul>
+<p><code>logging msg</code> 输出格式中可以配置的参数有：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-string">&#x27;%(name)s&#x27;</span>          <span class="hljs-comment"># Logger的名字</span><br><span class="hljs-string">&#x27;%(levelno)s&#x27;</span>       <span class="hljs-comment"># 数字形式的日志级别</span><br><span class="hljs-string">&#x27;%(levelname)s&#x27;</span>     <span class="hljs-comment"># 文本形式的日志级别（如 &#x27;DEBUG&#x27;, &#x27;INFO&#x27;, &#x27;WARNING&#x27;, &#x27;ERROR&#x27;, &#x27;CRITICAL&#x27;）</span><br><span class="hljs-string">&#x27;%(pathname)s&#x27;</span>      <span class="hljs-comment"># 完整路径名，可能包括文件名</span><br><span class="hljs-string">&#x27;%(filename)s&#x27;</span>      <span class="hljs-comment"># 文件名（从pathname中提取）</span><br><span class="hljs-string">&#x27;%(module)s&#x27;</span>        <span class="hljs-comment"># 模块名（从filename中提取，不带扩展名）</span><br><span class="hljs-string">&#x27;%(lineno)d&#x27;</span>        <span class="hljs-comment"># 代码行号</span><br><span class="hljs-string">&#x27;%(funcName)s&#x27;</span>      <span class="hljs-comment"># 函数或方法名</span><br><span class="hljs-string">&#x27;%(created)f&#x27;</span>       <span class="hljs-comment"># 当前时间（自纪元以来的秒数，浮点数）</span><br><span class="hljs-string">&#x27;%(asctime)s&#x27;</span>       <span class="hljs-comment"># 字符串形式的时间，格式可以由你指定，默认为 &#x27;%Y-%m-%d %H:%M:%S,%f&#x27;</span><br><span class="hljs-string">&#x27;%(msecs)d&#x27;</span>         <span class="hljs-comment"># 毫秒部分</span><br><span class="hljs-string">&#x27;%(thread)d&#x27;</span>        <span class="hljs-comment"># 线程ID</span><br><span class="hljs-string">&#x27;%(threadName)s&#x27;</span>    <span class="hljs-comment"># 线程名称</span><br><span class="hljs-string">&#x27;%(process)d&#x27;</span>       <span class="hljs-comment"># 进程ID</span><br><span class="hljs-string">&#x27;%(message)s&#x27;</span>       <span class="hljs-comment"># 用户记录的消息</span><br></code></pre></td></tr></table></figure>
+<h2 id="暗箱操作导致多重日志"><a class="markdownIt-Anchor" href="#暗箱操作导致多重日志"></a> 暗箱操作导致多重日志</h2>
+<p>​	<code>logging</code> 的暗箱操作：<code>logger</code> 在没有 <code>handler</code> 的情况下，其本身是不具备输出消息能力的。但是为什么上面全局 <code>logger</code> 的例子中  <code>logging.warning(msg)</code> 能够在不配置 <code>handler</code> 的情况下，输出日志呢？<strong>这其实是 logging 模块的保护机制，<strong>对于 warning 和 error 级别的消息，如果消息的日志等级大于 <code>logger</code> 的日志等级，且 <code>logger</code> 没有配置任何的 <code>handler</code>，则会调用 logging 模块</strong>内置的 <code>streamHandler</code></strong> 来输出信息</p>
+<h3 id="坑爹的-loggingwarning"><a class="markdownIt-Anchor" href="#坑爹的-loggingwarning"></a> 坑爹的 <code>logging.warning</code></h3>
+<p>​	当我们开心地调用 <code>logging.warning</code> 时，我们以为只是输出了一条日志，实际上可能给 <code>logging.root</code> 偷偷配置了 <code>streamHandler</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python">logging.warnign(<span class="hljs-string">&#x27;learn logging&#x27;</span>) <br><span class="hljs-built_in">print</span>(logging.root.handlers) <br><span class="hljs-comment"># [&lt;StreamHandler &lt;stderr&gt; (NOTSET)&gt;] </span><br></code></pre></td></tr></table></figure>
+<p>​	如果单纯的以为就多了个 <code>streamHandler</code> 就错了。他会引起多重日志的问题。为什么使用 pytorch 1.10 突然出现了多重日志？追根溯源，是因为 pytorch 1.10 的 <code>DistributedDataParallel</code> 模块在 <code>forward</code> 过程中调用了 <a href="https://link.zhihu.com/?target=https%3A//github.com/pytorch/pytorch/blob/71f889c7d265b9636b93ede9d651c0a9c4bee191/torch/nn/parallel/distributed.py%23L874">logging.info</a> ，进而 <code>logging.root</code> 多出了一个 <code>streamHandler</code>，如果这个调用发生在 <code>logging.getLogger</code> 之后，就会导致多重日志的发生</p>
+<ul>
+<li>为了避免多重日志的发生，我们最好配置输出的 formatter，让 logger 输出的日志自带 logger 名，这样就知道每条日志信息是哪一个 <code>logger</code> 产生，就很好调试了</li>
+</ul>
+<h2 id="万恶的loggingroot"><a class="markdownIt-Anchor" href="#万恶的loggingroot"></a> 万恶的<code>logging.root</code></h2>
+<p>​	众所可能不周知， <code>logging</code> 库为了简化配置 <code>logger</code> 的流程，允许我们通过派生“子实例”来获取日志格式和父实例一样的 <code>logger</code>。<font color="red">所有通过 <code>logging.getLogger</code> 方法创建的实例，都拥有共同的祖先：<code>logging.root</code></font></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span>logger = logging.getLogger(<span class="hljs-string">&#x27;roommate&#x27;</span>) <br><span class="hljs-meta">&gt;&gt;&gt; </span>logger = logger.getChild(<span class="hljs-string">&#x27;roommate&#x27;</span>) <br><span class="hljs-meta">&gt;&gt;&gt; </span>logger = logger.getChild(<span class="hljs-string">&#x27;roommate&#x27;</span>) <br><span class="hljs-meta">&gt;&gt;&gt; </span>logger = logger.getChild(<span class="hljs-string">&#x27;roommate&#x27;</span>) <br><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">while</span> logger.parent: <br><span class="hljs-meta">&gt;&gt;&gt; </span>    <span class="hljs-built_in">print</span>(logger.parent.name) <br><span class="hljs-meta">&gt;&gt;&gt; </span>    logger = logger.parent <br>roommate.roommate.roommate <br>roommate.roommate <br>roommate <br>root <br></code></pre></td></tr></table></figure>
+<p>​	子实例会继承父实例的属性，但是我们前面提到了 <code>logger</code> 的可配置参数只有 <code>level</code>，这个东西继承并不会带来多重日志的问题，<strong>但是 <code>logger</code> 还有通过 propagate 属性继承（严格来说这不算继承） <code>Handler</code> 的机制，当 propagate 为 True 时，子实例会向上搜索并调用父实例的 Handler 从而触发多重打印。我们只需要另 propagate 为 False，能走出万恶的继承循环了</strong></p>
+<p>​	我们举一个错误的代码例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> logging<br><br><br>format_str = <span class="hljs-string">&quot;%(asctime)s - %(name)s - %(levelname)s - %(message)s&quot;</span><br>logging.basicConfig(level=logging.DEBUG, <span class="hljs-built_in">format</span>=format_str)<br>logging.error(<span class="hljs-string">&quot;error msg from root logger&quot;</span>)<br><br><br>child_logger = logging.getLogger(<span class="hljs-string">&quot;child&quot;</span>)<br><span class="hljs-comment"># 为子记录器配置一个自己的处理器（这将导致双重日志）</span><br>ch_child = logging.StreamHandler()<br>ch_child.setLevel(logging.DEBUG)<br>formatter = logging.Formatter(format_str)<br>ch_child.setFormatter(formatter)<br><br>child_logger.addHandler(ch_child)<br>child_logger.error(<span class="hljs-string">&quot;error msg from child logger&quot;</span>)<br><br><span class="hljs-comment"># &gt;&gt;&gt;</span><br><span class="hljs-comment"># 2024-12-27 14:55:20,288 - root - ERROR - error msg from root logger</span><br><span class="hljs-comment"># 2024-12-27 14:55:20,288 - child - ERROR - error msg from child logger</span><br><span class="hljs-comment"># 2024-12-27 14:55:20,288 - child - ERROR - error msg from child logger</span><br></code></pre></td></tr></table></figure>
+<p>​	这样的错误代码在同一个文件内可能哈哈还会因为两种使用方式不同而发现，但如果是导入包的时候出现了这个问题那 debug 的难度是要上天了</p>
+<p>​	代码的修改也很简单，将 <code>child_logger</code> 的 propagate 属性设置成 False 就行了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> logging<br><br><br>format_str = <span class="hljs-string">&quot;%(asctime)s - %(name)s - %(levelname)s - %(message)s&quot;</span><br>logging.basicConfig(level=logging.DEBUG, <span class="hljs-built_in">format</span>=format_str)<br>logging.error(<span class="hljs-string">&quot;error msg from root logger&quot;</span>)<br><br><br>child_logger = logging.getLogger(<span class="hljs-string">&quot;child&quot;</span>)<br>child_logger.propagate = <span class="hljs-literal">False</span>  <span class="hljs-comment"># Set propagate=False for child logger</span><br>ch_child = logging.StreamHandler()<br>ch_child.setLevel(logging.DEBUG)<br>formatter = logging.Formatter(format_str)<br>ch_child.setFormatter(formatter)<br><br>child_logger.addHandler(ch_child)<br>child_logger.error(<span class="hljs-string">&quot;error msg from child logger&quot;</span>)<br><br><span class="hljs-comment"># &gt;&gt;&gt;</span><br><span class="hljs-comment"># 2024-12-27 15:05:59,857 - root - ERROR - error msg from root logger</span><br><span class="hljs-comment"># 2024-12-27 15:05:59,861 - child - ERROR - error msg from child logger</span><br></code></pre></td></tr></table></figure>
+<h2 id="loguru更简单的日志写法"><a class="markdownIt-Anchor" href="#loguru更简单的日志写法"></a> <code>loguru</code>：更简单的日志写法</h2>
+<p>​	<code>loguru</code> 是一个 Python 的记录日志的第三方库，旨在简化和改进应用程序的日志记录过程。<code>loguru</code> 试图通过提供有用的功能来解决标准库 logging 中的一些痛点，例如更简单的 API、自动处理日志文件的轮转、压缩等（但是这个库发现记录信息有点慢了）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> loguru <span class="hljs-keyword">import</span> logger<br><br><span class="hljs-comment"># 移除默认的控制台处理器</span><br>logger.remove()<br><span class="hljs-comment"># 添加一个新的处理器，将日志写入 &#x27;log.txt&#x27; 文件中</span><br><span class="hljs-comment"># level=&#x27;DEBUG&#x27; 设置最低日志级别为 DEBUG</span><br>logger.add(<span class="hljs-string">&quot;log.txt&quot;</span>, level=<span class="hljs-string">&quot;DEBUG&quot;</span>)<br><br><span class="hljs-comment"># 记录一些不同级别的日志消息</span><br>logger.debug(<span class="hljs-string">&quot;debug msg&quot;</span>)<br>logger.info(<span class="hljs-string">&quot;info msg&quot;</span>)<br>logger.warning(<span class="hljs-string">&quot;warning msg&quot;</span>)<br>logger.error(<span class="hljs-string">&quot;error msg&quot;</span>)<br><span class="hljs-comment"># &gt;&gt;&gt;</span><br><span class="hljs-comment"># 2024-12-27 15:20:29.546 | DEBUG    | __main__:&lt;module&gt;:33 - debug msg</span><br><span class="hljs-comment"># 2024-12-27 15:20:29.546 | INFO     | __main__:&lt;module&gt;:34 - info msg</span><br><span class="hljs-comment"># 2024-12-27 15:20:29.546 | WARNING  | __main__:&lt;module&gt;:35 - warning msg</span><br><span class="hljs-comment"># 2024-12-27 15:20:29.546 | ERROR    | __main__:&lt;module&gt;:36 - error msg</span><br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+			
+			
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/12/28/meta_learning/hyperparameter_search/" title="hyperparameter_search">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">hyperparameter_search</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/12/22/ai/deep%20learning/3DGS/" title="3D Gaussian Splatting">
+                        <span class="hidden-mobile">3D Gaussian Splatting</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <i class="iconfont icon-love"></i> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

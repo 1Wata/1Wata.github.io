@@ -1,0 +1,626 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/w.png">
+  <link rel="icon" href="/img/w.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Segformer 代码结构分析  MMSegmentation 算法库的整体框架 ​	MMSegmentation 是 OpenMMLab 开源的基于 PyTorch 实现的功能强大的语义分割工具箱，MMSegmentation 的主要特性如下：  丰富的语义分割模型： 已支持 11 种主干网络和 34 种算法，例如常用模型 FCN， PSPNet 和 DeepLabV3；Transforme">
+<meta property="og:type" content="article">
+<meta property="og:title" content="segformer(1)">
+<meta property="og:url" content="http://example.com/2024/02/17/ai/computer_vision/segformer-1/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Segformer 代码结构分析  MMSegmentation 算法库的整体框架 ​	MMSegmentation 是 OpenMMLab 开源的基于 PyTorch 实现的功能强大的语义分割工具箱，MMSegmentation 的主要特性如下：  丰富的语义分割模型： 已支持 11 种主干网络和 34 种算法，例如常用模型 FCN， PSPNet 和 DeepLabV3；Transforme">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2024/02/17/ai/computer_vision/segformer-1/v2-a71127059ced6cdc5242925f948fda56_1440w.webp">
+<meta property="og:image" content="http://example.com/2024/02/17/ai/computer_vision/segformer-1/image-20240217160404076.png">
+<meta property="article:published_time" content="2024-02-17T02:50:28.000Z">
+<meta property="article:modified_time" content="2024-02-28T08:59:05.540Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2024/02/17/ai/computer_vision/segformer-1/v2-a71127059ced6cdc5242925f948fda56_1440w.webp">
+  
+  
+  
+  <title>segformer(1) - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.6","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/katex@0.11.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Wataの锟斤拷</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="segformer(1)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-02-17 10:50" pubdate>
+          2024年2月17日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          21 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">segformer(1)</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="segformer-代码结构分析"><a class="markdownIt-Anchor" href="#segformer-代码结构分析"></a> Segformer 代码结构分析</h1>
+<h2 id="mmsegmentation-算法库的整体框架"><a class="markdownIt-Anchor" href="#mmsegmentation-算法库的整体框架"></a> MMSegmentation 算法库的整体框架</h2>
+<p>​	MMSegmentation 是 OpenMMLab 开源的基于 PyTorch 实现的功能强大的语义分割工具箱，MMSegmentation 的主要特性如下：</p>
+<ul>
+<li>丰富的语义分割模型： 已支持 11 种主干网络和 34 种算法，例如常用模型 FCN， PSPNet 和 DeepLabV3；Transformer 模型，Swin Transformer、Segmenter 和 SegFormer； Real-Time 实时分割模型， ICNet、BiSeNet 和 STDC 等；以及最近流行的网络 ConvNeXt 和 MAE。</li>
+<li>大量开箱即用的模型权重：在 16 个常用的语义分割数据集上提供了 590 个训练好的模型。</li>
+<li>统一的性能评估框架：优化和统一了训练和测试的流程，方便公平比较各个模型在特定任务上的表现。</li>
+</ul>
+<h3 id="mmsegmentation-目录结构"><a class="markdownIt-Anchor" href="#mmsegmentation-目录结构"></a> MMSegmentation 目录结构</h3>
+<p>按照代码目录下的文件夹，MMSegmentation 代码库主要可以包含四个部分：</p>
+<p>（1）<code>./tools</code> 包括了调用 MMSegmentation 作为训练和测试入口的 <code>./tools/train.py</code> 和 <code>./tools/test.py</code>，<strong>预训练模型和数据集准备的转换脚本，以及部署和可视化相关的脚本</strong></p>
+<p>详细介绍可见 Github 里的<a target="_blank" rel="noopener" href="https://github.com/open-mmlab/mmsegmentation/blob/master/docs/zh_cn/useful_tools.md">文档</a></p>
+<p>（2） <code>./configs</code> 包括了各个算法的配置文件、存放常用的数据集配置、基础模型以及训练策略的基配置文件 <code>./configs/_base_</code></p>
+<p>（3）<code>./mmseg</code> 里面是 MMSegmentation 的算法库，包括核心组件、数据集处理、分割模型代码和面向用户的 API 接口</p>
+<p>（4）<code>./data</code> 指的是存放数据集的路径，在原本的代码库中没有这个文件夹。用户只需指定正确的文件夹路径即可使用数据</p>
+<p>下面是详细的 MMSegmentation 的算法库目录结构：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># MMSegmentation 算法库目录结构的主要部分 </span><br>mmsegmentation <br>   | <br>   |- configs                        <span class="hljs-comment"># 配置文件 </span><br>   |     |- _base_                   <span class="hljs-comment">## 基配置文件 </span><br>   |     |     |- datasets             <span class="hljs-comment">### 数据集相关配置文件 </span><br>   |     |     |- models               <span class="hljs-comment">### 模型相关配置文件 </span><br>   |     |     |- schedules            <span class="hljs-comment">### 训练日程如优化器，学习率等相关配置文件 </span><br>   |     |     |- default_runtime.py   <span class="hljs-comment">### 运行相关的默认的设置 </span><br>   |     |- swin                     <span class="hljs-comment">## 各个分割模型的配置文件，会引用 _base_ 的配置并做修改  </span><br>   |     |- ...                         <br>   |- data                           <span class="hljs-comment"># 原始及转换后的数据集文件 </span><br>   |- mmseg  <br>   |     |- core                     <span class="hljs-comment">## 核心组件 </span><br>   |     |     |- evaluation           <span class="hljs-comment">### 评估模型性能代码 </span><br>   |     |- datasets                 <span class="hljs-comment">## 数据集相关代码 </span><br>   |     |     |- pipelines            <span class="hljs-comment">### 数据预处理 </span><br>   |     |     |- samplers             <span class="hljs-comment">### 数据集采样代码 </span><br>   |     |     |- ade.py               <span class="hljs-comment">### 各个数据集准备需要的代码 </span><br>   |     |     |- ... <br>   |     |- models                    <span class="hljs-comment">## 分割模型具体实现代码 </span><br>   |     |     |- backbones             <span class="hljs-comment">### 主干网络 </span><br>   |     |     |- decode_heads          <span class="hljs-comment">### 解码头 </span><br>   |     |     |- losses                <span class="hljs-comment">### 损失函数 </span><br>   |     |     |- necks<br>   |     |     |- segmentors            <span class="hljs-comment">### 构建完整分割网络的代码 </span><br>   |     |     |- utils                 <span class="hljs-comment">### 构建模型时的辅助工具 </span><br>   |     |- apis                      <span class="hljs-comment">## high level 用户接口，在这里调用 ./mmseg/ 内各个组件 </span><br>   |     |     |- train.py              <span class="hljs-comment">### 训练接口（侧重 python 编程式训练）</span><br>   |     |     |- test.py               <span class="hljs-comment">### 测试接口 </span><br>   |     |     |- ... <br>   |     |- ops                       <span class="hljs-comment">## cuda 算子（即将迁移到 mmcv 中）</span><br>   |     |- utils                     <span class="hljs-comment">## 辅助工具 </span><br>   |- tools <br>   |     |- model_converters          <span class="hljs-comment">## 各个主干网络预训练模型转 key 脚本 </span><br>   |     |- convert_datasets          <span class="hljs-comment">## 各个数据集准备转换脚本</span><br>   |     |- train.py                  <span class="hljs-comment">## 训练脚本（侧重 python 命令行式训练）</span><br>   |     |- test.py                   <span class="hljs-comment">## 测试脚本</span><br>   |     |- ...                       <br>   |- ... <br></code></pre></td></tr></table></figure>
+<p>MMSegmentation 的算法库有 3 个关键组件：</p>
+<p>1.<code>./mmseg/apis/</code>，用于训练和测试的接口</p>
+<p>2.<code>./mmseg/models/</code>，用于分割网络模型的具体实现</p>
+<p>3.<code>./mmseg/datasets/</code>，用于数据集处理</p>
+<p>本文我们主要介绍算法模型相关的代码，因此<strong>涉及内容主要在 <code>./mmseg/models</code> 里面</strong></p>
+<h3 id="mmsegmentation-模型实现"><a class="markdownIt-Anchor" href="#mmsegmentation-模型实现"></a> MMSegmentation 模型实现</h3>
+<p>​	MMSegmentation 中将语义分割模型定义为 <strong>segmentor</strong>， 一般包括 <strong>backbone、neck、head、loss</strong>4 个核心组件（ 4 个组件不是每个算法都需要的），每个模块的功能如下：</p>
+<p>​	MMSegmentation 里面的<strong>分割器框架可以分为 “Encoder Decoder” 结构和 “Cascade Encoder Decoder” 结构</strong>。 “Cascade Encoder Decoder” 的解码部分不是单独的解码头，而是<strong>级联式的 2 个或多个解码头，前一个解码头的输出作为后一个解码头的输入。</strong></p>
+<p><img src="/2024/02/17/ai/computer_vision/segformer-1/v2-a71127059ced6cdc5242925f948fda56_1440w.webp" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>​	关于分割器 segmentor 的训练和测试的基本逻辑，以语义分割经典的 “Encoder Decoder” 结构为例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">EncoderDecoder</span>(<span class="hljs-title class_ inherited__">BaseSegmentor</span>): <br>   <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">...</span>): <br>        <span class="hljs-comment"># 构建 backbone、neck 和 head </span><br>        self.backbone = build_backbone(backbone) <br>        <span class="hljs-keyword">if</span> neck <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>: <br>            self.neck = build_neck(neck) <br>        self._init_decode_head(decode_head) <br>        self._init_auxiliary_head(auxiliary_head) <br>  <span class="hljs-keyword">def</span> <span class="hljs-title function_">forward_train</span>(<span class="hljs-params">...</span>):  <br>        <span class="hljs-comment"># 利用 backbone+neck 进行特征提取 </span><br>        x = self.extract_feat(img) <br>        losses = <span class="hljs-built_in">dict</span>() <br>        <span class="hljs-comment"># decode head 输出预测特征图并计算出 loss </span><br>        loss_decode = self._decode_head_forward_train(x, img_metas, <br>                                                      gt_semantic_seg) <br>        losses.update(loss_decode) <br>        <span class="hljs-comment"># auxiliary heads 输出预测特征图并计算出 loss </span><br>        <span class="hljs-keyword">if</span> self.with_auxiliary_head: <br>            loss_aux = self._auxiliary_head_forward_train( <br>                x, img_metas, gt_semantic_seg) <br>            losses.update(loss_aux) <br>        <span class="hljs-keyword">return</span> losses <br> <br>  <span class="hljs-keyword">def</span> <span class="hljs-title function_">simple_test</span>(<span class="hljs-params">...</span>): <br>        <span class="hljs-comment"># 调用 inference 函数，对输入图片做全图或者滑动窗口的推理，得到 logits 值</span><br>        seg_logit = self.inference(img, img_meta, rescale) <br>        <span class="hljs-comment"># 做 argmax 得到预测的 prediction mask </span><br>        seg_pred = seg_logit.argmax(dim=<span class="hljs-number">1</span>) <br> <br>   <span class="hljs-keyword">def</span> <span class="hljs-title function_">aug_test</span>(<span class="hljs-params">...</span>): <br>        ... <br></code></pre></td></tr></table></figure>
+<p><code>EncoderDecoder</code> 里面分别定义了训练和测试的接口，训练时调用 <code>forward_train()</code> 返回一个 dict，包含各种 loss ，测试时则会调用 <code>simple_test()</code> 或者测试时数据增广的 <code>aug_test()</code>，只返回预测的分割结果。</p>
+<p>训练时预测结果并计算 loss 的主要逻辑是在 <code>_decode_head_forward_train</code> 中实现：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">_decode_head_forward_train</span>(<span class="hljs-params">...</span>): <br>    <span class="hljs-comment"># 调用每个 head 自身的 forward_train 方法, 并计算出 loss </span><br> losses = <span class="hljs-built_in">dict</span>() <br>    loss_decode = self.decode_head.forward_train(x, img_metas, <br>                                                 gt_semantic_seg, <br>                                                 self.train_cfg) <br> <br>    losses.update(add_prefix(loss_decode, <span class="hljs-string">&#x27;decode&#x27;</span>)) <br>    <span class="hljs-comment"># 返回 </span><br>    <span class="hljs-keyword">return</span> losses <br></code></pre></td></tr></table></figure>
+<p>对于不同的 head，都可以抽象为：<code>seg_logits = self.forward(inputs)</code> ，即：<strong>网络前传得到预测的 logtis 值，然后再计算各个 head 的对应 loss</strong>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">forward_train</span>(<span class="hljs-params">...</span>): <br> seg_logits = self.forward(inputs) <br>    losses = self.losses(seg_logits, gt_semantic_seg) <br>    <span class="hljs-keyword">return</span> losses <br> <br><span class="hljs-keyword">def</span> <span class="hljs-title function_">losses</span>(<span class="hljs-params">self, seg_logit, seg_label</span>): <br> loss = <span class="hljs-built_in">dict</span>() <br>    seg_logit = resize( <span class="hljs-comment"># 将预测得到的 logits 值 resize 成原图大小 </span><br>        <span class="hljs-built_in">input</span>=seg_logit, <br>        size=seg_label.shape[<span class="hljs-number">2</span>:], <br>        mode=<span class="hljs-string">&#x27;bilinear&#x27;</span>, <br>        align_corners=self.align_corners) <br>    .... <br>    <span class="hljs-keyword">for</span> loss_decode <span class="hljs-keyword">in</span> losses_decode: <span class="hljs-comment"># 分别计算这个 decode head 中的各个 loss </span><br>        <span class="hljs-keyword">if</span> loss_decode.loss_name <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> loss: <br>            loss[loss_decode.loss_name] = loss_decode( <br>                seg_logit, <br>                seg_label, <br>                weight=seg_weight, <br>                ignore_index=self.ignore_index) <br>        <span class="hljs-keyword">else</span>: <br>            loss[loss_decode.loss_name] += loss_decode( <br>                seg_logit, <br>                seg_label, <br>                weight=seg_weight, <br>                ignore_index=self.ignore_index) <br>    .... <br>    <span class="hljs-keyword">return</span> loss <br></code></pre></td></tr></table></figure>
+<p>接下来，我们详细介绍分割器 segmentor 里4 个核心组件：backbone， neck，head，和 loss</p>
+<h4 id="backbone"><a class="markdownIt-Anchor" href="#backbone"></a> <strong>Backbone</strong></h4>
+<p>目前 MMSegmengtation 中已经集成了大部分主干网络，具体见文件 <code>./mmseg/models/backbones/</code>、</p>
+<p>**通常定义的&quot;主干网络&quot; 是指从上游任务（如 ImageNet ）预训练，然后用于多个下游任务（如目标检测、实例分割、语义分割、姿态估计）中的网络，**而在 <code>./mmseg/models/backbones</code> 里主干网络的定义有所不同，会把一些分割算法的网络结构也作为&quot;主干网络&quot;，如 UNet、 FastSCNN、CGNet、ICNet、BiSeNetV1/V2、ERFNet、STDC</p>
+<p>其中最常用的是 ResNet v1c 系列和 Vision Transformer 系列。如果你需要对骨架进行扩展，可以继承上述网络，然后通过注册器机制注册使用。一个典型用法为 <code>./configs/_base_/models/segmenter_vit-b16_mask.py</code> 里面的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs python">checkpoint = <span class="hljs-string">&#x27;https://download.openmmlab.com/mmsegmentation/v0.5/pretrain/segmenter/vit_base_p16_384_20220308-96dfe169.pth&#x27;</span>  <span class="hljs-comment"># noqa </span><br><span class="hljs-comment"># model settings </span><br>model = <span class="hljs-built_in">dict</span>( <br>    <span class="hljs-built_in">type</span>=<span class="hljs-string">&#x27;EncoderDecoder&#x27;</span>, <br>    pretrained=checkpoint, <span class="hljs-comment"># 加载的预训练模型，这里为 Google Research提供的由 JAX 训练框架得到的 Vision Transformer </span><br>    backbone=<span class="hljs-built_in">dict</span>( <br>        <span class="hljs-built_in">type</span>=<span class="hljs-string">&#x27;VisionTransformer&#x27;</span>, <span class="hljs-comment"># 骨架类名，后面的参数都是该类的初始化参数 </span><br>        img_size=(<span class="hljs-number">512</span>, <span class="hljs-number">512</span>), <br>        patch_size=<span class="hljs-number">16</span>, <br>        in_channels=<span class="hljs-number">3</span>, <br>        embed_dims=<span class="hljs-number">768</span>, <br>        num_layers=<span class="hljs-number">12</span>, <br>        num_heads=<span class="hljs-number">12</span>, <br>        drop_path_rate=<span class="hljs-number">0.1</span>, <br>        attn_drop_rate=<span class="hljs-number">0.0</span>, <br>        drop_rate=<span class="hljs-number">0.0</span>, <br>        final_norm=<span class="hljs-literal">True</span>, <br>        norm_cfg= <span class="hljs-built_in">dict</span>(<span class="hljs-built_in">type</span>=<span class="hljs-string">&#x27;LN&#x27;</span>, eps=<span class="hljs-number">1e-6</span>, requires_grad=<span class="hljs-literal">True</span>), <br>        with_cls_token=<span class="hljs-literal">True</span>, <br>        interpolate_mode=<span class="hljs-string">&#x27;bicubic&#x27;</span>, <br>    ), <br></code></pre></td></tr></table></figure>
+<p>这里使用了 MMCV 中的<a href="https://link.zhihu.com/?target=https%3A//github.com/open-mmlab/mmcv/blob/master/docs/zh_cn/understand_mmcv/registry.md">模块注册机制</a>，通过修改配置文件的 type ，可以使用在 MMSegmentation 已经实现的 backbone 模型。此外，还可以使用 MMClassification 里面的更多主干网络，如 ShuffleNet、EfficientNet 等，可根据 <code>./configs/convnext</code> 里面 ConvNeXt 的实现方式，详细的方式可以参考： <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/436865195">MMDet居然能用MMCls的Backbone？论配置文件的打开方式</a></p>
+<p>​	backbone， neck，head，和 loss可以同理解读</p>
+<p>​	如果把这东西看成一个库的话，会感觉这东西很难用，我想要自定义自己的模型的话，按照官方教程的说法，我需要在mmseg的底层代码中增加文件，创建一个新的文件 mmseg/models/backbones/mobilenet.py，这意味着我每次开发一个新模型都需要把整个mmseg文件包带上，而不能直接import底层的代码调用api，而且不能让我自己实例化模型，训练推理。<a target="_blank" rel="noopener" href="http://xn--train-2b3hw13edzh593cq3cvx3k.xn--pytest-j76j.py">必须使用它的train.py和test.py</a>…</p>
+<p>​	因此不应该把它视为一个库，而是一种代码模板，从这点来看，它的整个框架结构和可拓展性都是很好的，下面我们去看Segformer论文代码：</p>
+<h2 id="segformer-官方论文代码"><a class="markdownIt-Anchor" href="#segformer-官方论文代码"></a> Segformer 官方论文代码</h2>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><code class="hljs bash">├─ configs<br>│    ├─ _base_<br>│    │    ├─ datasets<br>│    │    ├─ models<br>│    │    ├─ schedules<br>│    │    └─ default_runtime.py<br>│    ├─ dmnet<br>│    ├─ dnlnet<br>│    └─ fastscnn<br>│  ... <br>├─ demo<br>├─ docker<br>├─ docs<br>│   └─ tutorials<br>├─ local_configs	<span class="hljs-comment"># 稍微特殊的目录，用于覆盖 configs 中对应部分的配置</span><br>│    ├─ segformer<br>│    │    ├─ B0<br>│    │    ├─ B1<br>│    │    ...<br>│    │    └─ B5<br>│    └─ _base_<br>│       ├─ datasets<br>│       ├─ models<br>│       └─ schedules<br>├─ mmseg<br>│    ├─ apis<br>│    │    ├─ inference.py<br>│    │    ├─ test.py<br>│    │    └─ train.py<br>│    ├─ core<br>│    │    ├─ evaluation<br>│    │    ├─ seg<br>│    │    │  └─ sampler<br>│    │    └─ utils<br>│    ├─ datasets<br>│    │    ├─ pipelines<br>│    │    ├─ ...<br>│    │    └─ ade.py<br>│    ├─ models<br>│    │    ├─backbones<br>│    │    ├─decode_heads<br>│    │    ├─losses<br>│    │    ├─necks<br>│    │    ├─segmentors<br>│    │    └─utils<br>│    ├─ops<br>│    └─utils<br>├─ requirements<br>├─ resources<br>├─ tests<br>│    ├─test_data<br>│    ├─test_models<br>│    └─test_utils<br>└─ tools<br>     └─convert_datasets<br></code></pre></td></tr></table></figure>
+<p>​	可以看出来这个目录就是按照上面 mmseg 目录模板来进行的，每个部分的功能都可以参照上面 mmseg 目录注释部分。特别的这里有一个 <code>local_configs</code> 文件夹值得一提，它的存在是如下考虑的：</p>
+<p>​	在实际使用中，用户可能会从<code>configs</code>文件夹中复制一个预定义的配置文件到<code>local_configs</code>文件夹，并根据需要进行修改。这样，用户可以保留原始的默认配置，同时在 <code>local_configs</code> 中进行个性化设置，而不会影响到原始的配置文件。<code>local_configs</code> 文件夹中的内容通常会覆盖 <code>configs</code> 文件夹中的对应配置。在许多深度学习框架和项目中，<code>local_configs</code>用于存放本地用户自定义的配置文件，这些文件允许用户根据自己的需求对模型的训练、推理或其他相关参数进行调整</p>
+<p>​	当项目运行时，它会首先查找<code>local_configs</code>文件夹中的配置文件，如果找到了与项目运行相关的配置文件，那么这些文件中的设置会优先被使用。如果<code>local_configs</code>中没有相应的配置文件，或者用户想要使用默认的配置，那么项目会回退到<code>configs</code>文件夹中的默认配置</p>
+<h2 id="segformer-程序复现"><a class="markdownIt-Anchor" href="#segformer-程序复现"></a> Segformer 程序复现：</h2>
+<p>先参照论文官方 github 仓库将代码copy下来，再安装依赖库：详情查看 <code>requirements.txt</code> 文档，mmcv 安装参照：<a target="_blank" rel="noopener" href="https://github.com/open-mmlab/mmcv">open-mmlab/mmcv: OpenMMLab Computer Vision Foundation</a></p>
+<h3 id="程序修改"><a class="markdownIt-Anchor" href="#程序修改"></a> 程序修改：</h3>
+<p>​	根据上面对各个部分内容作用的分析，我们只需要修改 <code>mmseg/datasets/corresponding_daaset.py  tools  locol_configs</code> 这三个部分即可：</p>
+<ul>
+<li>
+<p>本文我采用原论文中ADE20K数据集进行训练，于是修改 <code>mmseg/datasets/voc.py</code> 的步骤就可以省略了，不过也可以按照 ADE20K 数据集中 <code>objects.txt</code> 文档检查一下 <code>SegFormer-master/mmseg/datasets/ade.py</code> 中配置信息是否正确：<img src="/2024/02/17/ai/computer_vision/segformer-1/image-20240217160404076.png" srcset="/img/loading.gif" lazyload alt="image-20240217160404076" style="zoom:50%;"></p>
+</li>
+<li>
+<p>如果是单卡训练，需要修改在 <code>mmseg/models/decode_heads/segformer_head.py</code> 中BatchNorm 方式</p>
+</li>
+<li>
+<p>训练过程为了减少训练 epoch 的次数，采用了再预训练模型上继续训练的方式进行，</p>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+			
+			
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/02/18/ai/computer_vision/Segformer-2/" title="Segformer(2)">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Segformer(2)</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/02/09/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/%E8%AF%AD%E8%A8%80%E7%89%B9%E8%89%B2%E5%8F%8A%E5%86%85%E9%83%A8%E5%8C%85/progressive-bar/" title="progressive-bar">
+                        <span class="hidden-mobile">progressive-bar</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <i class="iconfont icon-love"></i> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,639 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/w.png">
+  <link rel="icon" href="/img/w.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Wandb教程(3) ​	本篇文章用于介绍Wandb如何进行网格超参数搜索，主要使用了Wandb中的Sweep功能：  Sweep配置：  定义 Sweeps 配置 ​	Wandb的配置文件支持YAML和Python等多种文件格式，关于如何配置Sweep可见[官方文档](Define sweep configuration for hyperparameter tuning. (wandb.ai">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Wandb教程(3)">
+<meta property="og:url" content="http://example.com/2024/04/06/ai/Pytorch/Wandb-3/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Wandb教程(3) ​	本篇文章用于介绍Wandb如何进行网格超参数搜索，主要使用了Wandb中的Sweep功能：  Sweep配置：  定义 Sweeps 配置 ​	Wandb的配置文件支持YAML和Python等多种文件格式，关于如何配置Sweep可见[官方文档](Define sweep configuration for hyperparameter tuning. (wandb.ai">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2024/04/06/ai/Pytorch/Wandb-3/1.webp">
+<meta property="og:image" content="http://example.com/2024/04/06/ai/Pytorch/Wandb-3/2.webp">
+<meta property="og:image" content="http://example.com/2024/04/06/ai/Pytorch/Wandb-3/3.webp">
+<meta property="article:published_time" content="2024-04-06T11:27:34.000Z">
+<meta property="article:modified_time" content="2024-04-07T10:29:15.649Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2024/04/06/ai/Pytorch/Wandb-3/1.webp">
+  
+  
+  
+  <title>Wandb教程(3) - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.6","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/katex@0.11.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Wataの锟斤拷</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Wandb教程(3)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-04-06 19:27" pubdate>
+          2024年4月6日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          11 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Wandb教程(3)</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="wandb教程3"><a class="markdownIt-Anchor" href="#wandb教程3"></a> Wandb教程(3)</h1>
+<p>​	本篇文章用于介绍Wandb如何进行网格超参数搜索，主要使用了Wandb中的Sweep功能：</p>
+<h2 id="sweep配置"><a class="markdownIt-Anchor" href="#sweep配置"></a> Sweep配置：</h2>
+<h3 id="定义-sweeps-配置"><a class="markdownIt-Anchor" href="#定义-sweeps-配置"></a> 定义 Sweeps 配置</h3>
+<p>​	Wandb的配置文件支持YAML和Python等多种文件格式，关于如何配置Sweep可见[官方文档](<a target="_blank" rel="noopener" href="https://docs.wandb.ai/guides/sweeps/define-sweep-configuration">Define sweep configuration for hyperparameter tuning. (wandb.ai)</a>)，下面是两种文件配置的例子：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">program:</span> <span class="hljs-string">train.py</span> <span class="hljs-comment"># 训练脚本文件名</span><br><span class="hljs-attr">method:</span> <span class="hljs-string">grid</span> <span class="hljs-comment"># 或 bayes, random 等其他搜索方法</span><br><span class="hljs-attr">parameters:</span><br>  <span class="hljs-attr">learning_rate:</span><br>    <span class="hljs-attr">distribution:</span> <span class="hljs-string">uniform</span><br>    <span class="hljs-attr">min:</span> <span class="hljs-number">0.0001</span><br>    <span class="hljs-attr">max:</span> <span class="hljs-number">0.01</span><br>  <span class="hljs-attr">batch_size:</span><br>    <span class="hljs-attr">values:</span> [<span class="hljs-number">32</span>, <span class="hljs-number">64</span>, <span class="hljs-number">128</span>]<br>  <span class="hljs-attr">dropout_rate:</span><br>    <span class="hljs-attr">distribution:</span> <span class="hljs-string">log_uniform</span><br>    <span class="hljs-attr">min:</span> <span class="hljs-number">0.001</span><br>    <span class="hljs-attr">max:</span> <span class="hljs-number">0.5</span><br><span class="hljs-attr">metric:</span><br>    <span class="hljs-attr">name:</span> <span class="hljs-string">val_accuracy</span> <span class="hljs-comment"># 监控的目标指标名称</span><br>    <span class="hljs-attr">goal:</span> <span class="hljs-string">maximize</span> <span class="hljs-comment"># 指标优化目标（maximize 或 minimize）</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> wandb<br><br>sweep_config = &#123;<br>    <span class="hljs-string">&quot;method&quot;</span>: <span class="hljs-string">&quot;grid&quot;</span>,<br>    <span class="hljs-string">&quot;metric&quot;</span>: &#123;<span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;val_loss&quot;</span>, <span class="hljs-string">&quot;goal&quot;</span>: <span class="hljs-string">&quot;minimize&quot;</span>&#125;,<br>    <span class="hljs-string">&quot;parameters&quot;</span>: &#123;<br>        <span class="hljs-string">&quot;learning_rate&quot;</span>: &#123;<span class="hljs-string">&quot;distribution&quot;</span>: <span class="hljs-string">&quot;uniform&quot;</span>, <span class="hljs-string">&quot;min&quot;</span>: <span class="hljs-number">1e-4</span>, <span class="hljs-string">&quot;max&quot;</span>: <span class="hljs-number">1e-2</span>&#125;,<br>        <span class="hljs-string">&quot;dropout_rate&quot;</span>: &#123;<span class="hljs-string">&quot;distribution&quot;</span>: <span class="hljs-string">&quot;categorical&quot;</span>, <span class="hljs-string">&quot;values&quot;</span>: [<span class="hljs-number">0.2</span>, <span class="hljs-number">0.3</span>, <span class="hljs-number">0.4</span>]&#125;,<br>    &#125;,<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="初始化-sweep"><a class="markdownIt-Anchor" href="#初始化-sweep"></a> 初始化 Sweep</h3>
+<p>​	对于Python文件，初始化则需要使用<code>wandb.sweep</code>函数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> wandb<br><br><span class="hljs-comment"># 加载或创建 sweep 配置</span><br>sweep_id = wandb.sweep(sweep_config)<br><br><span class="hljs-comment"># 在训练函数中加入 sweep 调用</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">train</span>(<span class="hljs-params">hparams</span>):<br>    <span class="hljs-comment"># 使用 hparams 来设置训练过程中的超参数</span><br>    wandb.init(config=hparams)<br>    <span class="hljs-comment"># ... 实现你的训练逻辑 ...</span><br>    <br><span class="hljs-comment"># 启动 Sweep，用于启动和管理 Sweep 中的实验执行的一个函数</span><br>wandb.agent(sweep_id, function=train)<br></code></pre></td></tr></table></figure>
+<h3 id="常用配置"><a class="markdownIt-Anchor" href="#常用配置"></a> 常用配置：</h3>
+<h4 id="1选择一个调优算法"><a class="markdownIt-Anchor" href="#1选择一个调优算法"></a> 1，选择一个调优算法</h4>
+<p>Sweep支持如下3种调优算法:</p>
+<ul>
+<li>
+<p>网格搜索：grid. 遍历所有可能得超参组合，只在超参空间不大的时候使用，否则会非常慢</p>
+</li>
+<li>
+<p>随机搜索：random. 每个超参数都选择一个随机值，非常有效，一般情况下建议使用</p>
+</li>
+<li>
+<p>贝叶斯搜索：bayes. 创建一个概率模型估计不同超参数组合的效果，采样有更高概率提升优化目标的超参数组合。对连续型的超参数特别有效，但扩展到非常高维度的超参数时效果不好</p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python">sweep_config = &#123;<br>    <span class="hljs-string">&#x27;method&#x27;</span>: <span class="hljs-string">&#x27;random&#x27;</span><br>    &#125;<br></code></pre></td></tr></table></figure>
+<h4 id="2定义调优目标"><a class="markdownIt-Anchor" href="#2定义调优目标"></a> 2，定义调优目标</h4>
+<p>设置优化指标，以及优化方向。</p>
+<p>sweep agents 通过 wandb.log 的形式向 sweep controller 传递优化目标的值</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs python">metric = &#123;<br>    <span class="hljs-string">&#x27;name&#x27;</span>: <span class="hljs-string">&#x27;val_acc&#x27;</span>,<br>    <span class="hljs-string">&#x27;goal&#x27;</span>: <span class="hljs-string">&#x27;maximize&#x27;</span>   <br>    &#125;<br>sweep_config[<span class="hljs-string">&#x27;metric&#x27;</span>] = metric<br></code></pre></td></tr></table></figure>
+<h4 id="3定义超参空间"><a class="markdownIt-Anchor" href="#3定义超参空间"></a> 3，定义超参空间</h4>
+<p>超参空间可以分成 固定型，离散型和连续型</p>
+<ul>
+<li>固定型：指定 value</li>
+<li>离散型：指定 values，列出全部候选取值</li>
+<li>连续性：需要指定 分布类型 distribution, 和范围 min, max。用于 random 或者 bayes采样</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs python">sweep_config[<span class="hljs-string">&#x27;parameters&#x27;</span>] = &#123;&#125;<br><br><span class="hljs-comment"># 固定不变的超参</span><br>sweep_config[<span class="hljs-string">&#x27;parameters&#x27;</span>].update(&#123;<br>    <span class="hljs-string">&#x27;project_name&#x27;</span>:&#123;<span class="hljs-string">&#x27;value&#x27;</span>:<span class="hljs-string">&#x27;wandb_demo&#x27;</span>&#125;,<br>    <span class="hljs-string">&#x27;epochs&#x27;</span>: &#123;<span class="hljs-string">&#x27;value&#x27;</span>: <span class="hljs-number">10</span>&#125;,<br>    <span class="hljs-string">&#x27;ckpt_path&#x27;</span>: &#123;<span class="hljs-string">&#x27;value&#x27;</span>:<span class="hljs-string">&#x27;checkpoint.pt&#x27;</span>&#125;&#125;)<br><br><span class="hljs-comment"># 离散型分布超参</span><br>sweep_config[<span class="hljs-string">&#x27;parameters&#x27;</span>].update(&#123;<br>    <span class="hljs-string">&#x27;optim_type&#x27;</span>: &#123;<br>        <span class="hljs-string">&#x27;values&#x27;</span>: [<span class="hljs-string">&#x27;Adam&#x27;</span>, <span class="hljs-string">&#x27;SGD&#x27;</span>,<span class="hljs-string">&#x27;AdamW&#x27;</span>]<br>        &#125;,<br>    <span class="hljs-string">&#x27;hidden_layer_width&#x27;</span>: &#123;<br>        <span class="hljs-string">&#x27;values&#x27;</span>: [<span class="hljs-number">16</span>,<span class="hljs-number">32</span>,<span class="hljs-number">48</span>,<span class="hljs-number">64</span>,<span class="hljs-number">80</span>,<span class="hljs-number">96</span>,<span class="hljs-number">112</span>,<span class="hljs-number">128</span>]<br>        &#125;<br>    &#125;)<br><br><span class="hljs-comment"># 连续型分布超参</span><br>sweep_config[<span class="hljs-string">&#x27;parameters&#x27;</span>].update(&#123;<br>    <br>    <span class="hljs-string">&#x27;lr&#x27;</span>: &#123;<br>        <span class="hljs-string">&#x27;distribution&#x27;</span>: <span class="hljs-string">&#x27;log_uniform_values&#x27;</span>,<br>        <span class="hljs-string">&#x27;min&#x27;</span>: <span class="hljs-number">1e-6</span>,<br>        <span class="hljs-string">&#x27;max&#x27;</span>: <span class="hljs-number">0.1</span><br>      &#125;,<br>    <br>    <span class="hljs-string">&#x27;batch_size&#x27;</span>: &#123;<br>        <span class="hljs-string">&#x27;distribution&#x27;</span>: <span class="hljs-string">&#x27;q_uniform&#x27;</span>,<br>        <span class="hljs-string">&#x27;q&#x27;</span>: <span class="hljs-number">8</span>,<br>        <span class="hljs-string">&#x27;min&#x27;</span>: <span class="hljs-number">32</span>,<br>        <span class="hljs-string">&#x27;max&#x27;</span>: <span class="hljs-number">256</span>,<br>      &#125;,<br>    <br>    <span class="hljs-string">&#x27;dropout_p&#x27;</span>: &#123;<br>        <span class="hljs-string">&#x27;distribution&#x27;</span>: <span class="hljs-string">&#x27;uniform&#x27;</span>,<br>        <span class="hljs-string">&#x27;min&#x27;</span>: <span class="hljs-number">0</span>,<br>        <span class="hljs-string">&#x27;max&#x27;</span>: <span class="hljs-number">0.6</span>,<br>      &#125;<br>&#125;)<br></code></pre></td></tr></table></figure>
+<h4 id="4定义剪枝策略-可选"><a class="markdownIt-Anchor" href="#4定义剪枝策略-可选"></a> 4，定义剪枝策略 (可选)</h4>
+<p>可以定义剪枝策略，提前终止那些没有希望的任务。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs python">sweep_config[<span class="hljs-string">&#x27;early_terminate&#x27;</span>] = &#123;<br>    <span class="hljs-string">&#x27;type&#x27;</span>:<span class="hljs-string">&#x27;hyperband&#x27;</span>,<br>    <span class="hljs-string">&#x27;min_iter&#x27;</span>:<span class="hljs-number">3</span>,<br>    <span class="hljs-string">&#x27;eta&#x27;</span>:<span class="hljs-number">2</span>,<br>    <span class="hljs-string">&#x27;s&#x27;</span>:<span class="hljs-number">3</span><br>&#125; <span class="hljs-comment">#在step=3, 6, 12 时考虑是否剪枝</span><br></code></pre></td></tr></table></figure>
+<h2 id="启动sweep"><a class="markdownIt-Anchor" href="#启动sweep"></a> 启动Sweep：</h2>
+<h3 id="初始化-sweep-controller"><a class="markdownIt-Anchor" href="#初始化-sweep-controller"></a> 初始化 sweep controller</h3>
+<p>​	<code>wandb.sweep</code> 用于创建和管理超参数搜索（Hyperparameter Sweeps）的主要接口。它允许定义搜索空间、选择搜索策略，并启动一个或多个 Agent 来执行一系列训练试验，以寻找最优模型配置</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">wandb.sweep(sweep_config: <span class="hljs-type">Union</span>[<span class="hljs-built_in">str</span>, <span class="hljs-type">Dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-type">Any</span>]], project: <span class="hljs-type">Optional</span>[<span class="hljs-built_in">str</span>] = <span class="hljs-literal">None</span>) -&gt; <span class="hljs-built_in">str</span><br></code></pre></td></tr></table></figure>
+<p><strong>参数</strong>：</p>
+<ul>
+<li><strong><code>sweep_config</code></strong>: 定义超参数搜索的配置。可以是 YAML 文件的路径（字符串）或直接提供一个 Python 字典。该配置包含搜索空间、搜索算法、调度策略等信息</li>
+<li><strong><code>project</code></strong>: 可选的字符串，指定 <code>wandb</code> 项目名称。如果不指定，将使用当前默认项目</li>
+</ul>
+<p><strong>返回值</strong>：返回一个字符串，表示新创建的 Sweep 的唯一 ID (<code>sweep_id</code>)。这个 ID 用于后续通过 <code>wandb.agent</code> 启动 Agent 时关联到该 Sweep</p>
+<p><strong>注意：name 在 sweep_config 里面配置</strong></p>
+<h3 id="启动-sweep-agent"><a class="markdownIt-Anchor" href="#启动-sweep-agent"></a> 启动 Sweep agent</h3>
+<p>​	我们需要把模型训练相关的全部代码整理成一个 train函数，再将train函数传入 sweep agent：</p>
+<p>​	<code>sweep_id</code>就是一个 sweep controller，<code>wandb.agent</code>就是用于创建 sweep agent 的函数它和 sweep agent 的关系如下：</p>
+<ul>
+<li><code>Sweep Controller</code> 负责定义超参数搜索的整体策略、配置搜索空间，并根据策略分配具体的超参数组合给 Agent 执行</li>
+<li><code>Agent</code> 根据 <code>Sweep Controller</code> 分配的超参数组合执行相应的训练任务，将训练过程中的数据同步回 <code>wandb</code> 平台</li>
+</ul>
+<p><img src="/2024/04/06/ai/Pytorch/Wandb-3/1.webp" srcset="/img/loading.gif" lazyload alt="agent &amp; controller"></p>
+<p><code>wandb.agent()</code> 主要接收参数：</p>
+<ul>
+<li><code>sweep_id</code>：这是你之前创建或通过 API 获取到的 Sweep 的唯一标识符</li>
+<li><code>function</code>：这是一个可调用对象，通常是<code>train</code>函数，并且可以访问当前 sweep 运行时传入的超参数</li>
+<li>后面的参数可以用关键字参数传入 train 函数的配置参数</li>
+</ul>
+<h3 id="修改训练脚本以接收超参数"><a class="markdownIt-Anchor" href="#修改训练脚本以接收超参数"></a> 修改训练脚本以接收超参数</h3>
+<p>确保训练脚本（例如上述的 <code>train.py</code>）能够从 <code>wandb.config</code> 中读取超参数值，并根据这些值来配置模型和训练过程</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> wandb<br><br>cofig = &#123;<br>    ...<br>&#125;<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">train</span>(<span class="hljs-params">config=config</span>):<br>    <span class="hljs-comment"># 获取当前运行的配置（包含超参数）</span><br>    hparams = wandb.config<br>    learning_rate = hparams.learning_rate<br>    batch_size = hparams.batch_size<br>    dropout_rate = hparams.dropout_rate<br>    <span class="hljs-comment"># 使用这些超参数训练模型...</span><br>    <br></code></pre></td></tr></table></figure>
+<h2 id="效果展示"><a class="markdownIt-Anchor" href="#效果展示"></a> 效果展示：</h2>
+<h3 id="平行坐标系图"><a class="markdownIt-Anchor" href="#平行坐标系图"></a> 平行坐标系图</h3>
+<p>​	可以直观展示哪些超参数组合更加容易获取更好的结果</p>
+<p><img src="/2024/04/06/ai/Pytorch/Wandb-3/2.webp" srcset="/img/loading.gif" lazyload alt="坐标线图"></p>
+<h2 id="超参数重要性图"><a class="markdownIt-Anchor" href="#超参数重要性图"></a> 超参数重要性图</h2>
+<p>​	可以显示超参数和优化目标最终取值的重要性，和相关性方向</p>
+<p><img src="/2024/04/06/ai/Pytorch/Wandb-3/3.webp" srcset="/img/loading.gif" lazyload alt="重要性图"></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+			
+			
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/04/09/Java/Java%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7/" title="Java高级特性">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Java高级特性</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/04/05/ai/computer_vision/%E5%B8%B8%E7%94%A8Neck%E7%BD%91%E7%BB%9C/" title="常用Neck网络-1">
+                        <span class="hidden-mobile">常用Neck网络-1</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <i class="iconfont icon-love"></i> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
