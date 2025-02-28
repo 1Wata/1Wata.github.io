@@ -216,6 +216,237 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
+        <a href="/2025/02/27/reinforcement_learning/planning/" target="_self">
+          planning
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/02/27/reinforcement_learning/planning/" target="_self">
+        <div>
+          Planning：概念、分类与价值  引言 ​	在强化学习领域，“planning”（规划）是智能体通过内部模拟环境进行决策的能力。与直接通过环境交互的试错学习不同，规划让智能体能够在「想象」中预演未来可能发生的场景。 ​	即：Planning 指智能体利用环境模型（model）在内部生成虚拟经验，通过模拟状态转移和奖励反馈来优化策略的过程。其本质是通过「思维实验」降低对真实环境交互的依赖  1
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-02-27 19:11" pubdate>
+              2025-02-27
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2025/02/27/tortures/ViT-Adapter%E5%A4%8D%E7%8E%B0/" target="_self">
+          ViT-Adapter复现
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/02/27/tortures/ViT-Adapter%E5%A4%8D%E7%8E%B0/" target="_self">
+        <div>
+          ViT-Adapter 复现 ​	好久没被工程问题折磨了，又被折磨了好惨，不过每次折磨总是能学到新东西  不要轻易尝试重构代码 ​	我在复现 ViT-Adapter/segmentation at main · czczup/ViT-Adapter 这个仓库的时候，由于官方 repo 给出的 mmcv 环境太老，必须使用 cuda=11.1 的环境，但是服务器的版本是 cuda=12.2，并不能
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-02-27 16:42" pubdate>
+              2025-02-27
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2025/02/25/detection-survey/" target="_self">
+          detection_survey
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/02/25/detection-survey/" target="_self">
+        <div>
+          Loss函数的视角 分类 loss：  Focal loss：用 Rankings  定位 loss:  IoU loss：   模型的发展  Anchor Based 方法  双阶段检测模型 核心思想：通过“粗筛候选区域”与“精细优化”两阶段提升检测精度。   R-CNN：  使用上古传统算法（如Selective Search）生成约2000个候选区域，对每个区域独立提取CNN特征；  通过
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-02-25 14:51" pubdate>
+              2025-02-25
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2025/02/18/%E5%8D%9A%E5%AE%A2/%E6%AC%A2%E8%BF%8E/" target="_self">
+          
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/02/18/%E5%8D%9A%E5%AE%A2/%E6%AC%A2%E8%BF%8E/" target="_self">
+        <div>
+          这是你的新仓库。 写点笔记，[[创建链接]]，或者试一试导入器插件! 当你准备好了，就将该笔记文件删除，使这个仓库为你所用。
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-02-18 18:06" pubdate>
+              2025-02-18
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2025/02/17/reinforcement_learning/value-eval/" target="_self">
+          value_eval
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/02/17/reinforcement_learning/value-eval/" target="_self">
+        <div>
+          值函数估计 ​	在前面我们进行了 MDP 的理论推导，可以发现 value-based 算法的核心在于值函数的估计，状态值函数 Vπ(s)V^\pi(s)Vπ(s) 的定义为： Vπ(s)=Eπ[∑k=0∞γkrt+k+1∣st=s]V^\pi(s) = \mathbb{E}_\pi \left[ \sum_{k=0}^\infty \gamma^k r_{t+k+1} \bigg| s_t =
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-02-17 22:53" pubdate>
+              2025-02-17
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2025/02/16/reinforcement_learning/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%BB%BC%E6%8B%AC%2017e4d12c3655802ebaa5d82cc35b6e9f/" target="_self">
+          
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/02/16/reinforcement_learning/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%BB%BC%E6%8B%AC%2017e4d12c3655802ebaa5d82cc35b6e9f/" target="_self">
+        <div>
+          强化学习综括  环境特性分类矩阵    维度特征 白盒环境（显式模型） 黑盒环境（隐式模型）     静态环境（单步决策） 运筹优化方法：- 线性/非线性规划- 组合优化- 凸优化 黑盒优化方法：- 代理模型优化（神经网络）- 贝叶斯优化- 模拟退火算法   动态环境（序贯决策） 动态规划方法：- 状态空间搜索（树/图搜索）- 马尔可夫决策过程(MDP)解析求解 强化学习方法：- 策略梯度优化-
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-02-16 11:17" pubdate>
+              2025-02-16
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2025/02/16/reinforcement_learning/MDP2/" target="_self">
+          MDP的进一步思考
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/02/16/reinforcement_learning/MDP2/" target="_self">
+        <div>
+          MDP的进一步思考  序列回报的形式： ​	问题描述：为何序列回报 GtG_tGt​ 的形式是通过指数加权求和衰减，即是通过将当前时刻及之后的所有奖励进行加权求和得到的： Gt=Rt+γRt+1+γ2Rt+2+⋯=∑k=0∞γkRt+kG_t = R_t + \gamma R_{t+1} + \gamma^2 R_{t+2} + \cdots = \sum_{k=0}^{\infty} \gam
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-02-16 11:03" pubdate>
+              2025-02-16
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
         <a href="/2025/02/14/machine_learning/prob-graphical-models2/" target="_self">
           prob_graphical_models2
         </a>
@@ -309,242 +540,11 @@
     </article>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2025/02/05/meta_learning/intro/" target="_self">
-          meta_intro
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/02/05/meta_learning/intro/" target="_self">
-        <div>
-          元学习入门 ​	元学习（meta-learning）被称为“学习如何学习”，旨在让模型通过学习多个任务的经验，获得快速适应新任务的能力。其核心目标是提高模型在面对新任务时的学习效率和泛化能力  Meta-learning 的几个分支   (1) 基于优化的元学习（Optimization-Based）  思想：直接优化模型参数，使其在少量迭代中收敛。 经典方法：  MAML：通过二阶梯度优化模型
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-02-05 22:07" pubdate>
-              2025-02-05
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2025/02/05/machine_learning/learning_theory2/" target="_self">
-          learning_theory2
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/02/05/machine_learning/learning_theory2/" target="_self">
-        <div>
-          VC 维  打散（shattering） ​	定义：称一个模型类 H\mathcal{H}H 可以打散为一个数据点集 x(1),x(2),…,x(n)x^{(1)}, x^{(2)}, \dots, x^{(n)}x(1),x(2),…,x(n)，若对于这些点上可能存在的每个标签，在该模型类中均存在获得零训练误差的模型。  ​	即先抽取一个样本集合，对其中的样本点随意加标签，模型都能够正确分类，
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-02-05 10:59" pubdate>
-              2025-02-05
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2025/02/03/machine_learning/learning_theary1/" target="_self">
-          神经网络学习理论-1
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/02/03/machine_learning/learning_theary1/" target="_self">
-        <div>
-          网络学习理论 ​	在这一章中，我们用严谨的数学语言建模各种问题的可学性，以及在可学的情况下，模型对未见数据的泛化误差（即模型的泛化能力）。同时，我们对模型的学习能力进行定量描述，研究目标为：  学习问题本身，包括采样的数据量的复杂度，这在 PAC 学习和 ERM 边界中描述 模型固有的表达能力，这在 VC 维中描述   归纳（Inductive）与直推（Transductive）  两种学习范式
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-02-03 20:54" pubdate>
-              2025-02-03
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2025/02/03/machine_learning/learning-theary/" target="_self">
-          神经网络学习理论-1
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/02/03/machine_learning/learning-theary/" target="_self">
-        <div>
-          网络学习理论 ​	在这一章中，我们用严谨的数学语言建模各种问题的可学性，以及在可学的情况下，模型对未见数据的泛化误差（即模型的泛化能力）。同时，我们对模型的学习能力进行定量描述，研究目标为：  学习问题本身，包括采样的数据量的复杂度，这在 PAC 学习和 ERM 边界中描述 模型固有的表达能力，这在 VC 维中描述   归纳（Inductive）与直推（Transductive）  两种学习范式
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-02-03 20:54" pubdate>
-              2025-02-03
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2025/01/31/machine_learning/multi-task/" target="_self">
-          multi_task
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/01/31/machine_learning/multi-task/" target="_self">
-        <div>
-          多任务学习 ​	多任务学习（Multitask Learning, MTL）是一种机器学习方法，它试图通过同时学习多个相关任务来提高模型的性能。这种方法基于一个假设：即不同任务之间存在一定的关联或共享信息，通过共同学习这些任务可以互相帮助，提升彼此的表现  单一任务 vs. 多任务学习 定义一个单一任务：从单一输入源中学习单个输出目标。该任务的目标函数为： min⁡wL(X,y,w)\min_w
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-01-31 09:49" pubdate>
-              2025-01-31
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2025/01/17/nohup-tmux/" target="_self">
-          nohup&amp;tmux
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/01/17/nohup-tmux/" target="_self">
-        <div>
-          nohup的问题 ​	在我使用 nohup 命令启动后台的训练任务的时候，发现了 nohup 命令的一些坑，特此记录和警醒自己 12345678910111213141516171819202122232425262728WARNING:torch.distributed.elastic.agent.server.api:Received 1 death signal, shutting dow
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-01-17 23:33" pubdate>
-              2025-01-17
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2025/01/16/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/import/" target="_self">
-          import
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/01/16/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/import/" target="_self">
-        <div>
-          
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-01-16 18:35" pubdate>
-              2025-01-16
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
 
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/#board">2</a><a class="page-number" href="/page/3/#board">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/#board">11</a><a class="extend next" rel="next" href="/page/2/#board"><i class="iconfont icon-arrowright"></i></a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/#board">2</a><a class="page-number" href="/page/3/#board">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/#board">12</a><a class="extend next" rel="next" href="/page/2/#board"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
 

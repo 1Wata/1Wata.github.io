@@ -27,7 +27,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/w5688414/paddleImage/main/actor_critic_img/policy.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/w5688414/paddleImage/main/actor_critic_img/Actor_Critic.png">
 <meta property="article:published_time" content="2024-06-07T12:15:17.000Z">
-<meta property="article:modified_time" content="2024-06-08T10:32:46.266Z">
+<meta property="article:modified_time" content="2025-02-27T10:48:12.244Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://example.com/2024/06/07/reinforcement_learning/Actor-Critic%E7%AE%97%E6%B3%95/q_value.png">
@@ -287,7 +287,7 @@
 <p>​	Q-learning算法决策的依据是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Q</mi><mo stretchy="false">(</mo><mi>s</mi><mo separator="true">,</mo><mi>a</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">Q(s,a)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">Q</span><span class="mopen">(</span><span class="mord mathnormal">s</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">a</span><span class="mclose">)</span></span></span></span> 的值。<strong>我们可以把这个算法的核心看成一个评论家(Critic)，而这个评论家会对我们在当前状态 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi></mrow><annotation encoding="application/x-tex">s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">s</span></span></span></span>下，采取的动作 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">a</span></span></span></span> 这个决策作出一个评价，评价的结果就是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Q</mi><mo stretchy="false">(</mo><mi>s</mi><mo separator="true">,</mo><mi>a</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">Q(s,a)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">Q</span><span class="mopen">(</span><span class="mord mathnormal">s</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">a</span><span class="mclose">)</span></span></span></span> 的值</strong></p>
 <p>​	Q-learning 算法不适合解决连续动作空间的问题。因为如果动作空间是连续的，那么用Q-learning算法就需要对动作空间离散化，就会导致动作空间的维度非常高。Actor-Critic 算法可以认为是 Q-learning 用于处理连续动作空间的算法</p>
 <h3 id="actor-critic-3"><a class="markdownIt-Anchor" href="#actor-critic-3"></a> Actor Critic</h3>
-<p>​	Actor-Critic 是Q-learning 和 Policy Gradient 的结合，为了导出 Actor-Critic 算法，我们先推到 Policy Gradient 算法：</p>
+<p>​	Actor-Critic 是 Q-learning 和 Policy Gradient 的结合，为了导出 Actor-Critic 算法，我们先推到 Policy Gradient 算法：</p>
 <p><img src="https://raw.githubusercontent.com/w5688414/paddleImage/main/actor_critic_img/policy.png" srcset="/img/loading.gif" lazyload alt></p>
 <p>最简单的 Policy Gradient 算法要优化的函数如下：</p>
 <p>​	目标是寻一策略π，最大化期望累积奖励 $ J\left( \pi \right)  $ 。策略梯度方法经梯度上升优化此目标函数，每步策略梯度可通过如下简化形式近似：</p>
@@ -391,8 +391,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/05/22/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/Gymnasium/Gymnasium-1/" title="Gymnasium-1">
-                        <span class="hidden-mobile">Gymnasium-1</span>
+                      <a href="/2024/05/25/reinforcement_learning/model-free/" title="model_free">
+                        <span class="hidden-mobile">model_free</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

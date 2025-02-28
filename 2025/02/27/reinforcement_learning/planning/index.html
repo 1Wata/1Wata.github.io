@@ -1,0 +1,730 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/w.png">
+  <link rel="icon" href="/img/w.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Planning：概念、分类与价值  引言 ​	在强化学习领域，“planning”（规划）是智能体通过内部模拟环境进行决策的能力。与直接通过环境交互的试错学习不同，规划让智能体能够在「想象」中预演未来可能发生的场景。 ​	即：Planning 指智能体利用环境模型（model）在内部生成虚拟经验，通过模拟状态转移和奖励反馈来优化策略的过程。其本质是通过「思维实验」降低对真实环境交互的依赖  1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="planning">
+<meta property="og:url" content="http://example.com/2025/02/27/reinforcement_learning/planning/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Planning：概念、分类与价值  引言 ​	在强化学习领域，“planning”（规划）是智能体通过内部模拟环境进行决策的能力。与直接通过环境交互的试错学习不同，规划让智能体能够在「想象」中预演未来可能发生的场景。 ​	即：Planning 指智能体利用环境模型（model）在内部生成虚拟经验，通过模拟状态转移和奖励反馈来优化策略的过程。其本质是通过「思维实验」降低对真实环境交互的依赖  1">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2025/02/27/reinforcement_learning/planning/image-20250227200452732.png">
+<meta property="og:image" content="http://example.com/2025/02/27/reinforcement_learning/planning/image-20250227200629410.png">
+<meta property="og:image" content="http://example.com/2025/02/27/reinforcement_learning/planning/image-20250227210833388.png">
+<meta property="og:image" content="http://example.com/2025/02/27/reinforcement_learning/planning/image-20250227212840055.png">
+<meta property="article:published_time" content="2025-02-27T11:11:29.000Z">
+<meta property="article:modified_time" content="2025-02-28T06:20:30.084Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2025/02/27/reinforcement_learning/planning/image-20250227200452732.png">
+  
+  
+  
+  <title>planning - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.6","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/katex@0.11.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Wataの锟斤拷</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="planning"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-02-27 19:11" pubdate>
+          2025年2月27日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          17 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">planning</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="planning概念-分类与价值"><a class="markdownIt-Anchor" href="#planning概念-分类与价值"></a> Planning：概念、分类与价值</h1>
+<h2 id="引言"><a class="markdownIt-Anchor" href="#引言"></a> 引言</h2>
+<p>​	在强化学习领域，“planning”（规划）是智能体通过<strong>内部模拟环境</strong>进行决策的能力。与直接通过环境交互的试错学习不同，规划让智能体能够在「想象」中预演未来可能发生的场景。</p>
+<p>​	即：<font color="red">Planning 指智能体利用<strong>环境模型</strong>（model）在内部生成虚拟经验，通过模拟状态转移和奖励反馈来优化策略的过程</font>。其本质是通过「思维实验」降低对真实环境交互的依赖</p>
+<h3 id="12-与学习的区别"><a class="markdownIt-Anchor" href="#12-与学习的区别"></a> 1.2 与学习的区别</h3>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>Planning</th>
+<th>Learning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>数据来源</td>
+<td>内部模型生成</td>
+<td>真实环境交互</td>
+</tr>
+<tr>
+<td>计算开销</td>
+<td>前期模型构建成本高</td>
+<td>后期策略优化成本高</td>
+</tr>
+<tr>
+<td>典型方法</td>
+<td>动态规划、MCTS</td>
+<td>Q-learning、PG</td>
+</tr>
+</tbody>
+</table>
+<p>例如，我们可以类似对标 Q-learning 算法创造 Q-planning 算法：</p>
+<blockquote>
+<p>重复以下步骤：</p>
+<ol>
+<li>随机选择一个状态 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mo>∈</mo><mi>S</mi></mrow><annotation encoding="application/x-tex">s \in S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mord mathnormal">s</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span> 和一个动作 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>∈</mo><mi mathvariant="script">A</mi><mo stretchy="false">(</mo><mi>S</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">a \in \mathcal{A}(S)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathcal">A</span></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mclose">)</span></span></span></span></li>
+<li>把 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>s</mi><mo separator="true">,</mo><mi>a</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">( s, a )</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">s</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">a</span><span class="mclose">)</span></span></span></span> 输入采样模型，然后获得采样得到的奖励 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi></mrow><annotation encoding="application/x-tex">r</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span></span></span></span> 和下一个状态 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>s</mi><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msup></mrow><annotation encoding="application/x-tex">s&#x27;</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.751892em;vertical-align:0em;"></span><span class="mord"><span class="mord mathnormal">s</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.751892em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span></span></span></span></li>
+<li>对 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>s</mi><mo separator="true">,</mo><mi>a</mi><mo separator="true">,</mo><mi>r</mi><mo separator="true">,</mo><msup><mi>s</mi><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">( s, a, r, s&#x27; )</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.001892em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">s</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">a</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">s</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.751892em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span> 进行一时间步表格 Q 学习：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Q</mi><mo stretchy="false">(</mo><mi>s</mi><mo separator="true">,</mo><mi>a</mi><mo stretchy="false">)</mo><mo>←</mo><mi>Q</mi><mo stretchy="false">(</mo><mi>s</mi><mo separator="true">,</mo><mi>a</mi><mo stretchy="false">)</mo><mo>+</mo><mi>α</mi><mrow><mo fence="true">[</mo><mi>r</mi><mo>+</mo><mi>γ</mi><msub><mo><mi>max</mi><mo>⁡</mo></mo><msup><mi>a</mi><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msup></msub><mi>Q</mi><mo stretchy="false">(</mo><msup><mi>s</mi><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msup><mo separator="true">,</mo><msup><mi>a</mi><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msup><mo stretchy="false">)</mo><mo>−</mo><mi>Q</mi><mo stretchy="false">(</mo><mi>s</mi><mo separator="true">,</mo><mi>a</mi><mo stretchy="false">)</mo><mo fence="true">]</mo></mrow></mrow><annotation encoding="application/x-tex">Q(s, a) \leftarrow Q(s, a) + \alpha \left[ r + \gamma \max_{a&#x27;} Q(s&#x27;, a&#x27;) - Q(s, a) \right]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">Q</span><span class="mopen">(</span><span class="mord mathnormal">s</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">a</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">←</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">Q</span><span class="mopen">(</span><span class="mord mathnormal">s</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">a</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1.001892em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;">[</span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord mathnormal" style="margin-right:0.05556em;">γ</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop"><span class="mop">max</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32797999999999994em;"><span style="top:-2.5500000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight">a</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6828285714285715em;"><span style="top:-2.786em;margin-right:0.07142857142857144em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">Q</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">s</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.751892em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.751892em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord mathnormal">Q</span><span class="mopen">(</span><span class="mord mathnormal">s</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">a</span><span class="mclose">)</span><span class="mclose delimcenter" style="top:0em;">]</span></span></span></span></span></li>
+</ol>
+</blockquote>
+<h2 id="规划方法的双重维度"><a class="markdownIt-Anchor" href="#规划方法的双重维度"></a> 规划方法的双重维度</h2>
+<p>规划分为状态空间的规划（state-space planning）和规划空间（plan-space planning）的规划：</p>
+<ul>
+<li>
+<p>状态空间的规划(state-space planning)：在状态空间搜索最佳策略，这是最常见的</p>
+</li>
+<li>
+<p>规划空间的规划(plan-space planning)：在规划空间搜索最佳策略，包括遗传算法和偏序规划。这时，一个规划就是一个动作集合以及动作顺序的约束，这时的状态就是一个规划，目标状态就是能完成任务的规划</p>
+</li>
+</ul>
+<p>​	在连续状态空间（或者很大的状态空间）中，智能体不可能能把所有的状态-动作数据全部收集到，好的规划能够对环境进行提前的建模，能够让模型做出一些靠谱的泛化</p>
+<h2 id="dyna-算法"><a class="markdownIt-Anchor" href="#dyna-算法"></a> Dyna 算法</h2>
+<p>​	Dyna 算法由强化学习先驱 Richard Sutton 提出，重要性在于<strong>统一了实时学习（learning）与离线规划（planning）</strong>。该架构创造性地让智能体能够：</p>
+<ul>
+<li>从真实交互中学习（环境反馈）</li>
+<li>从想象中学习（模型模拟）</li>
+<li>两类经验<strong>并行处理</strong>实现知识融合</li>
+</ul>
+<h3 id="算法工作流程"><a class="markdownIt-Anchor" href="#算法工作流程"></a> 算法工作流程</h3>
+<pre><code class=" mermaid">graph LR
+    A[真实经验] --&gt; B[更新Q值]
+    A --&gt; C[更新环境模型]
+    C --&gt; D[模拟经验生成]
+    D --&gt; E[模型规划更新Q值]
+    B --&gt; F[策略改进]
+    E --&gt; F
+</code></pre>
+<p>真实经验同时用于模型的学习和直接的强化学习：</p>
+<p><img src="/2025/02/27/reinforcement_learning/planning/image-20250227200452732.png" srcset="/img/loading.gif" lazyload alt="planning"></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">维度</th>
+<th style="text-align:left">Dyna-Q</th>
+<th style="text-align:left">传统Q-learning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">样本效率</td>
+<td style="text-align:left">1次交互触发n次更新</td>
+<td style="text-align:left">1次交互对应1次更新</td>
+</tr>
+<tr>
+<td style="text-align:left">收敛速度</td>
+<td style="text-align:left">快3-5倍（迷宫实验）</td>
+<td style="text-align:left">基础速度基准</td>
+</tr>
+<tr>
+<td style="text-align:left">模型依赖性</td>
+<td style="text-align:left">需要构建状态转移模型</td>
+<td style="text-align:left">无需环境模型</td>
+</tr>
+</tbody>
+</table>
+<p>可以类似构建 Dyna-Q 算法：</p>
+<p><img src="/2025/02/27/reinforcement_learning/planning/image-20250227200629410.png" srcset="/img/loading.gif" lazyload alt="Dyna-Q"></p>
+<h2 id="规划与学习进一步融合决策时规划"><a class="markdownIt-Anchor" href="#规划与学习进一步融合决策时规划"></a> 规划与学习进一步融合：决策时规划</h2>
+<h3 id="实时动态规划dtdp"><a class="markdownIt-Anchor" href="#实时动态规划dtdp"></a> 实时动态规划（DTDP）</h3>
+<p>​	实时动态规划（Real-Time Dynamic Programming）是针对<strong>大规模状态空间</strong>和<strong>实时决策需求</strong>设计的规划范式。与传统动态规划遍历所有状态的「地毯式搜索」不同（尽管动态规划相比于传统的其他算法可以减少计算量，但是他仍然是把所有的状态全部遍历了一遍的），RTDP采用<strong>聚焦更新策略</strong>：</p>
+<ul>
+<li>
+<p>状态更新优先级：<strong>仅更新智能体当前遭遇的状态及其可达后续状态</strong></p>
+</li>
+<li>
+<p>启发式引导：利用启发函数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mo stretchy="false">(</mo><mi>s</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">h(s)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">h</span><span class="mopen">(</span><span class="mord mathnormal">s</span><span class="mclose">)</span></span></span></span> 引导搜索方向，避免无效状态探索</p>
+</li>
+</ul>
+<p>这种方式极大地减少了状态空间，AlphaGo 中使用的技术就是使用了 DTDP 而非传统的 DP</p>
+<h3 id="与传统动态规划的对比"><a class="markdownIt-Anchor" href="#与传统动态规划的对比"></a> 与传统动态规划的对比</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">维度</th>
+<th style="text-align:left">RTDP</th>
+<th style="text-align:left">传统DP（值迭代）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">计算复杂度</td>
+<td style="text-align:left"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(k)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="mclose">)</span></span></span></span> 每次更新k个相关状态</td>
+<td style="text-align:left"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>N</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(N)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mclose">)</span></span></span></span> 全状态空间遍历</td>
+</tr>
+<tr>
+<td style="text-align:left">内存占用</td>
+<td style="text-align:left">仅需存储活跃状态值</td>
+<td style="text-align:left">需存储全状态空间值</td>
+</tr>
+<tr>
+<td style="text-align:left">适用场景</td>
+<td style="text-align:left">在线实时决策（如自动驾驶）</td>
+<td style="text-align:left">离线规划（如棋类求解）</td>
+</tr>
+<tr>
+<td style="text-align:left">收敛条件</td>
+<td style="text-align:left"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϵ</mi></mrow><annotation encoding="application/x-tex">\epsilon</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">ϵ</span></span></span></span>-收敛于最优策略</td>
+<td style="text-align:left">严格收敛到最优策略</td>
+</tr>
+<tr>
+<td style="text-align:left">典型更新方式</td>
+<td style="text-align:left">异步更新</td>
+<td style="text-align:left">同步全局更新</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">rtdp</span>(<span class="hljs-params">s_init, env, max_depth=<span class="hljs-number">100</span></span>):<br>    V = defaultdict(<span class="hljs-built_in">float</span>)  <span class="hljs-comment"># 动态构建值函数表</span><br>    s = s_init<br>    <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(max_depth):<br>        <span class="hljs-comment"># 前向搜索阶段</span><br>        path = []<br>        <span class="hljs-keyword">while</span> <span class="hljs-keyword">not</span> env.is_terminal(s):<br>            a = greedy_policy(s, V)  <span class="hljs-comment"># 基于当前V选择动作</span><br>            s_next = env.sample_next_state(s, a)<br>            path.append((s, a))<br>            s = s_next<br>        <br>        <span class="hljs-comment"># 反向传播更新</span><br>        <span class="hljs-keyword">for</span> (s_back, a_back) <span class="hljs-keyword">in</span> <span class="hljs-built_in">reversed</span>(path):<br>            <span class="hljs-comment"># 只更新遍历过的状态</span><br>            V[s_back] = <span class="hljs-built_in">max</span>([Q_value(s_back, a, V, env) <br>                           <span class="hljs-keyword">for</span> a <span class="hljs-keyword">in</span> env.actions(s_back)])<br></code></pre></td></tr></table></figure>
+<h3 id="决策时规划"><a class="markdownIt-Anchor" href="#决策时规划"></a> 决策时规划</h3>
+<p>​	这里我们又提出了一个新的概念：决策时规划。我们现在将规划分为两类：</p>
+<ul>
+<li>背景规划（back ground planning）：规划用于更细你很多状态值共后续动作的选择，例如 Dyna，Q-planning 等。在前面，我们提到的算法全部被划分为背景规划</li>
+<li>决策时规划（decision time planning）：规划只着眼于当前状态的动作选择。目前火爆的 world model 视频生成器就可以认为是一个用于决策时规划的模型（为自动驾驶服务），<strong>最终目的就是给一个 insight 的启发式函数来指导决策</strong></li>
+</ul>
+<p><img src="/2025/02/27/reinforcement_learning/planning/image-20250227210833388.png" srcset="/img/loading.gif" lazyload alt="Tree Search"></p>
+<p>一句话来概括：<font color="red">背景规划用于规划所有状态下的对象，而决策时规划只用于给出当前状态下对环境的启发式函数</font>（类似启发式搜索，性能的提升不是来自于多步更新，而是来自于专注于当前状态的后续可能）</p>
+<p>为了介绍 MCMC 方法，我们需要先介绍一下 Rollout 算法和</p>
+<h4 id="rollout-算法"><a class="markdownIt-Anchor" href="#rollout-算法"></a> Rollout 算法：</h4>
+<p>​	Rollout 算法是一种用于强化学习中的策略评估和优化的方法。它通过从当前状态下进行模拟的蒙特卡洛估计，选取最高估计值的动作，是一种决策是规划的算法，表现取决于蒙特卡洛算法的估值的准确性</p>
+<p>​	就是一种树搜索算法，将所有的轨迹展开到叶子节点并选择一个最优的轨迹，这种算法相当的低效，可以限制搜索的最大深度进行截断（将后续的值代替回报）来减少计算量（类似 beam search）</p>
+<h3 id="蒙特卡洛数搜索monte-carlo-tree-search"><a class="markdownIt-Anchor" href="#蒙特卡洛数搜索monte-carlo-tree-search"></a> 蒙特卡洛数搜索（Monte Carlo Tree Search）：</h3>
+<ol>
+<li>选择：根据树策略（动作值函数）遍历树到一个叶节点</li>
+<li>扩展：从选择的叶节点出发选择未探索过的动作到达新的状态</li>
+<li>模拟：从新的状态出发按照 rollout 策略进行轨迹模拟</li>
+<li>回溯：得到的回报回溯更新树策略，rollout 访问的状态值不会被保存</li>
+<li>重复上述步骤直至计算资源耗尽，从根节点选择最优动作</li>
+<li>得到新状态，保留原有树的新状态下的部分节点</li>
+<li>重复上述步骤直至游戏结束</li>
+</ol>
+<p><img src="/2025/02/27/reinforcement_learning/planning/image-20250227212840055.png" srcset="/img/loading.gif" lazyload alt="image-20250227212840055"></p>
+<p>​	就是按照一种特定的方式进行树展开，然后使用 roll out 算法对展开的节点进行值估计，可以认为是启发式搜索和 rollout 的一种结合（探索和利用的结合）</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+			
+			
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/02/27/tortures/ViT-Adapter%E5%A4%8D%E7%8E%B0/" title="ViT-Adapter复现">
+                        <span class="hidden-mobile">ViT-Adapter复现</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <i class="iconfont icon-love"></i> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
