@@ -1,0 +1,627 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/w.png">
+  <link rel="icon" href="/img/w.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Hugging Face Transformers：源码入门指南 ​	Hugging Face transformers 库对于任何使用当前最先进的自然语言处理 (NLP) 模型的人来说，都是一个极其强大的工具。虽然使用库的高级 API，如 pipeline 或 AutoModel.from_pretrained 非常直接，但深入研究源代码可以让你获得更深层次的理解，实现定制化，并更有效地调试问">
+<meta property="og:type" content="article">
+<meta property="og:title" content="intro">
+<meta property="og:url" content="http://example.com/2025/04/16/ai/frameworks/huggingface/intro/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Hugging Face Transformers：源码入门指南 ​	Hugging Face transformers 库对于任何使用当前最先进的自然语言处理 (NLP) 模型的人来说，都是一个极其强大的工具。虽然使用库的高级 API，如 pipeline 或 AutoModel.from_pretrained 非常直接，但深入研究源代码可以让你获得更深层次的理解，实现定制化，并更有效地调试问">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2025/04/16/ai/frameworks/huggingface/intro/transformers_overview.png">
+<meta property="og:image" content="http://example.com/2025/04/16/ai/frameworks/huggingface/intro/image-20250416185601758.png">
+<meta property="article:published_time" content="2025-04-16T07:44:44.000Z">
+<meta property="article:modified_time" content="2025-04-16T11:44:21.249Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2025/04/16/ai/frameworks/huggingface/intro/transformers_overview.png">
+  
+  
+  
+  <title>intro - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.6","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/katex@0.11.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Wataの锟斤拷</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="intro"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-04-16 15:44" pubdate>
+          2025年4月16日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          23 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">intro</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="hugging-face-transformers源码入门指南"><a class="markdownIt-Anchor" href="#hugging-face-transformers源码入门指南"></a> Hugging Face Transformers：源码入门指南</h1>
+<p>​	Hugging Face <code>transformers</code> 库对于任何使用当前最先进的自然语言处理 (NLP) 模型的人来说，都是一个极其强大的工具。虽然使用库的高级 API，如 <code>pipeline</code> 或 <code>AutoModel.from_pretrained</code> 非常直接，但深入研究源代码可以让你获得更深层次的理解，实现定制化，并更有效地调试问题</p>
+<p><img src="/2025/04/16/ai/frameworks/huggingface/intro/transformers_overview.png" srcset="/img/loading.gif" lazyload alt="framework"></p>
+<p>​	本指南将依据这张图的逻辑，从<strong>核心组件 (Core Components)</strong> 出发，再到支撑<strong>推理 (Inference)</strong> 和<strong>训练/评估 (Training/Evaluation)</strong> 工作流的<strong>高层抽象 (High-Level Abstractions)</strong>，带你一步步探索 <code>transformers</code> 的源代码</p>
+<h2 id="核心组件-core-components"><a class="markdownIt-Anchor" href="#核心组件-core-components"></a> 核心组件 (Core Components)</h2>
+<h3 id="配置-configuration"><a class="markdownIt-Anchor" href="#配置-configuration"></a> 配置 (Configuration)</h3>
+<p>​	模型的结构等信息的配置文件，基类为：<code>src/transformers/configuration_utils.py</code> (<code>PretrainedConfig</code>)，每个模型的具体模型配置为： <code>src/transformers/models/&lt;model_name&gt;/configuration_&lt;model_name&gt;.py</code> (例如 <code>BertConfig</code> in <code>models/bert/configuration_bert.py</code>)</p>
+<p>​	即每个模型架构都有一个对应的 <code>*Config</code> 类，继承自 <code>PretrainedConfig</code>。当你加载模型时，库会先加载 <code>config.json</code> 文件来实例化这个配置对象</p>
+<h3 id="分词器-tokenizer"><a class="markdownIt-Anchor" href="#分词器-tokenizer"></a> 分词器 (Tokenizer)</h3>
+<p>​	分词器的基类位于 <code>src/transformers/tokenization_utils_base.py</code> 中，分别是 <code>PreTrainedTokenizer</code> 和 <code>PreTrainedTokenizerFast</code>。而针对特定模型的分词器实现则存放在 <code>src/transformers/models/&lt;model_name&gt;/tokenization_&lt;model_name&gt;.py</code> （以及对应的 <code>_fast.py</code> 版本）目录下。值得一提的是，Transformers 库为了追求极致的性能，大量使用了由 Rust 语言实现的 Hugging Face tokenizers 库作为底层依赖。通常情况下，<code>PreTrainedTokenizerFast</code> 由于直接调用了 Rust 实现，因此在速度上往往更胜一筹。要让分词器正常工作，我们需要加载其对应的词汇表文件（例如 <code>vocab.txt</code>, <code>merges.txt</code> 等）以及配置文件 (<code>tokenizer_config.json</code>)</p>
+<p>​	当分词器处理一段文本后，通常会生成以下几种数据：</p>
+<ul>
+<li><code>input_ids</code>：文本的数字编码，不用 token 而是使用 token id。这个 id 来源于分词器预先构建好的词汇表。比如，词汇表里 “hello” 的ID是123，那么 <code>input_ids</code> 里就会出现123来代表它</li>
+<li><code>attention_mask</code>：当我们把多段文本一起送给模型处理时，为了让它们的长度一样，通常会用特殊符号（padding）把短的文本补齐。<code>attention_mask</code> 就是用来告诉模型哪些位置是原始文本的token（用1表示），哪些是后来填充的（用0表示）。这样模型在计算注意力的时候就不会被填充的部分干扰</li>
+<li><code>token_type_ids</code>：主要用在处理有多个输入段落的任务中，比如回答问题或者判断两个句子是不是相关。它用来标记每个 token 属于哪个段落。例如，在问答场景里，问题的 token 可能被标记为 0，答案上下文的 token 可能被标记为1。如果是只有一段文本的任务，那 <code>token_type_ids</code> 通常就是一串 0</li>
+</ul>
+<h3 id="模型-model"><a class="markdownIt-Anchor" href="#模型-model"></a> 模型 (Model)</h3>
+<p>​	这是 Transformers 库中实现神经网络核心逻辑的部分，包含了模型的所有层 (layers) 和计算逻辑 (computation logic)。模型架构的基类位于 <code>src/transformers/modeling_utils.py</code> 中的 <code>PreTrainedModel</code>（是 <code>nn.Module</code> 的一个功能拓展类）。具体的模型实现则存放在 <code>src/transformers/models/&lt;model_name&gt;/modeling_&lt;model_name&gt;.py</code> 目录下，例如 BERT 模型的相关代码可以在 <code>models/bert/modeling_bert.py</code> 文件中找到 <code>BertModel</code>（基础模型）和 <code>BertForSequenceClassification</code>（序列分类模型）等</p>
+<h3 id="数据集-dataset"><a class="markdownIt-Anchor" href="#数据集-dataset"></a> 数据集 (Dataset)</h3>
+<p>​	这一部分主要负责为模型的训练和评估提供数据。虽然 Transformers 库本身对数据格式没有硬性要求，但它与 Hugging Face <code>datasets</code> 库有着非常紧密的集成，推荐使用该库来管理和加载数据集</p>
+<p>​	数据整理器 (Data Collators) 的相关代码位于 <code>src/transformers/data/data_collator.py</code>。它的主要作用是将数据集中的多个样本组合成一个批次 (batch)，并处理成模型能够直接接受的格式。例如，对于长度不一的文本序列，数据整理器会负责进行填充 (padding) 操作，确保同一个批次内的所有样本长度一致。</p>
+<p>​	此外，<code>src/transformers/trainer.py</code> 文件中的 <code>Trainer</code> 类是 Transformers 库中用于模型训练和评估的高级接口，它期望接收符合特定接口的数据集对象，通常是 PyTorch 的 <code>torch.utils.data.Dataset</code> 或 Hugging Face <code>datasets</code> 库的 <code>datasets.Dataset</code> 对象。数据整理器会在 <code>Trainer</code> 内部被调用，用于在每个训练或评估步骤中生成模型所需的批次数据</p>
+<h3 id="example以-qwen2-为例"><a class="markdownIt-Anchor" href="#example以-qwen2-为例"></a> example：以 Qwen2 为例：</h3>
+<p><img src="/2025/04/16/ai/frameworks/huggingface/intro/image-20250416185601758.png" srcset="/img/loading.gif" lazyload alt="example"></p>
+<ul>
+<li><code>configuration_qwen2.py</code>：包含 <code>Qwen2Config</code> 类，定义了 <code>qwen2</code> 模型的配置参数，例如模型层数、隐藏层大小、注意力机制的设置等等</li>
+<li><code>modeling_qwen2.py</code>: 这是 <code>qwen2</code> 模型的核心架构实现文件，应该包含 <code>Qwen2Model</code> 类以及可能包含针对不同任务的派生类，例如 <code>Qwen2ForCausalLM</code>（用于生成任务）或 <code>Qwen2ForSequenceClassification</code>（用于分类任务），<code>Qwen2ForQuestionAnswering</code>等。这个文件定义了模型的神经网络层和计算逻辑</li>
+<li><code>modular_qwen2.py</code>: 类似于之前的分析，这个文件可能包含 <code>qwen2</code> 模型中一些可复用的模块化组件，用于在 <code>modeling_qwen2.py</code> 中构建完整的模型架构，例如 <code>Qwen2Attention</code>，<code>Qwen2Attention</code> 等，有助于代码的组织和维护</li>
+<li><code>tokenization_qwen2.py</code>: 这个文件应该包含了 <code>Qwen2Tokenizer</code> 类，它是 <code>qwen2</code> 模型的 Python 实现的 tokenizer。<code>tokenization_qwen2_fast.py</code> 包含了 <code>Qwen2TokenizerFast</code> 类，这是使用 Rust 实现的快速 tokenizer 版本。<code>_fast.py</code> 版本的 tokenizer 通常具有更高的性能，也更加常用</li>
+</ul>
+<h2 id="高层抽象与工作流-high-level-abstractions-workflows"><a class="markdownIt-Anchor" href="#高层抽象与工作流-high-level-abstractions-workflows"></a> 高层抽象与工作流 (High-Level Abstractions &amp; Workflows)</h2>
+<p>这些是构建在核心组件之上的高级接口，简化了特定的任务流程。</p>
+<h3 id="推理工作流pipline"><a class="markdownIt-Anchor" href="#推理工作流pipline"></a> 推理工作流：<code>pipline</code></h3>
+<p>​	Pipeline 组件旨在大幅简化使用预训练模型进行推理的过程。通过它，用户仅需寥寥几行代码，即可轻松地利用强大的预训练模型完成各种预测任务。Pipeline 的核心在于其内部集成了模型推理所需的关键要素，包括模型的配置 (Configuration)、模型本身 (Model) 以及负责将原始输入转化为模型可接受格式的分词器 (Tokenizer)</p>
+<p>​	Pipeline 的工作流程主要分为三个步骤：</p>
+<ul>
+<li>预处理 (Preprocess) 阶段：接收用户的原始输入，例如一段文本，并利用 Tokenizer 将其转化为模型所需的 <code>input_ids</code> 和 <code>attention_mask</code> 等格式</li>
+<li>前向传播 (Forward) 阶段：处理后的输入会被送入预训练的 Model 中进行计算</li>
+<li>后处理 (Postprocess) 阶段，模型输出的原始结果（比如 logits）会被转换成更易于理解和使用的形式，例如文本分类的标签和分数，或者机器翻译生成的文本</li>
+</ul>
+<p>​	深入了解 Pipeline 的实现细节，可以从 <code>src/transformers/pipelines/__init__.py</code> 文件中的 <code>pipeline()</code> 函数开始探索。这个函数是 Pipeline 的入口点，它会根据指定的 <code>task</code> 参数，自动找到并实例化对应的 Pipeline 子类。这些具体的任务实现位于 <code>src/transformers/pipelines/&lt;task_name&gt;.py</code> 目录下，例如文本分类任务的实现就在 <code>text_classification.py</code> 中，机器翻译任务则在 <code>translation.py</code> 中</p>
+<h3 id="训练评估工作流-trainer"><a class="markdownIt-Anchor" href="#训练评估工作流-trainer"></a> 训练/评估工作流: <code>Trainer</code></h3>
+<p>​	<code>Trainer</code> 类是 Transformers 库中用于简化模型训练和评估流程的高级接口。它封装了标准的训练循环，并负责处理诸多复杂的细节，例如<font color="red"><strong>优化器的管理、学习率的调度、训练过程中的日志记录、模型的保存以及分布式训练的支持等</strong></font></p>
+<p>​	要使用 <code>Trainer</code> 需要提供 Model、包含训练配置信息的 TrainingArguments、用于训练和评估的 Dataset、Tokenizer，以及用于将数据集中的样本组合成批次并进行必要处理的 DataCollator 等。</p>
+<p>​	<code>Trainer</code> 的工作流程涵盖了从<font color="red">数据准备到模型评估的整个过程</font>。它会管理训练的轮数 (epoch) 和步数 (step)，并利用 DataCollator 和 DataLoader 来准备模型所需的批次数据。在每个训练步骤中，Trainer 会执行模型的前向传播以计算损失 (loss)，然后执行反向传播和优化器的更新步骤 (optimizer step)。此外，Trainer 还会负责学习率的调整。在训练结束后或训练过程中，Trainer 能够执行评估循环 (evaluation loop) 并计算各种评估指标 (metrics)。最后，Trainer 还会处理模型的保存、训练日志的记录，并支持与 Weights &amp; Biases (W&amp;B) 和 TensorBoard 等常用工具的集成…</p>
+<p>​	Trainer 的内部机制，可以从 <code>src/transformers/trainer.py</code> 文件中的 <code>Trainer</code> 类的 <code>__init__</code> 方法开始，了解其初始化过程。<code>train()</code> 方法是启动训练循环的关键，而 <code>evaluate()</code> 方法则负责执行评估。核心的训练逻辑位于 <code>_inner_training_loop</code> 方法中</p>
+<h2 id="它们如何连接from_pretrained"><a class="markdownIt-Anchor" href="#它们如何连接from_pretrained"></a> 它们如何连接：<code>from_pretrained</code></h2>
+<p>​	无论是使用 Pipeline 还是 Trainer，加载预训练模型都非常方便。这背后的关键在于 <code>from_pretrained</code> 方法，它连接了 <code>Configuration</code>, <code>Model</code>, 和 <code>Tokenizer</code> 这些核心组件，使得 Pipeline 和 Trainer 能够轻松地使用预训练模型。</p>
+<p>​	<code>from_pretrained</code> 它存在于 <code>PreTrainedModel</code>, <code>PretrainedConfig</code>, <code>PreTrainedTokenizer</code> 等基类及其子类中。它的主要任务就是从 Hugging Face Hub 的模型仓库或者本地缓存中，自动下载并加载预训练好的模型权重、配置文件以及分词器文件</p>
+<p>​	让我们以一个常见的操作 <code>AutoModel.from_pretrained(&quot;identifier&quot;)</code> 为例，来看看 <code>from_pretrained</code> 是如何工作的：</p>
+<ol>
+<li>首先，像 <code>AutoModel</code> 这样的“Auto”类会根据您提供的 <code>identifier</code>（例如模型名称）在 Hugging Face Hub 上查找对应的 <code>config.json</code> 文件</li>
+<li><code>AutoModel</code> 会读取 <code>config.json</code> 中的 <code>model_type</code> 字段，这个字段指明了具体的模型类型。</li>
+<li>根据 <code>model_type</code>，<code>AutoModel</code> 就能确定需要加载哪个具体的模型类，比如 <code>BertModel</code>。</li>
+<li>然后，<code>AutoModel</code> 会调用这个具体模型类（例如 <code>BertModel</code>) 的 <code>from_pretrained</code> 方法。</li>
+<li>在这个方法内部，会进行以下操作：
+<ul>
+<li>下载并将 <code>config.json</code> 文件加载到对应的 <code>*Config</code> 对象中（例如 <code>BertConfig</code>）。</li>
+<li>根据加载的 <code>Config</code> 对象实例化模型（例如创建一个 <code>BertModel(config)</code> 的实例）。</li>
+<li>下载模型的权重文件 (<code>pytorch_model.bin</code> 或者 <code>.safetensors</code> 格式）。</li>
+<li>将下载的权重加载到刚刚创建的模型实例中</li>
+</ul>
+</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+			
+			
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/04/16/distributed_training/intro/" title="intro">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">intro</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/03/15/policy_gradient/" title="policy_gradient">
+                        <span class="hidden-mobile">policy_gradient</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <i class="iconfont icon-love"></i> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

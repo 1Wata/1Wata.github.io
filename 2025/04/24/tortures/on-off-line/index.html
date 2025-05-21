@@ -1,0 +1,608 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/w.png">
+  <link rel="icon" href="/img/w.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="对于在线处理和离线处理的讨论  问题描述： ​	我在使用 MLLM 的 VQA 方式进行单目标跟踪的时候，出现了一个问题是，由于输入的图片分辨率不一样，如果我使用了 normalize bbox 模型并不能正确理解 normalize bbox 的含义，因此我需要正确裁剪 bbox 输入模型相同分辨率的图像，因此需要正确处理数据集，有两种方式，将数据集先全部裁剪完再开始训练，这就是 off-li">
+<meta property="og:type" content="article">
+<meta property="og:title" content="on-off-line">
+<meta property="og:url" content="http://example.com/2025/04/24/tortures/on-off-line/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="对于在线处理和离线处理的讨论  问题描述： ​	我在使用 MLLM 的 VQA 方式进行单目标跟踪的时候，出现了一个问题是，由于输入的图片分辨率不一样，如果我使用了 normalize bbox 模型并不能正确理解 normalize bbox 的含义，因此我需要正确裁剪 bbox 输入模型相同分辨率的图像，因此需要正确处理数据集，有两种方式，将数据集先全部裁剪完再开始训练，这就是 off-li">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2025/04/24/tortures/on-off-line/image-20250425202446639.png">
+<meta property="og:image" content="http://example.com/2025/04/24/tortures/on-off-line/image-20250425202855356.png">
+<meta property="og:image" content="http://example.com/2025/04/24/tortures/on-off-line/image-20250425202951800.png">
+<meta property="article:published_time" content="2025-04-24T11:38:21.000Z">
+<meta property="article:modified_time" content="2025-04-25T12:45:54.407Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2025/04/24/tortures/on-off-line/image-20250425202446639.png">
+  
+  
+  
+  <title>on-off-line - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.6","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/katex@0.11.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Wataの锟斤拷</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="on-off-line"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-04-24 19:38" pubdate>
+          2025年4月24日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          820 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          9 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">on-off-line</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="对于在线处理和离线处理的讨论"><a class="markdownIt-Anchor" href="#对于在线处理和离线处理的讨论"></a> 对于在线处理和离线处理的讨论</h1>
+<h2 id="问题描述"><a class="markdownIt-Anchor" href="#问题描述"></a> 问题描述：</h2>
+<p>​	我在使用 MLLM 的 VQA 方式进行单目标跟踪的时候，出现了一个问题是，由于输入的图片分辨率不一样，如果我使用了 normalize bbox 模型并不能正确理解 normalize bbox 的含义，因此我需要正确裁剪 bbox 输入模型相同分辨率的图像，因此需要正确处理数据集，有两种方式，将数据集先全部裁剪完再开始训练，这就是 off-line 处理；另一种就是边处理数据边裁剪，每遍历到数据集中的一个 sample 就裁剪一个 sample 内的图片。</p>
+<h2 id="结论-tldr-版"><a class="markdownIt-Anchor" href="#结论-tldr-版"></a> 结论 TLDR 版：</h2>
+<ul>
+<li>
+<p>online 处理一般而言省磁盘容量，但是会有更大的计算开销，offline 处理一般省计算开销（提前处理的计算量不计入训练过程），但是对磁盘容量的消耗更大</p>
+</li>
+<li>
+<p>对于科研这种需要快速迭代的工作来说，第一考虑的就是时间成本，一般来说 online 和 offline 的时间差别不大，因此写代码时间消耗反而是最大的（这个看情况），那么就是代码怎么好改就选取哪个方法</p>
+</li>
+<li>
+<p>online 与 offline 不止限制于数据处理上，还在各个方面会出现，例如推荐系统的 online training 和 offline training 的区别；模型推理的 online inference 和 offline inference 的区别等等</p>
+</li>
+</ul>
+<h2 id="online-实现难度分析"><a class="markdownIt-Anchor" href="#online-实现难度分析"></a> online 实现难度分析：</h2>
+<p>​	因为 MLLM 模型微调全部是在 llama factory 框架下进行微调的，但是 llama factory 并没有对数据集有很多拓展功能，下面就需要分析源代码看一下数据集的处理逻辑，评估一下在这个框架下是否真的好改代码，我们需要明确目标：<font color="red">对图片数据进行裁剪的最佳位置在调用加载图片进入内存之后，在对图片进行归一化等数值化处理之前</font>。下面我们一步步查看源码：</p>
+<h3 id="llama-factory-数据集处理流程链"><a class="markdownIt-Anchor" href="#llama-factory-数据集处理流程链"></a> llama factory 数据集处理流程链：</h3>
+<p>我的数据集一个 sample 示例如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>	<span class="hljs-attr">&quot;messages&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>      <span class="hljs-punctuation">&#123;</span><br>        <span class="hljs-attr">&quot;role&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;user&quot;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;content&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;The first 2 images (&lt;image&gt;&lt;image&gt;) show the object of interest: &#x27;the player who controls the ball&#x27;. Please locate this object in the final image (&lt;image&gt;). Provide its bounding box as [x1, y1, x2, y2] coordinates within that image.&quot;</span><br>      <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-punctuation">&#123;</span><br>        <span class="hljs-attr">&quot;role&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;assistant&quot;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;content&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;The object &#x27;the player who controls the ball&#x27; is located at [38, 248, 103, 313].&quot;</span><br>      <span class="hljs-punctuation">&#125;</span><br>    <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;images&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>      <span class="hljs-string">&quot;cropped_dataset_visible/cropped_images/sample_000000/template_000.jpg&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-string">&quot;cropped_dataset_visible/cropped_images/sample_000000/template_001.jpg&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-string">&quot;cropped_dataset_visible/cropped_images/sample_000000/search.jpg&quot;</span><br>    <span class="hljs-punctuation">]</span><br> <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br></code></pre></td></tr></table></figure>
+<h4 id="加载数据进内存"><a class="markdownIt-Anchor" href="#加载数据进内存"></a> 加载数据进内存：</h4>
+<ul>
+<li>
+<p>训练流程开始时，会解析命令行参数和配置文件，包括数据集名称和路径 (<code>data/dataset_info.json</code> 用于定义数据集元信息，如列名、格式等)</p>
+</li>
+<li>
+<p><code>get_dataset</code> 函数负责根据数据集名称和配置加载原始数据集。它会调用 <code>_load_single_dataset</code> (<code>src/llamafactory/data/loader.py</code>) 从 Hugging Face Hub、ModelScope、本地文件等来源加载数据。</p>
+</li>
+</ul>
+<p><img src="/2025/04/24/tortures/on-off-line/image-20250425202446639.png" srcset="/img/loading.gif" lazyload alt="load_dataset"></p>
+<h4 id="自定义选择数据处理器"><a class="markdownIt-Anchor" href="#自定义选择数据处理器"></a> 自定义选择数据处理器：</h4>
+<ul>
+<li><code>_get_dataset_processor</code> 函数根据当前的训练阶段 (<code>stage</code>，如 “sft”, “pt”, “rm”)  选择一个合适的 <code>DatasetProcessor</code> 子类</li>
+</ul>
+<p><img src="/2025/04/24/tortures/on-off-line/image-20250425202855356.png" srcset="/img/loading.gif" lazyload alt="image-20250425202855356"></p>
+<p>其中各种 <code>dataprocessor</code> 保存在 <code>src/llamafactory/data/processor</code> 路径下：</p>
+<p><img src="/2025/04/24/tortures/on-off-line/image-20250425202951800.png" srcset="/img/loading.gif" lazyload alt="processors"></p>
+<p>​	因此每次 iter 会调用不同的 processor 对数据进行预处理，因此我们需要进入 processor 内容进一步查看代码，我们使用的是 SFT 训练，因此就用 <code>SupervisedDatasetProcessor</code> 为例，它的代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-meta">@dataclass</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">SupervisedDatasetProcessor</span>(<span class="hljs-title class_ inherited__">DatasetProcessor</span>):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">_encode_data_example</span>(<span class="hljs-params"></span><br><span class="hljs-params">        self,</span><br><span class="hljs-params">        prompt: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">str</span>]],</span><br><span class="hljs-params">        response: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">str</span>]],</span><br><span class="hljs-params">        system: <span class="hljs-type">Optional</span>[<span class="hljs-built_in">str</span>],</span><br><span class="hljs-params">        tools: <span class="hljs-type">Optional</span>[<span class="hljs-built_in">str</span>],</span><br><span class="hljs-params">        images: <span class="hljs-built_in">list</span>[<span class="hljs-string">&quot;ImageInput&quot;</span>],</span><br><span class="hljs-params">        videos: <span class="hljs-built_in">list</span>[<span class="hljs-string">&quot;VideoInput&quot;</span>],</span><br><span class="hljs-params">        audios: <span class="hljs-built_in">list</span>[<span class="hljs-string">&quot;AudioInput&quot;</span>],</span><br><span class="hljs-params">    </span>) -&gt; <span class="hljs-built_in">tuple</span>[<span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>], <span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>]]:<br>        messages = self.template.mm_plugin.process_messages(prompt + response, images, videos, audios, self.processor)<br>        input_ids, labels = self.template.mm_plugin.process_token_ids(<br>            [], [], images, videos, audios, self.tokenizer, self.processor<br>        )<br>        encoded_pairs = self.template.encode_multiturn(self.tokenizer, messages, system, tools)<br>        total_length = <span class="hljs-built_in">len</span>(input_ids) + (<span class="hljs-number">1</span> <span class="hljs-keyword">if</span> self.template.efficient_eos <span class="hljs-keyword">else</span> <span class="hljs-number">0</span>)<br>        <span class="hljs-keyword">if</span> self.data_args.mask_history:<br>            encoded_pairs = encoded_pairs[::-<span class="hljs-number">1</span>]  <span class="hljs-comment"># high priority for last turns</span><br><br>        <span class="hljs-keyword">for</span> turn_idx, (source_ids, target_ids) <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(encoded_pairs):<br>            <span class="hljs-keyword">if</span> total_length &gt;= self.data_args.cutoff_len:<br>                <span class="hljs-keyword">break</span><br><br>            source_len, target_len = infer_seqlen(<br>                <span class="hljs-built_in">len</span>(source_ids), <span class="hljs-built_in">len</span>(target_ids), self.data_args.cutoff_len - total_length<br>            )<br>            source_ids = source_ids[:source_len]<br>            target_ids = target_ids[:target_len]<br>            total_length += source_len + target_len<br><br>            <span class="hljs-keyword">if</span> self.data_args.train_on_prompt:<br>                source_label = source_ids<br>            <span class="hljs-keyword">elif</span> self.template.efficient_eos:<br>                source_label = [self.tokenizer.eos_token_id] + [IGNORE_INDEX] * (source_len - <span class="hljs-number">1</span>)<br>            <span class="hljs-keyword">else</span>:<br>                source_label = [IGNORE_INDEX] * source_len<br><br>            <span class="hljs-keyword">if</span> self.data_args.mask_history <span class="hljs-keyword">and</span> turn_idx != <span class="hljs-number">0</span>:  <span class="hljs-comment"># train on the last turn only</span><br>                target_label = [IGNORE_INDEX] * target_len<br>            <span class="hljs-keyword">else</span>:<br>                target_label = target_ids<br><br>            <span class="hljs-keyword">if</span> self.data_args.mask_history:  <span class="hljs-comment"># reversed sequences</span><br>                input_ids = source_ids + target_ids + input_ids<br>                labels = source_label + target_label + labels<br>            <span class="hljs-keyword">else</span>:<br>                input_ids += source_ids + target_ids<br>                labels += source_label + target_label<br><br>        <span class="hljs-keyword">if</span> self.template.efficient_eos:<br>            input_ids += [self.tokenizer.eos_token_id]<br>            labels += [self.tokenizer.eos_token_id]<br><br>        <span class="hljs-keyword">return</span> input_ids, labels<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">preprocess_dataset</span>(<span class="hljs-params">self, examples: <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">list</span>[<span class="hljs-type">Any</span>]]</span>) -&gt; <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">list</span>[<span class="hljs-type">Any</span>]]:<br>        <span class="hljs-comment"># build inputs with format `&lt;bos&gt; X Y &lt;eos&gt;` and labels with format `&lt;ignore&gt; ... &lt;ignore&gt; Y &lt;eos&gt;`</span><br>        <span class="hljs-comment"># for multiturn examples, we only mask the prompt part in each prompt-response pair.</span><br>        model_inputs = defaultdict(<span class="hljs-built_in">list</span>)<br>        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(examples[<span class="hljs-string">&quot;_prompt&quot;</span>])):<br>            <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(examples[<span class="hljs-string">&quot;_prompt&quot;</span>][i]) % <span class="hljs-number">2</span> != <span class="hljs-number">1</span> <span class="hljs-keyword">or</span> <span class="hljs-built_in">len</span>(examples[<span class="hljs-string">&quot;_response&quot;</span>][i]) != <span class="hljs-number">1</span>:<br>                logger.warning_rank0(<br>                    <span class="hljs-string">&quot;Dropped invalid example: &#123;&#125;&quot;</span>.<span class="hljs-built_in">format</span>(examples[<span class="hljs-string">&quot;_prompt&quot;</span>][i] + examples[<span class="hljs-string">&quot;_response&quot;</span>][i])<br>                )<br>                <span class="hljs-keyword">continue</span><br><br>            input_ids, labels = self._encode_data_example(<br>                prompt=examples[<span class="hljs-string">&quot;_prompt&quot;</span>][i],<br>                response=examples[<span class="hljs-string">&quot;_response&quot;</span>][i],<br>                system=examples[<span class="hljs-string">&quot;_system&quot;</span>][i],<br>                tools=examples[<span class="hljs-string">&quot;_tools&quot;</span>][i],<br>                images=examples[<span class="hljs-string">&quot;_images&quot;</span>][i] <span class="hljs-keyword">or</span> [],<br>                videos=examples[<span class="hljs-string">&quot;_videos&quot;</span>][i] <span class="hljs-keyword">or</span> [],<br>                audios=examples[<span class="hljs-string">&quot;_audios&quot;</span>][i] <span class="hljs-keyword">or</span> [],<br>            )<br>            model_inputs[<span class="hljs-string">&quot;input_ids&quot;</span>].append(input_ids)<br>            model_inputs[<span class="hljs-string">&quot;attention_mask&quot;</span>].append([<span class="hljs-number">1</span>] * <span class="hljs-built_in">len</span>(input_ids))<br>            model_inputs[<span class="hljs-string">&quot;labels&quot;</span>].append(labels)<br>            model_inputs[<span class="hljs-string">&quot;images&quot;</span>].append(examples[<span class="hljs-string">&quot;_images&quot;</span>][i])<br>            model_inputs[<span class="hljs-string">&quot;videos&quot;</span>].append(examples[<span class="hljs-string">&quot;_videos&quot;</span>][i])<br>            model_inputs[<span class="hljs-string">&quot;audios&quot;</span>].append(examples[<span class="hljs-string">&quot;_audios&quot;</span>][i])<br><br>        <span class="hljs-keyword">return</span> model_inputs<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">print_data_example</span>(<span class="hljs-params">self, example: <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>]]</span>) -&gt; <span class="hljs-literal">None</span>:<br>        valid_labels = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">filter</span>(<span class="hljs-keyword">lambda</span> x: x != IGNORE_INDEX, example[<span class="hljs-string">&quot;labels&quot;</span>]))<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;input_ids:\n&#123;&#125;&quot;</span>.<span class="hljs-built_in">format</span>(example[<span class="hljs-string">&quot;input_ids&quot;</span>]))<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;inputs:\n&#123;&#125;&quot;</span>.<span class="hljs-built_in">format</span>(self.tokenizer.decode(example[<span class="hljs-string">&quot;input_ids&quot;</span>], skip_special_tokens=<span class="hljs-literal">False</span>)))<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;label_ids:\n&#123;&#125;&quot;</span>.<span class="hljs-built_in">format</span>(example[<span class="hljs-string">&quot;labels&quot;</span>]))<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;labels:\n<span class="hljs-subst">&#123;self.tokenizer.decode(valid_labels, skip_special_tokens=<span class="hljs-literal">False</span>)&#125;</span>&quot;</span>)<br><br></code></pre></td></tr></table></figure>
+<ul>
+<li><code>_encode_data_example</code> 这个私有方法是整个处理流程的核心，它负责处理<strong>单个</strong>数据样本（一个完整的对话或多轮对话），将其转换为模型训练所需的 <code>input_ids</code> 和 <code>labels</code> 序列</li>
+<li><code>preprocess_dataset</code> 这是公开的预处理方法，接收一个包含多个数据样本的批次，遍历这些样本，并调用 <code>_encode_data_example</code> 来处理每一个样本。它将处理结果组织成一个字典，准备用于 PyTorch 的 <code>DataLoader</code></li>
+</ul>
+<p>一步步调试查看中间过程可以发现，</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+			
+			
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/04/30/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/mutable/" title="Hashable &amp; Mutable">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Hashable &amp; Mutable</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/04/16/distributed_training/intro/" title="intro">
+                        <span class="hidden-mobile">intro</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <i class="iconfont icon-love"></i> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
