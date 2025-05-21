@@ -216,72 +216,6 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/11/22/ai/generative_ai/gen-unif-view-2/" target="_self">
-          生成式模型统一视角-Diffusion
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/11/22/ai/generative_ai/gen-unif-view-2/" target="_self">
-        <div>
-          生成式模型统一视角-Diffusion  Diffusion的优化思路 ​	我们先从整体的框架去了解 diffusion 在干什么，而不是按照论文的公式一步一步来，那样会被各种细节的公式给迷惑住而忘记了整体的模型设计思路，下面的行文中我们省略中间公式的推导 上一次我们推导到了 ELBO 使用的优化的最终形式为： ELBO=Eq(x1∣x0)[log⁡p(x0∣x1)]⏟reconstructio
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-11-22 21:29" pubdate>
-              2024-11-22
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/10/21/ai/generative_ai/gen_unif_view_1/" target="_self">
-          生成式模型统一视角-ELBO
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/10/21/ai/generative_ai/gen_unif_view_1/" target="_self">
-        <div>
-          生成式模型统一视角-ELBO  生成式模型的作用-intro ​	给定从某个分布中抽取的观察样本xxx，生成模型的目标是学习并模拟这个分布的真实数据分布 p(x)p(x)p(x)。这里的真实数据分布是指生成这些样本的原始概率分布。生成模型通过学习训练数据中的模式来近似这个真实的分布（注意这只是对于绝大部分的基于概率的模型） ​	一旦模型学会了如何近似真实的数据分布，我们就可以使用这个模型生成新的
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-10-21 19:12" pubdate>
-              2024-10-21
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
         <a href="/2024/10/17/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/shared-memory/" target="_self">
           shared_memory
         </a>
@@ -531,6 +465,72 @@
             <i class="iconfont icon-date"></i>
             <time datetime="2024-10-10 20:21" pubdate>
               2024-10-10
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/10/06/ai/Pytorch/torch-compile/" target="_self">
+          torch_compile
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/10/06/ai/Pytorch/torch-compile/" target="_self">
+        <div>
+          torch.compile解析 ​	torch.compile是PyTorch 2.2版本中的一个重要新特性。它是一种新的 PyTorch 编译器，它可以将 Python 和 TorchScript 模型编译成 TorchDynamo 图，从而提高模型的运行效率。是加速 PyTorch 代码速度的最新方法！ torch.compile 通过将 PyTorch 代码 JIT（just in tim
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-10-06 10:48" pubdate>
+              2024-10-06
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/10/03/alchemy-tricks/" target="_self">
+          alchemy tricks
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/10/03/alchemy-tricks/" target="_self">
+        <div>
+          alchemy tricks ​	本文用于记录炼丹过程中的各种心得经验，长期更新  computer vision  Transformer 架构主要关注全局的，低频信号信息（就是一个近视眼）；CNN 架构主要关注局部的，高频信号，对细节信息敏感但是缺乏全局的语义信息。如果想把两种架构的优点都用上，可以考虑以下几种技巧：  在生成多尺度特征图时，用 transformer 架构生成低分率的，具有
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-10-03 16:32" pubdate>
+              2024-10-03
             </time>
           </div>
         

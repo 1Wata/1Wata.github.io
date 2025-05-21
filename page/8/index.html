@@ -216,72 +216,6 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/04/19/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/2_frame/" target="_self">
-          cuda-2-程序框架
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/19/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/2_frame/" target="_self">
-        <div>
-          cuda 程序框架 12345678910111213头文件包含常量定义（或者宏定义）C++ 自定义函数和CUDA核函数的声明（原型）int main(void)&#123;    分配主机与设备内存    初始化主机中的数据    将某些数据从主机复制到设备    调用核函数在设备中进行计算    将某些数据从设备复制到主机    释放主机与设备内存&#125;C++自定义函数与CUDA核函数
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-04-19 21:11" pubdate>
-              2024-04-19
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/04/19/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/1_compile/" target="_self">
-          cuda-1(兼容性)
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/19/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/1_compile/" target="_self">
-        <div>
-          cuda程序兼容性问题 先了解cuda程序编译的流程：先从C/C++代码编译为PTX，再从PTX编译为cudin代码   C/C++源码转化为PTX这一步骤与硬件无关   PTX指令转化为二进制cubin代码与具体的GPU架构有关    指定虚拟架构计算能力  C/C++源码编译为PTX时，可以指定虚拟架构的计算能力，用于确定代码中可以使用的CUDA功能 编译指令（指定虚拟架构计算能力）：  1
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-04-19 20:26" pubdate>
-              2024-04-19
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
         <a href="/2024/04/13/Java/Java%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" target="_self">
           Java面向对象细碎知识
         </a>
@@ -597,6 +531,93 @@
             </time>
           </div>
         
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/03/19/ai/Pytorch/Wandb-2/" target="_self">
+          Wandb教程(2)
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/19/ai/Pytorch/Wandb-2/" target="_self">
+        <div>
+          Wandb教程(2)  Wand的推荐用法  Config：  config的配置方法：  直接赋值 ​	在初始化 wandb 之前或之后，可以创建一个字典或使用 wandb.config 的属性赋值方式来设置配置项。例如： 12345678910111213141516# 方法一：直接创建一个字典并赋值给 wandb.configconfig = &#123;    &quot;learnin
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-03-19 18:55" pubdate>
+              2024-03-19
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/03/17/ai/Pytorch/Wandb-1/" target="_self">
+          Wandb教程(1)
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/17/ai/Pytorch/Wandb-1/" target="_self">
+        <div>
+          Wandb教程(1) ​	Wandb（Weights &amp; Biases）是一个用于机器学习实验跟踪、可视化和管理的平台。它提供了一个强大的工具集，帮助研究人员和开发人员跟踪他们的模型训练过程、超参数、指标以及模型的版本。他就是Tensorboard的白富美版本：颜值高，气质好，可视化交互性强，支持所有深度学习框架。它内嵌在计算机中，不需要你写可视化代码（我之前每次可视化都要写一次把张量的
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-03-17 18:15" pubdate>
+              2024-03-17
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Pytorch%E5%AD%A6%E4%B9%A0/" class="category-chain-item">Pytorch学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
         
         
       </div>
