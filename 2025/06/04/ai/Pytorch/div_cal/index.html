@@ -1,0 +1,638 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/w.png">
+  <link rel="icon" href="/img/w.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="计算向量场的散度：PyTorch 实现与技巧 ​	在许多机器学习任务中，例如像 score matching 这样的生成模型训练方法中，我们经常需要计算模型输出（例如 score function sθ(x)s_\theta(\boldsymbol x)sθ​(x)）的散度 ∇x⋅sθ(x)\nabla_\boldsymbol x \cdot s_\theta(\boldsymbol x)∇x​">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算向量场的散度：PyTorch 实现与技巧">
+<meta property="og:url" content="http://example.com/2025/06/04/ai/Pytorch/div_cal/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="计算向量场的散度：PyTorch 实现与技巧 ​	在许多机器学习任务中，例如像 score matching 这样的生成模型训练方法中，我们经常需要计算模型输出（例如 score function sθ(x)s_\theta(\boldsymbol x)sθ​(x)）的散度 ∇x⋅sθ(x)\nabla_\boldsymbol x \cdot s_\theta(\boldsymbol x)∇x​">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-06-04T12:20:30.000Z">
+<meta property="article:modified_time" content="2025-06-04T15:33:35.490Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="PyTorch">
+<meta property="article:tag" content="ScoreMatching">
+<meta property="article:tag" content="Autograd">
+<meta property="article:tag" content="Divergence">
+<meta property="article:tag" content="Hutchinson">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>计算向量场的散度：PyTorch 实现与技巧 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.6","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/katex@0.11.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Wataの锟斤拷</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="计算向量场的散度：PyTorch 实现与技巧"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-04 20:20" pubdate>
+          2025年6月4日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          21 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">计算向量场的散度：PyTorch 实现与技巧</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="计算向量场的散度pytorch-实现与技巧"><a class="markdownIt-Anchor" href="#计算向量场的散度pytorch-实现与技巧"></a> 计算向量场的散度：PyTorch 实现与技巧</h1>
+<p>​	在许多机器学习任务中，例如像 score matching 这样的生成模型训练方法中，我们经常需要计算模型输出（例如 score function <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>s</mi><mi>θ</mi></msub><mo stretchy="false">(</mo><mi mathvariant="bold-italic">x</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">s_\theta(\boldsymbol x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal">s</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">θ</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord boldsymbol">x</span></span><span class="mclose">)</span></span></span></span>）的散度 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="normal">∇</mi><mi mathvariant="bold-italic">x</mi></msub><mo>⋅</mo><msub><mi>s</mi><mi>θ</mi></msub><mo stretchy="false">(</mo><mi mathvariant="bold-italic">x</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\nabla_\boldsymbol x \cdot s_\theta(\boldsymbol x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord">∇</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.161108em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord boldsymbol mtight">x</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal">s</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">θ</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord boldsymbol">x</span></span><span class="mclose">)</span></span></span></span>。这一项通常作为损失函数的一部分，例如在 Denoising Score Matching (DSM) 或 Sliced Score Matching (SSM) 中，它帮助模型学习数据的内在结构。</p>
+<p>​	直接精确计算高维向量场的散度，特别是当 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>s</mi><mi>θ</mi></msub><mo stretchy="false">(</mo><mi mathvariant="bold-italic">x</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">s_\theta(\boldsymbol x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal">s</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">θ</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord boldsymbol">x</span></span><span class="mclose">)</span></span></span></span> 是一个复杂的神经网络时，可能非常耗费计算资源。因为它涉及到计算雅可比矩阵（Jacobian matrix）并对其对角线元素求和。因此，我们需要一些有效的方法来计算或估计这个散度项。</p>
+<p>本文将探讨在 PyTorch 中处理这一问题的几种策略，从直接的数值方法到更高级的随机估计技术。</p>
+<h2 id="preliminary"><a class="markdownIt-Anchor" href="#preliminary"></a> Preliminary</h2>
+<p>​	回忆一下，对于一个 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">n</span></span></span></span> 维向量场 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold">F</mi><mo stretchy="false">(</mo><mi mathvariant="bold-italic">x</mi><mo stretchy="false">)</mo><mo>=</mo><mo stretchy="false">(</mo><msub><mi>F</mi><mn>1</mn></msub><mo stretchy="false">(</mo><mi mathvariant="bold-italic">x</mi><mo stretchy="false">)</mo><mo separator="true">,</mo><msub><mi>F</mi><mn>2</mn></msub><mo stretchy="false">(</mo><mi mathvariant="bold-italic">x</mi><mo stretchy="false">)</mo><mo separator="true">,</mo><mo>…</mo><mo separator="true">,</mo><msub><mi>F</mi><mi>n</mi></msub><mo stretchy="false">(</mo><mi mathvariant="bold-italic">x</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\mathbf{F}(\boldsymbol x) = (F_1(\boldsymbol x), F_2(\boldsymbol x), \dots, F_n(\boldsymbol x))</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathbf">F</span></span><span class="mopen">(</span><span class="mord"><span class="mord boldsymbol">x</span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord boldsymbol">x</span></span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord boldsymbol">x</span></span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord boldsymbol">x</span></span><span class="mclose">)</span><span class="mclose">)</span></span></span></span>，其中 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">x</mi><mo>=</mo><mo stretchy="false">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo separator="true">,</mo><msub><mi>x</mi><mn>2</mn></msub><mo separator="true">,</mo><mo>…</mo><mo separator="true">,</mo><msub><mi>x</mi><mi>n</mi></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\boldsymbol x = (x_1, x_2, \dots, x_n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.44444em;vertical-align:0em;"></span><span class="mord"><span class="mord boldsymbol">x</span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.30110799999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>，其散度定义为：</p>
+<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>div</mtext><mi mathvariant="bold">F</mi><mo>=</mo><mi mathvariant="normal">∇</mi><mo>⋅</mo><mi mathvariant="bold">F</mi><mo>=</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mfrac><mrow><mi mathvariant="normal">∂</mi><msub><mi>F</mi><mi>i</mi></msub></mrow><mrow><mi mathvariant="normal">∂</mi><msub><mi>x</mi><mi>i</mi></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex">\text{div}\mathbf{F} =\nabla \cdot \mathbf{F} = \sum_{i=1}^{n} \frac{\partial F_i}{\partial x_i}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord text"><span class="mord">div</span></span><span class="mord"><span class="mord mathbf">F</span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord">∇</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.68611em;vertical-align:0em;"></span><span class="mord"><span class="mord mathbf">F</span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.929066em;vertical-align:-1.277669em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.6513970000000002em;"><span style="top:-1.872331em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.050005em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.3000050000000005em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.277669em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.37144em;"><span style="top:-2.3139999999999996em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord" style="margin-right:0.05556em;">∂</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord" style="margin-right:0.05556em;">∂</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.8360000000000001em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+<p>​	散度衡量了向量场在某一点的“源”（正散度）或“汇”（负散度）的强度。在物理学中，它描述了场的通量密度；在机器学习中，它可以作为正则项或目标函数的一部分。</p>
+<h2 id="pytorch-中的实现方法"><a class="markdownIt-Anchor" href="#pytorch-中的实现方法"></a> PyTorch 中的实现方法</h2>
+<p>根据向量场的形式（是离散数据网格还是函数输出），我们可以选择不同的计算方法。</p>
+<h3 id="方法1使用-torchgradient-计算离散场散度"><a class="markdownIt-Anchor" href="#方法1使用-torchgradient-计算离散场散度"></a> 方法1：使用 <code>torch.gradient</code> 计算离散场散度</h3>
+<p>​	若向量场是定义在一个规则网格上的离散数据（例如，来自物理模拟的输出或图像数据），PyTorch 1.8 版本以上提供的 <code>torch.gradient</code> 函数是一个方便的工具。它使用二阶中心差分（边界处为一阶）来数值计算梯度。</p>
+<h3 id="示例计算三维空间中向量场的散度"><a class="markdownIt-Anchor" href="#示例计算三维空间中向量场的散度"></a> 示例：计算三维空间中向量场的散度</h3>
+<p>​	假设我们有一个三维向量场 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold">F</mi><mo>=</mo><mo stretchy="false">(</mo><msub><mi>F</mi><mi>x</mi></msub><mo separator="true">,</mo><msub><mi>F</mi><mi>y</mi></msub><mo separator="true">,</mo><msub><mi>F</mi><mi>z</mi></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\mathbf{F} = (F_x, F_y, F_z)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68611em;vertical-align:0em;"></span><span class="mord"><span class="mord mathbf">F</span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.036108em;vertical-align:-0.286108em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">x</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.15139200000000003em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">y</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.04398em;">z</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>，其数据存储在一个形状为 <code>(batch_size, 3, D_x, D_y, D_z)</code> 的张量 <code>field</code> 中。这里 <code>3</code> 代表向量的三个分量 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>F</mi><mi>x</mi></msub><mo separator="true">,</mo><msub><mi>F</mi><mi>y</mi></msub><mo separator="true">,</mo><msub><mi>F</mi><mi>z</mi></msub></mrow><annotation encoding="application/x-tex">F_x, F_y, F_z</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.969438em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">x</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.15139200000000003em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">y</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-left:-0.13889em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.04398em;">z</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>，而 <code>D_x, D_y, D_z</code> 是三个空间维度的大小。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> torch<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">compute_divergence_from_grid</span>(<span class="hljs-params">field_tensor, spacing=<span class="hljs-number">1.0</span></span>):<br>    <span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">    计算离散向量场的散度。</span><br><span class="hljs-string">    field_tensor: 形状为 (B, N_dim, D1, D2, ..., DN_dim) 的张量。</span><br><span class="hljs-string">                  例如，对于3D向量场，形状为 (B, 3, Dx, Dy, Dz)。</span><br><span class="hljs-string">                  N_dim 是向量场的维度 (例如，3D向量场是3)。</span><br><span class="hljs-string">                  D1, ..., DN_dim 是空间网格的维度。</span><br><span class="hljs-string">    spacing: 网格点之间的间距，可以是单个标量或每个维度的间距元组。</span><br><span class="hljs-string">    返回散度张量，形状为 (B, D1, D2, ..., DN_dim)。</span><br><span class="hljs-string">    &quot;&quot;&quot;</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-built_in">isinstance</span>(spacing, <span class="hljs-built_in">tuple</span>):<br>        spacing = (spacing,) * (field_tensor.dim() - <span class="hljs-number">2</span>) <span class="hljs-comment"># Assumes spatial dims start from index 2</span><br><br>    <span class="hljs-comment"># 例如，对于 (B, 3, Dx, Dy, Dz) 的3D向量场:</span><br>    <span class="hljs-comment"># F_x 是 field_tensor[:, 0], shape (B, Dx, Dy, Dz)</span><br>    <span class="hljs-comment"># F_y 是 field_tensor[:, 1], shape (B, Dx, Dy, Dz)</span><br>    <span class="hljs-comment"># F_z 是 field_tensor[:, 2], shape (B, Dx, Dy, Dz)</span><br><br>    <span class="hljs-comment"># 注意：torch.gradient 的 dim 参数指的是输入到该函数的张量的维度。</span><br>    <span class="hljs-comment"># 例如，fx = field_tensor[:, 0] (shape B, Dx, Dy, Dz)</span><br>    <span class="hljs-comment"># dfx_dx (对第一个空间维度 Dx 求导) 使用 dim=1 (0-indexed for Dx)</span><br>    <span class="hljs-comment"># dfy_dy (对第二个空间维度 Dy 求导) 使用 dim=2 (0-indexed for Dy)</span><br>    <span class="hljs-comment"># dfz_dz (对第三个空间维度 Dz 求导) 使用 dim=3 (0-indexed for Dz)</span><br><br>    <span class="hljs-comment"># 假设 field_tensor 的维度顺序是 [batch, component, spatial_dim_1, spatial_dim_2, ...]</span><br>    <span class="hljs-comment"># 我们需要对每个分量 F_i 求关于其对应空间维度 x_i 的偏导数。</span><br>    <br>    divergence = torch.zeros_like(field_tensor[:, <span class="hljs-number">0</span>]) <span class="hljs-comment"># Shape (B, D1, D2, ...)</span><br>    <br>    <span class="hljs-comment"># Generalizing for N_dim vector field on N_dim grid</span><br>    <span class="hljs-comment"># Assumes field_tensor[:, i] is F_i, and we want dF_i / d(spatial_dim_i)</span><br>    <span class="hljs-comment"># Spatial dimensions in field_tensor[:, i] start from its dim 1.</span><br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(field_tensor.shape[<span class="hljs-number">1</span>]): <span class="hljs-comment"># Iterate over vector components</span><br>        <span class="hljs-comment"># field_tensor[:, i] is the i-th component, e.g., F_x, F_y, F_z</span><br>        <span class="hljs-comment"># We take its gradient along the (i+1)-th dimension of this sliced tensor</span><br>        <span class="hljs-comment"># (which corresponds to the (i+2)-th dimension of the original field_tensor)</span><br>        <span class="hljs-comment"># e.g., for F_x (i=0), take gradient along its dim 1 (Dx)</span><br>        <span class="hljs-comment"># for F_y (i=1), take gradient along its dim 2 (Dy)</span><br>        <span class="hljs-comment"># for F_z (i=2), take gradient along its dim 3 (Dz)</span><br>        <br>        <span class="hljs-comment"># Check if current component&#x27;s spatial dimension exists</span><br>        <span class="hljs-comment"># The spatial dimension for component `i` is `i+1` in the sliced tensor `field_tensor[:, i]`</span><br>        <span class="hljs-keyword">if</span> field_tensor.dim() &gt; <span class="hljs-number">2</span> + i : <span class="hljs-comment"># 2 accounts for batch and component dims</span><br>             <span class="hljs-comment"># The i-th component (e.g., Fx) is field_tensor[:, i]</span><br>             <span class="hljs-comment"># Its corresponding spatial dimension is the (i+1)-th dimension of this sub-tensor</span><br>            partial_derivative = torch.gradient(field_tensor[:, i], <br>                                                spacing=spacing[i] <span class="hljs-keyword">if</span> <span class="hljs-built_in">isinstance</span>(spacing, <span class="hljs-built_in">tuple</span>) <span class="hljs-keyword">and</span> <span class="hljs-built_in">len</span>(spacing) &gt; i <span class="hljs-keyword">else</span> spacing, <br>                                                dim=i+<span class="hljs-number">1</span>)[<span class="hljs-number">0</span>]<br>            divergence += partial_derivative<br>        <span class="hljs-keyword">else</span>:<br>            <span class="hljs-comment"># This case might occur if N_dim (number of components) is larger than</span><br>            <span class="hljs-comment"># the number of spatial dimensions in the grid, which is unusual for divergence.</span><br>            <span class="hljs-comment"># Or if spacing tuple is not correctly sized.</span><br>            <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Warning: Component <span class="hljs-subst">&#123;i&#125;</span> does not have a corresponding spatial dimension for gradient calculation or spacing issue.&quot;</span>)<br><br><br>    <span class="hljs-keyword">return</span> divergence<br><br><span class="hljs-comment"># 示例输入 (3D 向量场)</span><br>batch_size, Dx, Dy, Dz = <span class="hljs-number">2</span>, <span class="hljs-number">10</span>, <span class="hljs-number">10</span>, <span class="hljs-number">10</span><br>example_field = torch.randn(batch_size, <span class="hljs-number">3</span>, Dx, Dy, Dz) <span class="hljs-comment"># B, 3 components, Dx, Dy, Dz grid</span><br>dx, dy, dz = <span class="hljs-number">0.1</span>, <span class="hljs-number">0.1</span>, <span class="hljs-number">0.1</span> <span class="hljs-comment"># Spacing for each dimension</span><br><br>div_grid = compute_divergence_from_grid(example_field, spacing=(dx, dy, dz))<br><span class="hljs-comment"># print(f&quot;Divergence from grid shape: &#123;div_grid.shape&#125;&quot;) # Expected: (B, Dx, Dy, Dz)</span><br></code></pre></td></tr></table></figure>
+<p>​	<strong>适用场景</strong>：当向量场是预先计算好的、存储在网格上的数据时，此方法非常直接。例如，在图像处理中计算光流场的散度，或在流体力学模拟中分析速度场</p>
+<h3 id="方法2使用-torchautograd-和-hutchinson-随机估计器-针对模型输出"><a class="markdownIt-Anchor" href="#方法2使用-torchautograd-和-hutchinson-随机估计器-针对模型输出"></a> 方法2：使用 <code>torch.autograd</code> 和 Hutchinson 随机估计器 (针对模型输出)</h3>
+<p>​	在 score matching 等场景中，向量场 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>s</mi><mi>θ</mi></msub><mo stretchy="false">(</mo><mi mathvariant="bold-italic">x</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">s_\theta(\boldsymbol x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal">s</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">θ</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord boldsymbol">x</span></span><span class="mclose">)</span></span></span></span> 通常是由一个神经网络（参数为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi></mrow><annotation encoding="application/x-tex">\theta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span></span></span></span>）针对输入 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">x</mi></mrow><annotation encoding="application/x-tex">\boldsymbol x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.44444em;vertical-align:0em;"></span><span class="mord"><span class="mord boldsymbol">x</span></span></span></span></span> 计算得到的。这里，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">x</mi></mrow><annotation encoding="application/x-tex">\boldsymbol x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.44444em;vertical-align:0em;"></span><span class="mord"><span class="mord boldsymbol">x</span></span></span></span></span> 通常是一个扁平化的向量 (e.g., <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>R</mi><mi>D</mi></msup></mrow><annotation encoding="application/x-tex">R^D</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8413309999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413309999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">D</span></span></span></span></span></span></span></span></span></span></span>)，而 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>s</mi><mi>θ</mi></msub><mo stretchy="false">(</mo><mi mathvariant="bold-italic">x</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">s_\theta(\boldsymbol x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal">s</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">θ</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord boldsymbol">x</span></span><span class="mclose">)</span></span></span></span> 的输出也具有相同的维度 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>R</mi><mi>D</mi></msup></mrow><annotation encoding="application/x-tex">R^D</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8413309999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413309999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">D</span></span></span></span></span></span></span></span></span></span></span>。我们感兴趣的是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>Tr</mtext><mo stretchy="false">(</mo><msub><mi mathvariant="bold-italic">J</mi><mi mathvariant="bold-italic">x</mi></msub><msub><mi>s</mi><mi>θ</mi></msub><mo stretchy="false">(</mo><mi mathvariant="bold-italic">x</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\text{Tr}(\boldsymbol{J}_{\boldsymbol x} s_\theta(\boldsymbol x))</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord text"><span class="mord">Tr</span></span><span class="mopen">(</span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol" style="margin-right:0.10069em;">J</span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.161108em;"><span style="top:-2.5500000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord boldsymbol mtight">x</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">s</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">θ</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord boldsymbol">x</span></span><span class="mclose">)</span><span class="mclose">)</span></span></span></span>，即 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>s</mi><mi>θ</mi></msub><mo stretchy="false">(</mo><mi mathvariant="bold-italic">x</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">s_\theta(\boldsymbol x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal">s</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">θ</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord boldsymbol">x</span></span><span class="mclose">)</span></span></span></span> 关于 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">x</mi></mrow><annotation encoding="application/x-tex">\boldsymbol x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.44444em;vertical-align:0em;"></span><span class="mord"><span class="mord boldsymbol">x</span></span></span></span></span> 的雅可比矩阵的迹。</p>
+<p>​	直接计算完整的雅可比矩阵然后取迹，对于高维输入（例如图像）来说代价高昂。Hutchinson 随机迹估计器提供了一个可行的解决方案：</p>
+<blockquote>
+<p>对于一个矩阵 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">A</mi></mrow><annotation encoding="application/x-tex">\boldsymbol{A}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68611em;vertical-align:0em;"></span><span class="mord"><span class="mord"><span class="mord boldsymbol">A</span></span></span></span></span></span>，其迹 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>Tr</mtext><mo stretchy="false">(</mo><mi mathvariant="bold-italic">A</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\text{Tr}(\boldsymbol{A})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord text"><span class="mord">Tr</span></span><span class="mopen">(</span><span class="mord"><span class="mord"><span class="mord boldsymbol">A</span></span></span><span class="mclose">)</span></span></span></span> 可以被估计为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="double-struck">E</mi><mrow><mi mathvariant="bold-italic">ϵ</mi><mo>∼</mo><mi>p</mi><mo stretchy="false">(</mo><mi mathvariant="bold-italic">ϵ</mi><mo stretchy="false">)</mo></mrow></msub><mo stretchy="false">[</mo><msup><mi mathvariant="bold-italic">ϵ</mi><mi>T</mi></msup><mi mathvariant="bold-italic">A</mi><mi mathvariant="bold-italic">ϵ</mi><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">\mathbb{E}_{\boldsymbol{\epsilon} \sim p(\boldsymbol{\epsilon})}[\boldsymbol{\epsilon}^T \boldsymbol{A} \boldsymbol{\epsilon}]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.1965309999999998em;vertical-align:-0.3551999999999999em;"></span><span class="mord"><span class="mord"><span class="mord mathbb">E</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.34480000000000005em;"><span style="top:-2.5198em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord boldsymbol mtight">ϵ</span></span></span><span class="mrel mtight">∼</span><span class="mord mathnormal mtight">p</span><span class="mopen mtight">(</span><span class="mord mtight"><span class="mord mtight"><span class="mord boldsymbol mtight">ϵ</span></span></span><span class="mclose mtight">)</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.3551999999999999em;"><span></span></span></span></span></span></span><span class="mopen">[</span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol">ϵ</span></span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413309999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span></span></span></span></span><span class="mord"><span class="mord"><span class="mord boldsymbol">A</span></span></span><span class="mord"><span class="mord"><span class="mord boldsymbol">ϵ</span></span></span><span class="mclose">]</span></span></span></span>，其中 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">ϵ</mi></mrow><annotation encoding="application/x-tex">\boldsymbol{\epsilon}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.44444em;vertical-align:0em;"></span><span class="mord"><span class="mord"><span class="mord boldsymbol">ϵ</span></span></span></span></span></span> 是一个随机向量，其分量独立同分布，均值为0，方差为1（例如，来自标准正态分布或 Rademacher 分布）。<br>
+在实践中，我们通常用少量样本（甚至一个样本）的均值来近似这个期望。</p>
+</blockquote>
+<p>​	对于散度 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="normal">∇</mi><mi mathvariant="bold-italic">x</mi></msub><mo>⋅</mo><msub><mi>s</mi><mi>θ</mi></msub><mo stretchy="false">(</mo><mi mathvariant="bold-italic">x</mi><mo stretchy="false">)</mo><mo>=</mo><mtext>Tr</mtext><mo stretchy="false">(</mo><msub><mi mathvariant="bold-italic">J</mi><mi mathvariant="bold-italic">x</mi></msub><msub><mi>s</mi><mi>θ</mi></msub><mo stretchy="false">(</mo><mi mathvariant="bold-italic">x</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\nabla_{\boldsymbol x} \cdot s_\theta(\boldsymbol x) = \text{Tr}(\boldsymbol{J}_{\boldsymbol x} s_\theta(\boldsymbol x))</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord">∇</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.161108em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord boldsymbol mtight">x</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal">s</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">θ</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord boldsymbol">x</span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord text"><span class="mord">Tr</span></span><span class="mopen">(</span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol" style="margin-right:0.10069em;">J</span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.161108em;"><span style="top:-2.5500000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord boldsymbol mtight">x</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">s</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">θ</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord boldsymbol">x</span></span><span class="mclose">)</span><span class="mclose">)</span></span></span></span>，Hutchinson 估计的关键在于高效计算 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi mathvariant="bold-italic">ϵ</mi><mi>T</mi></msup><mo stretchy="false">(</mo><msub><mi mathvariant="bold-italic">J</mi><mi mathvariant="bold-italic">x</mi></msub><msub><mi>s</mi><mi>θ</mi></msub><mo stretchy="false">(</mo><mi mathvariant="bold-italic">x</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo><mi mathvariant="bold-italic">ϵ</mi></mrow><annotation encoding="application/x-tex">\boldsymbol{\epsilon}^T (\boldsymbol{J}_{\boldsymbol x} s_\theta(\boldsymbol x)) \boldsymbol{\epsilon}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0913309999999998em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol">ϵ</span></span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413309999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol" style="margin-right:0.10069em;">J</span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.161108em;"><span style="top:-2.5500000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord boldsymbol mtight">x</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">s</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">θ</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord boldsymbol">x</span></span><span class="mclose">)</span><span class="mclose">)</span><span class="mord"><span class="mord"><span class="mord boldsymbol">ϵ</span></span></span></span></span></span>。这可以通过两次向量-雅可比积 (vector-Jacobian products, VJPs) 或者一次雅可比-向量积 (Jacobian-vector product, JVP) 和一次点积来完成。一个常用的技巧是利用 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi mathvariant="bold-italic">ϵ</mi><mi>T</mi></msup><mi mathvariant="bold-italic">J</mi><mi mathvariant="bold-italic">ϵ</mi><mo>=</mo><msup><mi mathvariant="bold-italic">ϵ</mi><mi>T</mi></msup><msub><mi mathvariant="normal">∇</mi><mi mathvariant="bold-italic">x</mi></msub><mo stretchy="false">(</mo><msub><mi>s</mi><mi>θ</mi></msub><mo stretchy="false">(</mo><mi mathvariant="bold-italic">x</mi><msup><mo stretchy="false">)</mo><mi>T</mi></msup><msub><mi mathvariant="bold-italic">ϵ</mi><mtext>fixed</mtext></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\boldsymbol{\epsilon}^T \boldsymbol{J} \boldsymbol{\epsilon} = \boldsymbol{\epsilon}^T \nabla_{\boldsymbol x} (s_\theta(\boldsymbol x)^T \boldsymbol{\epsilon}_{\text{fixed}})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8413309999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol">ϵ</span></span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413309999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span></span></span></span></span><span class="mord"><span class="mord"><span class="mord boldsymbol" style="margin-right:0.10069em;">J</span></span></span><span class="mord"><span class="mord"><span class="mord boldsymbol">ϵ</span></span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.0913309999999998em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol">ϵ</span></span></span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413309999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span></span></span></span></span><span class="mord"><span class="mord">∇</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.161108em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord boldsymbol mtight">x</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">s</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">θ</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord boldsymbol">x</span></span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413309999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span></span></span></span></span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol">ϵ</span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">fixed</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span>, 其中 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="bold-italic">ϵ</mi><mtext>fixed</mtext></msub></mrow><annotation encoding="application/x-tex">\boldsymbol{\epsilon}_{\text{fixed}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.59444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol">ϵ</span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">fixed</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 在求导时被视为常数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> torch<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">hutchinson_divergence_estimator</span>(<span class="hljs-params">model, x, num_samples=<span class="hljs-number">1</span></span>):<br>    <span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">    使用Hutchinson随机估计器估计模型输出关于其输入的散度 Tr(J_x model(x)).</span><br><span class="hljs-string">    model: 一个可调用对象 (例如 nn.Module), 输入 x, 输出与 x 形状相同的张量.</span><br><span class="hljs-string">    x: 输入张量, shape (B, D_features). 需要 x.requires_grad = True.</span><br><span class="hljs-string">    num_samples: 用于估计的随机向量样本数.</span><br><span class="hljs-string">    返回散度估计值, shape (B,).</span><br><span class="hljs-string">    &quot;&quot;&quot;</span><br>    batch_size, feature_dim = x.shape<br>    total_div_estimate = torch.zeros(batch_size, device=x.device, dtype=x.dtype)<br><br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> x.requires_grad:<br>        <span class="hljs-comment"># 为了计算梯度，x 必须允许梯度传播</span><br>        <span class="hljs-comment"># 调用者应确保 x.requires_grad is True</span><br>        <span class="hljs-comment"># 如果模型内部修改了 x 的 requires_grad 状态，可能会有问题</span><br>        <span class="hljs-comment"># 这里我们临时设置，但更好的做法是在外部处理</span><br>        x.requires_grad_(<span class="hljs-literal">True</span>) <br><br>    <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(num_samples):<br>        <span class="hljs-comment"># epsilon 的形状应与 model(x) 的输出相同</span><br>        epsilon = torch.randn_like(x) <span class="hljs-comment"># (B, D_features)</span><br>        <br>        <span class="hljs-comment"># 确保 epsilon 在计算 s_dot_v 的梯度时不参与求导</span><br>        epsilon_fixed = epsilon.detach()<br><br>        model_output = model(x) <span class="hljs-comment"># (B, D_features)</span><br><br>        <span class="hljs-comment"># 1. 计算 s_theta(x)^T epsilon_fixed</span><br>        <span class="hljs-comment"># model_output is (B, D), epsilon_fixed is (B, D)</span><br>        s_dot_epsilon = (model_output * epsilon_fixed).<span class="hljs-built_in">sum</span>(dim=-<span class="hljs-number">1</span>) <span class="hljs-comment"># Shape (B,)</span><br><br>        <span class="hljs-comment"># 2. 计算 nabla_x (s_theta(x)^T epsilon_fixed)</span><br>        <span class="hljs-comment"># 这是 (B,) 张量关于 (B,D) 张量的梯度.</span><br>        grad_s_dot_epsilon = torch.autograd.grad(<br>            outputs=s_dot_epsilon,<br>            inputs=x,<br>            grad_outputs=torch.ones_like(s_dot_epsilon), <span class="hljs-comment"># 为批次中的每个样本提供梯度</span><br>            create_graph=<span class="hljs-literal">True</span>, <span class="hljs-comment"># 对于score matching等需要二阶导数或将此项作为loss一部分的场景至关重要</span><br>            retain_graph=<span class="hljs-literal">True</span>  <span class="hljs-comment"># 如果 x 或 model 在计算图中被多次使用</span><br>        )[<span class="hljs-number">0</span>] <span class="hljs-comment"># Shape (B, D_features)</span><br>        <span class="hljs-comment"># grad_s_dot_epsilon 现在是 J^T epsilon</span><br><br>        <span class="hljs-comment"># 3. 计算 epsilon^T (nabla_x (s_theta(x)^T epsilon_fixed))</span><br>        <span class="hljs-comment"># 即 epsilon^T (J^T epsilon) --- 这不正确，应该是 epsilon^T J epsilon</span><br>        <span class="hljs-comment"># grad_s_dot_epsilon 是 J^T epsilon.</span><br>        <span class="hljs-comment"># 我们需要的是 epsilon^T J epsilon.</span><br>        <span class="hljs-comment"># 实际上，Yang Song 等人的论文中使用的形式是 v^T nabla_x (s(x)^T v),</span><br>        <span class="hljs-comment"># 其中 nabla_x (s(x)^T v) 是 (J^T v).</span><br>        <span class="hljs-comment"># 所以 v^T (J^T v) 是我们计算的。这似乎是标准做法。</span><br>        <span class="hljs-comment"># 另一种解释是，我们计算的是 sum_i v_i * (nabla_x (s(x)^T v))_i</span><br>        <span class="hljs-comment"># (nabla_x (s(x)^T v))_k = d/dx_k (sum_j s_j v_j) = sum_j (ds_j/dx_k) v_j</span><br>        <span class="hljs-comment"># 所以 v^T nabla_x (s(x)^T v) = sum_k v_k (sum_j (ds_j/dx_k) v_j)</span><br>        <span class="hljs-comment"># 这正是 epsilon^T J epsilon (如果 J 是对称的) 或者 epsilon^T J^T epsilon (一般情况).</span><br>        <span class="hljs-comment"># 对于迹估计 Tr(J) = E[eps^T J eps], 这个形式是正确的。</span><br><br>        div_sample = (grad_s_dot_epsilon * epsilon).<span class="hljs-built_in">sum</span>(dim=-<span class="hljs-number">1</span>) <span class="hljs-comment"># Shape (B,)</span><br>        total_div_estimate += div_sample<br>        <br>    <span class="hljs-keyword">return</span> total_div_estimate / num_samples<br><br><span class="hljs-comment"># 示例：定义一个简单的模型 (例如，一个线性层)</span><br><span class="hljs-comment"># class SimpleModel(torch.nn.Module):</span><br><span class="hljs-comment">#     def __init__(self, dim):</span><br><span class="hljs-comment">#         super().__init__()</span><br><span class="hljs-comment">#         self.linear = torch.nn.Linear(dim, dim)</span><br><span class="hljs-comment">#     def forward(self, x):</span><br><span class="hljs-comment">#         return self.linear(x)</span><br><br><span class="hljs-comment"># feature_dim = 5</span><br><span class="hljs-comment"># model = SimpleModel(feature_dim)</span><br><span class="hljs-comment"># input_x = torch.randn(batch_size, feature_dim, requires_grad=True)</span><br><br><span class="hljs-comment"># div_hutchinson = hutchinson_divergence_estimator(model, input_x, num_samples=10)</span><br><span class="hljs-comment"># print(f&quot;Hutchinson divergence estimate (batch): &#123;div_hutchinson&#125;&quot;)</span><br><br><span class="hljs-comment"># 如果需要精确散度（代价高昂，仅用于低维验证）：</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">exact_divergence_auto</span>(<span class="hljs-params">model, x</span>):<br>    <span class="hljs-string">&quot;&quot;&quot;计算精确散度 sum_i d(model(x)_i)/d(x_i)&quot;&quot;&quot;</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> x.requires_grad:<br>        x.requires_grad_(<span class="hljs-literal">True</span>)<br>    <br>    model_output = model(x)<br>    B, D = x.shape<br>    div = torch.zeros(B, device=x.device, dtype=x.dtype)<br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(D):<br>        <span class="hljs-comment"># 计算 d(model_output[:, i]) / d x</span><br>        <span class="hljs-comment"># 然后取对角线元素 d(model_output[:, i]) / d x[:, i]</span><br>        grad_outputs = torch.zeros_like(model_output)<br>        grad_outputs[:, i] = <span class="hljs-number">1.0</span><br>        <br>        grads_i_th_output_row_of_jacobian = torch.autograd.grad(<br>            outputs=model_output, <span class="hljs-comment"># d(model_output)/dx</span><br>            inputs=x,<br>            grad_outputs=grad_outputs, <span class="hljs-comment"># selects i-th component of model_output</span><br>            create_graph=<span class="hljs-literal">True</span>,<br>            retain_graph=<span class="hljs-literal">True</span><br>        )[<span class="hljs-number">0</span>] <span class="hljs-comment"># Shape (B, D), this is (d model_output_i / d x_0, ..., d model_output_i / d x_&#123;D-1&#125;)</span><br>        div += grads_i_th_output_row_of_jacobian[:, i] <span class="hljs-comment"># Accumulate J_ii</span><br>    <span class="hljs-keyword">return</span> div<br><br><span class="hljs-comment"># div_exact = exact_divergence_auto(model, input_x)</span><br><span class="hljs-comment"># print(f&quot;Exact divergence (batch): &#123;div_exact&#125;&quot;)</span><br></code></pre></td></tr></table></figure>
+<p><strong>适用场景</strong>：当向量场是由神经网络等可微函数定义时，此方法是计算其散度的标准且高效的途径，尤其是在高维输入（如图像、点云）的 score matching 中。</p>
+<h2 id="作为损失项使用"><a class="markdownIt-Anchor" href="#作为损失项使用"></a> 作为损失项使用</h2>
+<p>​	最终计算得到的散度（或其估计）通常会作为正则项或目标函数的一部分加入到总损失中：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 假设 other_loss 是模型的主要损失项</span><br><span class="hljs-comment"># div_value 是计算得到的散度 (例如，来自 hutchinson_divergence_estimator)</span><br><span class="hljs-comment"># lambda_div 是一个超参数，用于平衡散度项的权重</span><br><br><span class="hljs-comment"># 通常我们希望惩罚散度的绝对值或平方值</span><br>divergence_penalty = torch.mean(torch.<span class="hljs-built_in">abs</span>(div_value)) <br><span class="hljs-comment"># 或者 divergence_penalty = torch.mean(div_value**2)</span><br><br>total_loss = other_loss + lambda_div * divergence_penalty<br>total_loss.backward() <span class="hljs-comment"># 进行反向传播</span><br></code></pre></td></tr></table></figure>
+<p>​	选择 <code>torch.abs</code> 还是 <code>torch.square</code> (或直接使用 <code>div_value</code> 如果其符号有意义) 取决于具体的应用和希望施加的约束。</p>
+<h2 id="选择上的考量"><a class="markdownIt-Anchor" href="#选择上的考量"></a> 选择上的考量</h2>
+<ol>
+<li>
+<p><strong>方法选择</strong>：</p>
+<ul>
+<li>如果处理的是<strong>离散网格数据</strong>，<code>torch.gradient</code> 是自然的选择。确保理解其关于边界处理（默认二阶中心差分，边界一阶）和 <code>spacing</code> 参数的正确使用。</li>
+<li>如果向量场是<strong>模型输出</strong> <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>s</mi><mi>θ</mi></msub><mo stretchy="false">(</mo><mi mathvariant="bold-italic">x</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">s_\theta(\boldsymbol x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal">s</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">θ</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord boldsymbol">x</span></span><span class="mclose">)</span></span></span></span>，且需要 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>Tr</mtext><mo stretchy="false">(</mo><msub><mi mathvariant="bold-italic">J</mi><mi mathvariant="bold-italic">x</mi></msub><msub><mi>s</mi><mi>θ</mi></msub><mo stretchy="false">(</mo><mi mathvariant="bold-italic">x</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\text{Tr}(\boldsymbol{J}_{\boldsymbol x} s_\theta(\boldsymbol x))</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord text"><span class="mord">Tr</span></span><span class="mopen">(</span><span class="mord"><span class="mord"><span class="mord"><span class="mord boldsymbol" style="margin-right:0.10069em;">J</span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.161108em;"><span style="top:-2.5500000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord boldsymbol mtight">x</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">s</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">θ</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord boldsymbol">x</span></span><span class="mclose">)</span><span class="mclose">)</span></span></span></span>，Hutchinson 估计器 (<code>torch.autograd.grad</code> 的巧妙运用) 是首选，尤其对于高维 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">x</mi></mrow><annotation encoding="application/x-tex">\boldsymbol x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.44444em;vertical-align:0em;"></span><span class="mord"><span class="mord boldsymbol">x</span></span></span></span></span>。</li>
+</ul>
+</li>
+<li>
+<p><strong><code>requires_grad</code> 和 <code>create_graph</code></strong>：</p>
+<ul>
+<li>当使用 <code>torch.autograd.grad</code> 计算散度（如 Hutchinson 方法）时，输入 <code>x</code> 必须设置 <code>x.requires_grad_(True)</code>。</li>
+<li>如果散度项本身是损失函数的一部分，并且你需要通过它反向传播来更新模型参数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi></mrow><annotation encoding="application/x-tex">\theta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span></span></span></span>，那么在 <code>torch.autograd.grad</code> 调用中设置 <code>create_graph=True</code> 至关重要。这将允许计算更高阶的导数。</li>
+</ul>
+</li>
+<li>
+<p><strong>Hutchinson 估计器的样本数 (<code>num_samples</code>)</strong>：</p>
+<ul>
+<li>增加 <code>num_samples</code> 可以提高散度估计的准确性，但也会增加计算成本。在实践中，对于随机梯度下降类型的优化，通常使用 <code>num_samples=1</code> 就能取得不错的效果，因为多步迭代的随机性有助于平均掉噪声。</li>
+</ul>
+</li>
+<li>
+<p><strong>坐标系和维度对应</strong>：</p>
+<ul>
+<li>使用 <code>torch.gradient</code> 时，务必确保 <code>dim</code> 参数正确指向你希望对其求导的空间维度。如 <code>compute_divergence_from_grid</code> 所示，当对张量进行切片后，维度索引会发生变化。</li>
+</ul>
+</li>
+<li>
+<p><strong>性能</strong>：</p>
+<ul>
+<li>对于大规模数据或复杂模型，向量化操作和利用 GPU 加速是必要的。PyTorch 的设计天然支持这些。</li>
+<li>精确计算雅可比矩阵的迹（如 <code>exact_divergence_auto</code>）通常非常慢，仅适用于低维调试或验证。</li>
+</ul>
+</li>
+</ol>
+<h2 id="总结"><a class="markdownIt-Anchor" href="#总结"></a> 总结</h2>
+<p>在 PyTorch 中计算散度没有一键式的内置函数，但根据具体情况，我们可以有效地实现它：</p>
+<ul>
+<li>对于<strong>离散网格数据</strong>，<code>torch.gradient</code> 提供了数值解法。</li>
+<li>对于<strong>神经网络等模型输出的散度</strong>（常见于 score matching），基于 <code>torch.autograd.grad</code> 的 Hutchinson 随机估计器是强大且常用的工具。</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+			
+			
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/06/06/flow_matching_1/" title="Flow Matching 入门 (一)：ODE 与概率密度变换">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Flow Matching 入门 (一)：ODE 与概率密度变换</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/04/ai/Pytorch/div_cal1/" title="div_cal">
+                        <span class="hidden-mobile">div_cal</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <i class="iconfont icon-love"></i> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

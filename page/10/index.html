@@ -216,15 +216,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/03/03/ai/frameworks/mmcv/mmcv%E7%BB%84%E4%BB%B61/" target="_self">
-          MMCV组件1
+        <a href="/2024/04/05/ai/computer_vision/%E5%B8%B8%E7%94%A8Neck%E7%BD%91%E7%BB%9C/" target="_self">
+          常用Neck网络-1
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/03/ai/frameworks/mmcv/mmcv%E7%BB%84%E4%BB%B61/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/05/ai/computer_vision/%E5%B8%B8%E7%94%A8Neck%E7%BD%91%E7%BB%9C/" target="_self">
         <div>
-          MMCV核心组件FileHandler ​	注意：在2.0.0版本以后，FileHandler和FileClient的功能已经转到mmengine中了(它们在mmengine.fileio模块中)，但是功能和用法大体不变，导入和使用方式如下： 123456789101112# 在2.0.0半本以后，mmcv.load 函数已经被移除。在新版本中，# 此功能已经被重新设计和整合到了 mmcv.co
+          SPP(Spatial Pyramid Pooling)  Motivation： ​	SPP的提出就是为了解决CNN输入图像大小必须固定的问题，从而可以使得输入图像高宽比和大小任意  网络结构解析： ​	SPP-Neck网络结构如下：   首先是输入层(input image),其大小可以是任意的 中间的部分就是SPP-Neck层，SPP会在最后一层卷积层输出的特征图上进行操作，将其划分为多个
         </div>
       </a>
 
@@ -232,8 +232,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-03-03 15:03" pubdate>
-              2024-03-03
+            <time datetime="2024-04-05 09:53" pubdate>
+              2024-04-05
             </time>
           </div>
         
@@ -249,15 +249,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/02/28/ai/computer_vision/MMseg1/" target="_self">
-          MMseg1
+        <a href="/2024/03/27/scientific_research/cv_udsampler/FeatUp/" target="_self">
+          FeatUp(1)
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/28/ai/computer_vision/MMseg1/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/27/scientific_research/cv_udsampler/FeatUp/" target="_self">
         <div>
-          MMseg教程(1)  配置文件的结构： config: ├─ _base_ ├    ├─datasets ├    ├─models ├    └─schedules ├─ unet ├─ upernet ├─ vit ├─ ...  ​	config文件夹下有各种模型的配置文件夹，各个模型配置文件夹下装有该模型的不同网络，在不同的数据集下的配置，由于配置有很多的相似部分，因此这些配置都继承
+          FeatUp ​	本文章通过借助图像重建的思路提出了一种新型上采样算子，这篇论文的idea可以用以下几点概括：  借助3D图像重建网络NeRF的想法：多个视角下的地分辨率信号可以指导采样高分辨率的特征图的“重建“过程，这里的“多个视角”指对原低分辨率特征图进行各种微调（jittered）之后的特征图，通过这些低分辨率的特征图可以有效地帮助重建高分辨率信号 以Joint Bilateral Ups
         </div>
       </a>
 
@@ -265,41 +265,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-02-28 16:00" pubdate>
-              2024-02-28
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/02/24/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/%E8%AF%AD%E8%A8%80%E7%89%B9%E8%89%B2%E5%8F%8A%E5%86%85%E9%83%A8%E5%8C%85/Eff-py2/" target="_self">
-          Effective Python note(2)
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/24/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/%E8%AF%AD%E8%A8%80%E7%89%B9%E8%89%B2%E5%8F%8A%E5%86%85%E9%83%A8%E5%8C%85/Eff-py2/" target="_self">
-        <div>
-          Effective Python note(2)  类与继承：  尽量用辅助类来维护程序的状态，而不要用字典和元组 ​	在Python编程中，当需要在程序中维护状态时，应该优先考虑使用自定义的辅助类（辅助类是指那些主要用于封装数据和行为的类），而不是依赖于内置的字典（dict）或元组（tuple）类型。这是因为随着程序的复杂性增加，使用字典和元组可能会导致代码难以理解和维护 主要考虑两点：  代
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-02-24 14:04" pubdate>
-              2024-02-24
+            <time datetime="2024-03-27 18:14" pubdate>
+              2024-03-27
             </time>
           </div>
         
@@ -314,13 +281,20 @@
     
       <span class="category-chain">
         
-  <a href="/categories/booknotes/" class="category-chain-item">booknotes</a>
+  <a href="/categories/deep-learning/" class="category-chain-item">deep learning</a>
   
   
     <span>></span>
     
-  <a href="/categories/booknotes/Effective-Python/" class="category-chain-item">Effective Python</a>
+  <a href="/categories/deep-learning/computer-vision/" class="category-chain-item">computer vision</a>
   
+  
+    <span>></span>
+    
+  <a href="/categories/deep-learning/computer-vision/sampling-operation/" class="category-chain-item">sampling operation</a>
+  
+  
+
   
 
   
@@ -336,7 +310,7 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/python/">#python</a>
+              <a href="/tags/scientific-research/">#scientific research</a>
             
           </div>
         
@@ -350,15 +324,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/02/23/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/%E8%AF%AD%E8%A8%80%E7%89%B9%E8%89%B2%E5%8F%8A%E5%86%85%E9%83%A8%E5%8C%85/Eff-py1/" target="_self">
-          Effective Python note(1)
+        <a href="/2024/03/19/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/%E8%AF%AD%E8%A8%80%E7%89%B9%E8%89%B2%E5%8F%8A%E5%86%85%E9%83%A8%E5%8C%85/Python%E5%AE%9E%E7%94%A8%E7%94%A8%E6%B3%95/" target="_self">
+          Python实用用法
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/23/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/%E8%AF%AD%E8%A8%80%E7%89%B9%E8%89%B2%E5%8F%8A%E5%86%85%E9%83%A8%E5%8C%85/Eff-py1/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/19/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/%E8%AF%AD%E8%A8%80%E7%89%B9%E8%89%B2%E5%8F%8A%E5%86%85%E9%83%A8%E5%8C%85/Python%E5%AE%9E%E7%94%A8%E7%94%A8%E6%B3%95/" target="_self">
         <div>
-          Effective Python note(1)  Pythonic：  PEP8 的一些重要规范：  每行字符数不超过79 长表达式换行时，首行后每行额外缩进4个空格 文件中函数与类间用两个空行分隔 同一类内各方法间用一个空行隔开 函数、变量及属性命名使用小写字母并以下划线相连，如 lowercase_underscore 受保护实例属性以单下划线开头，例如 _leading_undersco
+          Python实用用法  路径操作： ​	Python中常用路径操作库包括os.path 和 pathlib.Path，都是 Python 中用于处理文件和目录路径的模块，但它们的设计哲学和使用方式存在显著区别：  os.path：  是一个基于字符串的操作库，提供了许多函数来处理路径名，如连接路径、拆分路径、判断是否为绝对路径、获取目录/文件名等 以过程式风格编写，所有操作返回的是字符串类型结果
         </div>
       </a>
 
@@ -366,47 +340,12 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-02-23 13:18" pubdate>
-              2024-02-23
+            <time datetime="2024-03-19 20:14" pubdate>
+              2024-03-19
             </time>
           </div>
         
         
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/booknotes/" class="category-chain-item">booknotes</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/booknotes/Effective-Python/" class="category-chain-item">Effective Python</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/python/">#python</a>
-            
-          </div>
         
       </div>
     </article>
@@ -418,15 +357,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/02/21/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/%E8%AF%AD%E8%A8%80%E7%89%B9%E8%89%B2%E5%8F%8A%E5%86%85%E9%83%A8%E5%8C%85/Python-glob/" target="_self">
-          Python-glob
+        <a href="/2024/03/19/ai/Pytorch/Wandb-2/" target="_self">
+          Wandb教程(2)
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/21/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/%E8%AF%AD%E8%A8%80%E7%89%B9%E8%89%B2%E5%8F%8A%E5%86%85%E9%83%A8%E5%8C%85/Python-glob/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/19/ai/Pytorch/Wandb-2/" target="_self">
         <div>
-          Python 标准库——glob 模块 glob 是 Python 标准库中的一个模块，它提供了一种简单的方式来查找符合特定模式的文件路径。这个模块特别适用于在文件系统中搜索文件，它支持多种通配符：  *：匹配任意数量（包括零个）的字符 ?：匹配任意单个字符 []：匹配指定范围内的字符，例如 [a-z] 匹配任意小写字母，[0-9] 匹配任意数字 [!...]：匹配不在指定范围内的字符   gl
+          Wandb教程(2)  Wand的推荐用法  Config：  config的配置方法：  直接赋值 ​	在初始化 wandb 之前或之后，可以创建一个字典或使用 wandb.config 的属性赋值方式来设置配置项。例如： 12345678910111213141516# 方法一：直接创建一个字典并赋值给 wandb.configconfig = &#123;    &quot;learnin
         </div>
       </a>
 
@@ -434,33 +373,12 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-02-21 21:01" pubdate>
-              2024-02-21
+            <time datetime="2024-03-19 18:55" pubdate>
+              2024-03-19
             </time>
           </div>
         
         
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/Python/" class="category-chain-item">Python</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
         
       </div>
     </article>
@@ -472,15 +390,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/02/21/ai/Pytorch/Pytorch-multiGPU/" target="_self">
-          Pytorch多GPU并行
+        <a href="/2024/03/17/ai/Pytorch/Wandb-1/" target="_self">
+          Wandb教程(1)
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/21/ai/Pytorch/Pytorch-multiGPU/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/17/ai/Pytorch/Wandb-1/" target="_self">
         <div>
-          Pytorch多GPU并行 ​	在PyTorch中，多GPU并行确实可以分为数据并行（Data Parallelism）和模型并行（Model Parallelism），这两种并行策略针对不同的并行化需求  数据并行（Data Parallelism）： 数据并行是最常见的并行策略，它通过将数据集分割成多个小batch，然后在多个GPU上并行处理这些部分。每个GPU上运行相同的模型副本，独立地计
+          Wandb教程(1) ​	Wandb（Weights &amp; Biases）是一个用于机器学习实验跟踪、可视化和管理的平台。它提供了一个强大的工具集，帮助研究人员和开发人员跟踪他们的模型训练过程、超参数、指标以及模型的版本。他就是Tensorboard的白富美版本：颜值高，气质好，可视化交互性强，支持所有深度学习框架。它内嵌在计算机中，不需要你写可视化代码（我之前每次可视化都要写一次把张量的
         </div>
       </a>
 
@@ -488,8 +406,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-02-21 11:15" pubdate>
-              2024-02-21
+            <time datetime="2024-03-17 18:15" pubdate>
+              2024-03-17
             </time>
           </div>
         
@@ -526,15 +444,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/02/18/ai/computer_vision/Segformer-2/" target="_self">
-          Segformer(2)
+        <a href="/2024/03/13/ai/Pytorch/TensorBoard-2/" target="_self">
+          TensorBoardX教程(2)
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/18/ai/computer_vision/Segformer-2/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/13/ai/Pytorch/TensorBoard-2/" target="_self">
         <div>
-          Segformer 论文详解： ​	在SegFormer提出时，transformer已经开始在图像领域展露头角。在此之前，SETR最早将transformer结构引入到了语义分割任务中。SETR采用ViT作为backbone，并结合多个CNN decoder来放大特征分辨率。但是SETR具有两个局限性：  没有利用 multi-scale 特征 具有非常高的计算消耗  为了解决上述问题，pyr
+          Tensorboard的示例应用  Tensorboard进行中间特征图可视化： ​	采用了注册钩子函数，再钩子函数中记录特征图，并将其可视化下来的方案，代码如下： 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849import torchimport torch.nn
         </div>
       </a>
 
@@ -542,128 +460,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-02-18 19:00" pubdate>
-              2024-02-18
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/02/17/ai/computer_vision/segformer-1/" target="_self">
-          segformer(1)
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/17/ai/computer_vision/segformer-1/" target="_self">
-        <div>
-          Segformer 代码结构分析  MMSegmentation 算法库的整体框架 ​	MMSegmentation 是 OpenMMLab 开源的基于 PyTorch 实现的功能强大的语义分割工具箱，MMSegmentation 的主要特性如下：  丰富的语义分割模型： 已支持 11 种主干网络和 34 种算法，例如常用模型 FCN， PSPNet 和 DeepLabV3；Transforme
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-02-17 10:50" pubdate>
-              2024-02-17
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/02/09/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/%E8%AF%AD%E8%A8%80%E7%89%B9%E8%89%B2%E5%8F%8A%E5%86%85%E9%83%A8%E5%8C%85/progressive-bar/" target="_self">
-          progressive-bar
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/09/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/%E8%AF%AD%E8%A8%80%E7%89%B9%E8%89%B2%E5%8F%8A%E5%86%85%E9%83%A8%E5%8C%85/progressive-bar/" target="_self">
-        <div>
-          Python 进度条模块 ​	过年水一篇 ​	Python 中有几个流行的进度条模块，它们可以帮助在执行长时间运行的任务时提供进度反馈。一些常用的进度条模块有 tqdm，progress，alive-pprogress，PySimpleGUI 等。本篇文章主要整理一下 tqdm 的使用方法：  tqdm(range(i)) 使用： 123456import timefrom tqdm impor
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-02-09 22:54" pubdate>
-              2024-02-09
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/Python/" class="category-chain-item">Python</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/02/05/ai/Pytorch/Pytorch-hook/" target="_self">
-          Pytorch-hook
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/05/ai/Pytorch/Pytorch-hook/" target="_self">
-        <div>
-          Pytorch 的 hook 机制：  简介： 在PyTorch中，hook机制是一种强大的工具，它允许开发者在不修改模型原始结构的情况下，插入自定义函数来访问、记录或修改模型运行过程中的中间层输出（forward pass）和梯度（backward pass）。 具体来说，在torch.nn.Module及其包含的torch.Tensor对象上可以注册hook。通过调用.register_fo
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-02-05 21:06" pubdate>
-              2024-02-05
+            <time datetime="2024-03-13 20:37" pubdate>
+              2024-03-13
             </time>
           </div>
         
@@ -688,6 +486,159 @@
 </span>
 
           </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/03/13/ai/Pytorch/TensorBoard-1/" target="_self">
+          TensorBoardX教程(1)
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/13/ai/Pytorch/TensorBoard-1/" target="_self">
+        <div>
+          TensorBoardX教程(1) TensorBoard 是一组用于数据可视化的工具。它包含在流行的开源机器学习库 Tensorflow 中。TensorBoard 的主要功能包括：  可视化模型的网络架构 跟踪模型指标，如损失和准确性等 检查机器学习工作流程中权重、偏差和其他组件的直方图 显示非表格数据，包括图像、文本和音频 将高维嵌入投影到低维空间   TensorBoardX的使用： ​
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-03-13 18:27" pubdate>
+              2024-03-13
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Pytorch%E5%AD%A6%E4%B9%A0/" class="category-chain-item">Pytorch学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/03/12/reinforcement_learning/%E5%A4%9A%E8%87%82%E8%80%81%E8%99%8E%E6%9C%BA/" target="_self">
+          多臂老虎机
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/12/reinforcement_learning/%E5%A4%9A%E8%87%82%E8%80%81%E8%99%8E%E6%9C%BA/" target="_self">
+        <div>
+          多臂老虎机问题  题目描述： ​	有一个拥有 KKK 根拉杆的老虎机(multi-armed bandit)，拉动每一根拉杆都对应一个关于奖励的概率分布 R\mathcal{R}R。我们每次拉动其中一根拉杆，就可以从该拉杆对应的奖励概率分布中获得一个奖励 rrr。我们在各根拉杆的奖励概率分布未知的情况下，从头开始尝试，目标是在操作 TTT 次拉杆后获得尽可能高的累积奖励。由于奖励的概率分布是未知
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-03-12 18:03" pubdate>
+              2024-03-12
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/03/12/reinforcement_learning/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E5%85%A5%E9%97%A8/" target="_self">
+          intro
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/12/reinforcement_learning/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E5%85%A5%E9%97%A8/" target="_self">
+        <div>
+          什么是强化学习 ​	强化学习是机器通过与环境交互来实现目标的一种计算方法。机器和环境的一轮交互是指，机器在环境的一个状态下做一个动作决策，把这个动作作用到环境当中，这个环境发生相应的改变并且将相应的奖励反馈和下一轮状态传回机器（因此强化学习示意图很像RNN网络）。这种交互是迭代进行的，机器的目标是最大化在多轮交互过程中获得的累积奖励的期望。强化学习用智能体（agent）概念来表示做决策的机器。相
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-03-12 16:20" pubdate>
+              2024-03-12
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/03/05/ai/frameworks/mmcv/mmcv%E7%BB%84%E4%BB%B66/" target="_self">
+          mmcv组件6
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/05/ai/frameworks/mmcv/mmcv%E7%BB%84%E4%BB%B66/" target="_self">
+        <div>
+          MMCV核心组件Hook ​	MM的整个算法过程就像一个黑盒子：给定输入后（配置文件），黑盒子就会吐出算法结果。整个过程封装度非常高，几乎不需要手写什么代码，Hook机制的作用就是在算法执行过程中加入自定义操作呢 Hook就是一种一种触发器，可以在程序预定义的位置执行预定义的函数。MMCV根据算法的生命周期预定义了6个可以插入自定义函数的位点，用户可以在每个位点自由地插入任意数量的函数操作，如下
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-03-05 17:04" pubdate>
+              2024-03-05
+            </time>
+          </div>
+        
         
         
       </div>
@@ -698,7 +649,7 @@
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/page/9/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/#board">8</a><a class="page-number" href="/page/9/#board">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/#board">11</a><a class="page-number" href="/page/12/#board">12</a><a class="extend next" rel="next" href="/page/11/#board"><i class="iconfont icon-arrowright"></i></a>
+      <a class="extend prev" rel="prev" href="/page/9/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/#board">8</a><a class="page-number" href="/page/9/#board">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/#board">11</a><a class="page-number" href="/page/12/#board">12</a><a class="page-number" href="/page/13/#board">13</a><a class="extend next" rel="next" href="/page/11/#board"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
 

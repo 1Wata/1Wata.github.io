@@ -1,0 +1,599 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/w.png">
+  <link rel="icon" href="/img/w.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="timm 库实用手册  什么是 timm 库？ ​	PyTorch Image Models (timm)是一个图像模型（models）、层（layers）、实用程序（utilities）、优化器（optimizers）、调度器（schedulers）、数据加载&#x2F;增强（data-loaders &#x2F; augmentations）和参考训练&#x2F;验证脚本（reference training &#x2F; val">
+<meta property="og:type" content="article">
+<meta property="og:title" content="timm">
+<meta property="og:url" content="http://example.com/2025/05/29/ai/computer_vision/timm/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="timm 库实用手册  什么是 timm 库？ ​	PyTorch Image Models (timm)是一个图像模型（models）、层（layers）、实用程序（utilities）、优化器（optimizers）、调度器（schedulers）、数据加载&#x2F;增强（data-loaders &#x2F; augmentations）和参考训练&#x2F;验证脚本（reference training &#x2F; val">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-05-29T14:57:37.000Z">
+<meta property="article:modified_time" content="2025-05-30T12:42:01.783Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>timm - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.6","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/katex@0.11.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.0.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Wataの锟斤拷</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="timm"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-05-29 22:57" pubdate>
+          2025年5月29日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          590 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          6 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">timm</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="timm-库实用手册"><a class="markdownIt-Anchor" href="#timm-库实用手册"></a> <code>timm</code> 库实用手册</h1>
+<h2 id="什么是-timm-库"><a class="markdownIt-Anchor" href="#什么是-timm-库"></a> 什么是 timm 库？</h2>
+<p>​	PyTorch Image Models (timm)是一个图像模型（models）、层（layers）、实用程序（utilities）、优化器（optimizers）、调度器（schedulers）、数据加载/增强（data-loaders / augmentations）和参考训练/验证脚本（reference training / validation scripts）的集合，目的是将各种SOTA模型组合在一起，从而能够重现ImageNet的训练结果</p>
+<p>​	<code>timm</code> 库实现了最新的几乎所有的具有影响力的视觉模型，它不仅提供了模型的权重，还提供了一个很棒的分布式训练和评估的代码框架，方便后人开发。更难能可贵的是它还在不断地更新迭代新的训练方法，新的视觉模型和优化代码。</p>
+<p>​	源代码链接：<a target="_blank" rel="noopener" href="https://github.com/huggingface/pytorch-image-models#introduction">huggingface/pytorch-image-models: The largest collection of PyTorch image encoders / backbones.</a></p>
+<h2 id="introduction"><a class="markdownIt-Anchor" href="#introduction"></a> Introduction</h2>
+<h3 id="创建模型"><a class="markdownIt-Anchor" href="#创建模型"></a> 创建模型</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> timm<br><span class="hljs-keyword">import</span> torch<br><br>model = timm.create_model(<span class="hljs-string">&#x27;resnet34&#x27;</span>, num_classes=<span class="hljs-number">100</span>)<br>x = torch.randn(<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">224</span>, <span class="hljs-number">224</span>)<br>model(x).shape<br>&gt;&gt;&gt;<br>torch.Size([<span class="hljs-number">1</span>, <span class="hljs-number">100</span>])<br></code></pre></td></tr></table></figure>
+<p>​	用 <code>timm</code> 库可以很快创建模型. The <code>create_model</code> function is a factory method that can be used to create over 300 models that are part of the <code>timm</code> library.</p>
+<p>To create a pretrained model, simply pass in <code>pretrained=True</code>.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python">pretrained_resnet_34 = timm.create_model(<span class="hljs-string">&#x27;resnet34&#x27;</span>, pretrained=<span class="hljs-literal">True</span>)<br>&gt;&gt;&gt;<br>Downloading: <span class="hljs-string">&quot;https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/resnet34-43635321.pth&quot;</span> to /home/tmabraham/.cache/torch/hub/checkpoints/resnet34-<span class="hljs-number">43635321.</span>pth<br></code></pre></td></tr></table></figure>
+<p>​	<code>timm.list_models()</code> 返回 <code>timm</code> 中可用模型的完整列表。如果要查看具有预训练权重的模型的完整列表，可以在 <code>list_models</code> 中传入 <code>pretrained=True</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs python">avail_pretrained_models = timm.list_models(pretrained=<span class="hljs-literal">True</span>)<br><span class="hljs-built_in">len</span>(avail_pretrained_models), avail_pretrained_models[:<span class="hljs-number">5</span>]<br>&gt;&gt;&gt;<br>(<span class="hljs-number">592</span>,<br> [<span class="hljs-string">&#x27;adv_inception_v3&#x27;</span>,<br>  <span class="hljs-string">&#x27;bat_resnext26ts&#x27;</span>,<br>  <span class="hljs-string">&#x27;beit_base_patch16_224&#x27;</span>,<br>  <span class="hljs-string">&#x27;beit_base_patch16_224_in22k&#x27;</span>,<br>  <span class="hljs-string">&#x27;beit_base_patch16_384&#x27;</span>])<br></code></pre></td></tr></table></figure>
+<h3 id="优化器和学习率调度器"><a class="markdownIt-Anchor" href="#优化器和学习率调度器"></a> 优化器和学习率调度器</h3>
+<p>​	<code>timm</code> 提供了丰富的优化器和学习率调度器实现，支持最新的训练技术：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> timm.optim <span class="hljs-keyword">import</span> create_optimizer_v2<br><span class="hljs-keyword">from</span> timm.scheduler <span class="hljs-keyword">import</span> create_scheduler<br><br><span class="hljs-comment"># 创建优化器</span><br>optimizer = create_optimizer_v2(<br>    model, <br>    opt=<span class="hljs-string">&#x27;adamw&#x27;</span>, <br>    lr=<span class="hljs-number">1e-3</span>, <br>    weight_decay=<span class="hljs-number">0.05</span><br>)<br><br><span class="hljs-comment"># 创建学习率调度器</span><br>lr_scheduler, _ = create_scheduler(<br>    args, <br>    optimizer, <br>    num_epochs=<span class="hljs-number">300</span>,<br>    warmup_epochs=<span class="hljs-number">10</span><br>)<br></code></pre></td></tr></table></figure>
+<p>​	支持的优化器包括：SGD, Adam, AdamW, RMSprop, Adagrad, AdaHessian 等。学习率调度器支持：StepLR, Cosine, Plateau, Tanh 等多种策略。</p>
+<h3 id="特征提取"><a class="markdownIt-Anchor" href="#特征提取"></a> 特征提取</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">features = model.forward_features(img)<br></code></pre></td></tr></table></figure>
+<h2 id="实用功能"><a class="markdownIt-Anchor" href="#实用功能"></a> 实用功能</h2>
+<p>​	<code>timm</code> 最实用的功能是提供了<strong>即插即用的模块化组件</strong>，避免重复造轮子。以下展示如何利用<code>timm</code> 模块快速搭建复杂结构：</p>
+<h3 id="调用经典卷积块"><a class="markdownIt-Anchor" href="#调用经典卷积块"></a> 调用经典卷积块</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> timm.models.layers <span class="hljs-keyword">import</span> ConvNormAct<br><br><span class="hljs-comment"># 替代手动编写Conv+BN+ReLU</span><br>x = ConvNormAct(<br>    in_channels=<span class="hljs-number">64</span>,<br>    out_channels=<span class="hljs-number">128</span>,<br>    kernel_size=<span class="hljs-number">3</span>,<br>    stride=<span class="hljs-number">2</span>,<br>    act_layer=<span class="hljs-string">&quot;gelu&quot;</span>  <span class="hljs-comment"># 支持多种激活函数</span><br>)(x)<br></code></pre></td></tr></table></figure>
+<h3 id="调用-vit-的经典-attention-模块"><a class="markdownIt-Anchor" href="#调用-vit-的经典-attention-模块"></a> 调用 VIT 的经典 attention 模块：</h3>
+<p>​	在 <code>timm</code> 库中，<code>timm/models/vision_transformer.py</code> （VIT）的源代码中有这样一个模块：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Attention</span>(nn.Module):<br>    fused_attn: Final[<span class="hljs-built_in">bool</span>]<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params"></span><br><span class="hljs-params">            self,</span><br><span class="hljs-params">            dim: <span class="hljs-built_in">int</span>,</span><br><span class="hljs-params">            num_heads: <span class="hljs-built_in">int</span> = <span class="hljs-number">8</span>,</span><br><span class="hljs-params">            qkv_bias: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">False</span>,</span><br><span class="hljs-params">            qk_norm: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">False</span>,</span><br><span class="hljs-params">            proj_bias: <span class="hljs-built_in">bool</span> = <span class="hljs-literal">True</span>,</span><br><span class="hljs-params">            attn_drop: <span class="hljs-built_in">float</span> = <span class="hljs-number">0.</span>,</span><br><span class="hljs-params">            proj_drop: <span class="hljs-built_in">float</span> = <span class="hljs-number">0.</span>,</span><br><span class="hljs-params">            norm_layer: <span class="hljs-type">Type</span>[nn.Module] = nn.LayerNorm,</span><br><span class="hljs-params">    </span>) -&gt; <span class="hljs-literal">None</span>:<br>        <span class="hljs-built_in">super</span>().__init__()<br>        <span class="hljs-keyword">assert</span> dim % num_heads == <span class="hljs-number">0</span>, <span class="hljs-string">&#x27;dim should be divisible by num_heads&#x27;</span><br>        self.num_heads = num_heads<br>        self.head_dim = dim // num_heads<br>        self.scale = self.head_dim ** -<span class="hljs-number">0.5</span><br>        self.fused_attn = use_fused_attn()<br><br>        self.qkv = nn.Linear(dim, dim * <span class="hljs-number">3</span>, bias=qkv_bias)<br>        self.q_norm = norm_layer(self.head_dim) <span class="hljs-keyword">if</span> qk_norm <span class="hljs-keyword">else</span> nn.Identity()<br>        self.k_norm = norm_layer(self.head_dim) <span class="hljs-keyword">if</span> qk_norm <span class="hljs-keyword">else</span> nn.Identity()<br>        self.attn_drop = nn.Dropout(attn_drop)<br>        self.proj = nn.Linear(dim, dim, bias=proj_bias)<br>        self.proj_drop = nn.Dropout(proj_drop)<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">forward</span>(<span class="hljs-params">self, x: torch.Tensor</span>) -&gt; torch.Tensor:<br>        B, N, C = x.shape<br>        qkv = self.qkv(x).reshape(B, N, <span class="hljs-number">3</span>, self.num_heads, self.head_dim).permute(<span class="hljs-number">2</span>, <span class="hljs-number">0</span>, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">4</span>)<br>        q, k, v = qkv.unbind(<span class="hljs-number">0</span>)<br>        q, k = self.q_norm(q), self.k_norm(k)<br><br>        <span class="hljs-keyword">if</span> self.fused_attn:<br>            x = F.scaled_dot_product_attention(<br>                q, k, v,<br>                dropout_p=self.attn_drop.p <span class="hljs-keyword">if</span> self.training <span class="hljs-keyword">else</span> <span class="hljs-number">0.</span>,<br>            )<br>        <span class="hljs-keyword">else</span>:<br>            q = q * self.scale<br>            attn = q @ k.transpose(-<span class="hljs-number">2</span>, -<span class="hljs-number">1</span>)<br>            attn = attn.softmax(dim=-<span class="hljs-number">1</span>)<br>            attn = self.attn_drop(attn)<br>            x = attn @ v<br><br>        x = x.transpose(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>).reshape(B, N, C)<br>        x = self.proj(x)<br>        x = self.proj_drop(x)<br>        <span class="hljs-keyword">return</span> x<br>    <br></code></pre></td></tr></table></figure>
+<p>​	如果要使用类似 <code>timm</code> 中 VIT 一样的 attention 模块，就不用每次都造一次轮子，我们可以直接这样用：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> timm.models.vision_transformer <span class="hljs-keyword">import</span> Attention<br></code></pre></td></tr></table></figure>
+<h2 id="更多高级用法"><a class="markdownIt-Anchor" href="#更多高级用法"></a> 更多高级用法</h2>
+<h3 id="特征提取与可视化"><a class="markdownIt-Anchor" href="#特征提取与可视化"></a> 特征提取与可视化</h3>
+<p>​	<code>timm</code> 提供了灵活的中间层特征访问接口：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 获取所有特征层名称</span><br>feature_layer_names = timm.get_feature_info(model)<br><br><span class="hljs-comment"># 注册钩子获取中间特征</span><br>features = &#123;&#125;<br><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_features</span>(<span class="hljs-params">name</span>):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">hook</span>(<span class="hljs-params">model, <span class="hljs-built_in">input</span>, output</span>):<br>        features[name] = output.detach()<br>    <span class="hljs-keyword">return</span> hook<br><br>model.layer3.register_forward_hook(get_features(<span class="hljs-string">&#x27;layer3&#x27;</span>))<br>model.layer4.register_forward_hook(get_features(<span class="hljs-string">&#x27;layer4&#x27;</span>))<br><br><span class="hljs-comment"># 可视化特征图</span><br><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">visualize_features</span>(<span class="hljs-params">feature_maps, layer_name</span>):<br>    plt.figure(figsize=(<span class="hljs-number">12</span>, <span class="hljs-number">6</span>))<br>    plt.title(<span class="hljs-string">f&quot;<span class="hljs-subst">&#123;layer_name&#125;</span> Feature Maps&quot;</span>)<br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">16</span>):  <span class="hljs-comment"># 显示前16个通道</span><br>        plt.subplot(<span class="hljs-number">4</span>, <span class="hljs-number">4</span>, i+<span class="hljs-number">1</span>)<br>        plt.imshow(feature_maps[<span class="hljs-number">0</span>, i].cpu().numpy(), cmap=<span class="hljs-string">&#x27;viridis&#x27;</span>)<br>        plt.axis(<span class="hljs-string">&#x27;off&#x27;</span>)<br>    plt.tight_layout()<br>    plt.show()<br></code></pre></td></tr></table></figure>
+<h3 id="模型融合与集成"><a class="markdownIt-Anchor" href="#模型融合与集成"></a> 模型融合与集成</h3>
+<p>​	<code>timm</code> 支持多种模型融合技术：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 创建模型集成</span><br>model1 = timm.create_model(<span class="hljs-string">&#x27;resnet50&#x27;</span>, pretrained=<span class="hljs-literal">True</span>)<br>model2 = timm.create_model(<span class="hljs-string">&#x27;efficientnet_b3&#x27;</span>, pretrained=<span class="hljs-literal">True</span>)<br>model3 = timm.create_model(<span class="hljs-string">&#x27;vit_base_patch16_224&#x27;</span>, pretrained=<span class="hljs-literal">True</span>)<br><br><span class="hljs-comment"># 加权平均集成</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">ensemble_predict</span>(<span class="hljs-params">models, <span class="hljs-built_in">input</span>, weights=[<span class="hljs-number">0.4</span>, <span class="hljs-number">0.3</span>, <span class="hljs-number">0.3</span>]</span>):<br>    outputs = [model(<span class="hljs-built_in">input</span>) <span class="hljs-keyword">for</span> model <span class="hljs-keyword">in</span> models]<br>    avg_output = <span class="hljs-built_in">sum</span>(w * o <span class="hljs-keyword">for</span> w, o <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(weights, outputs))<br>    <span class="hljs-keyword">return</span> avg_output<br><br><span class="hljs-comment"># 模型权重平均</span><br><span class="hljs-keyword">from</span> timm.utils.model_ema <span class="hljs-keyword">import</span> ModelEma<br>ema_model = ModelEma(model, decay=<span class="hljs-number">0.999</span>)  <span class="hljs-comment"># 指数移动平均</span><br><br><span class="hljs-comment"># 随机权重平均 (SWA)</span><br><span class="hljs-keyword">from</span> timm.optim <span class="hljs-keyword">import</span> Swa<br>swa_model = Swa(model, optimizer, swa_start=<span class="hljs-number">10</span>, swa_freq=<span class="hljs-number">5</span>)<br></code></pre></td></tr></table></figure>
+<h3 id="自定义模型架构"><a class="markdownIt-Anchor" href="#自定义模型架构"></a> 自定义模型架构</h3>
+<p>​	<code>timm</code> 的模块化设计使得创建自定义模型变得简单：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> timm.models.vision_transformer <span class="hljs-keyword">import</span> VisionTransformer<br><span class="hljs-keyword">from</span> timm.models.layers <span class="hljs-keyword">import</span> PatchEmbed, Mlp<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">CustomViT</span>(<span class="hljs-title class_ inherited__">VisionTransformer</span>):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, **kwargs</span>):<br>        <span class="hljs-built_in">super</span>().__init__(**kwargs)<br>        <br>        <span class="hljs-comment"># 添加新的模块</span><br>        self.extra_mlp = Mlp(<br>            in_features=self.embed_dim,<br>            hidden_features=self.embed_dim * <span class="hljs-number">4</span>,<br>            act_layer=nn.GELU<br>        )<br>        <br>        <span class="hljs-comment"># 修改分类头</span><br>        self.head = nn.Sequential(<br>            nn.Linear(self.embed_dim, self.embed_dim // <span class="hljs-number">2</span>),<br>            nn.ReLU(),<br>            nn.Linear(self.embed_dim // <span class="hljs-number">2</span>, self.num_classes)<br>        )<br>    <br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">forward_features</span>(<span class="hljs-params">self, x</span>):<br>        <span class="hljs-comment"># 复用原始ViT的特征提取</span><br>        x = <span class="hljs-built_in">super</span>().forward_features(x)<br>        <br>        <span class="hljs-comment"># 添加自定义处理</span><br>        x = self.extra_mlp(x)<br>        <span class="hljs-keyword">return</span> x<br><br><span class="hljs-comment"># 实例化自定义模型</span><br>custom_vit = CustomViT(<br>    img_size=<span class="hljs-number">224</span>,<br>    patch_size=<span class="hljs-number">16</span>,<br>    embed_dim=<span class="hljs-number">768</span>,<br>    depth=<span class="hljs-number">12</span>,<br>    num_heads=<span class="hljs-number">12</span>,<br>    num_classes=<span class="hljs-number">1000</span><br>)<br></code></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://timm.fast.ai/">Pytorch Image Models (timm) | timmdocs</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+			
+			
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/05/31/ai/generative_ai/score-based/" title="基于分数的生成模型 (Score-based Generative Models)">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">基于分数的生成模型 (Score-based Generative Models)</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/05/26/scientific_research/tools_tricks/feature_visualization/" title="feature_visualization">
+                        <span class="hidden-mobile">feature_visualization</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <i class="iconfont icon-love"></i> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

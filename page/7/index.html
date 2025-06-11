@@ -216,15 +216,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/05/07/%E6%95%B0%E5%AD%A6/n%E7%BB%B4%E6%AC%A7%E6%8B%89%E5%85%AC%E5%BC%8F/" target="_self">
-          n维欧拉公式
+        <a href="/2024/09/16/ai/deep%20learning/LLama-Omni%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" target="_self">
+          LLama-Omni论文阅读
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/05/07/%E6%95%B0%E5%AD%A6/n%E7%BB%B4%E6%AC%A7%E6%8B%89%E5%85%AC%E5%BC%8F/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/09/16/ai/deep%20learning/LLama-Omni%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" target="_self">
         <div>
-          欧拉公式在n维的推广 ​	我们知道 ez=er(cosθ+sinθ)e^{z} = e^r(cos \theta + sin\theta)ez=er(cosθ+sinθ) 为最熟悉的欧拉公式形式，而复数的表示可以用二元的矩阵取代，因此我们可以将复数形式的欧拉公式改写为矩阵形式，因此很自然的一个想法是，这个公式是否能推广到 nnn 维欧式空间  欧拉公式的意义 ​	以一个线性微分方程组为例： {d
+          LLama-Omni论文阅读 ​	论文介绍了 LLaMA-Omni 模型，这是一种新颖的模型架构，设计用于实现与大型语言模型（LLMs）之间的低延迟（low latency）、高质量语音交互。LLaMA-Omni 集成了预训练的 audio encoder、audio adaptor、LLM 以及 streaming audio decoder（流式语音解码器），从而消除了对语音转录的需求，能够
         </div>
       </a>
 
@@ -232,8 +232,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-05-07 19:24" pubdate>
-              2024-05-07
+            <time datetime="2024-09-16 15:59" pubdate>
+              2024-09-16
             </time>
           </div>
         
@@ -249,15 +249,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/05/04/ai/deep%20learning/Rewrite-the-Stars%E8%AE%BA%E6%96%87%E7%B2%BE%E8%AF%BB/" target="_self">
-          Rewrite the Stars论文精读
+        <a href="/2024/09/16/ai/deep%20learning/MMEvol%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" target="_self">
+          MMEvol论文阅读
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/05/04/ai/deep%20learning/Rewrite-the-Stars%E8%AE%BA%E6%96%87%E7%B2%BE%E8%AF%BB/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/09/16/ai/deep%20learning/MMEvol%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" target="_self">
         <div>
-          Why do element-wise mutiplication work? ​	我们常常注意到在神经网络中，element-wise multiplication 往往能够取得很好的效果。之前不同领域中文章往往也应用了这一点并且提出了各自的概念或解释（例如gating mechanism，high-order， modulation mechanism， visual-attention等等
+          MMEvol ​	论文地址：MMEvol: Empowering Multimodal Large Language Models with Evol-Instruct ​	该论文的工作在于提出 MMEvol 的新框架（有点像教师-学生模型训练方法），一个用于多模态大语言模型（MLLMs）的图像-文本指令数据进化的框架。其主要目标是通过自动化生成开放域的图像-文本指令数据，来增强现有数据集的多样
         </div>
       </a>
 
@@ -265,8 +265,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-05-04 14:45" pubdate>
-              2024-05-04
+            <time datetime="2024-09-16 10:12" pubdate>
+              2024-09-16
             </time>
           </div>
         
@@ -282,15 +282,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/04/28/cuda-4-%E8%AE%A1%E6%97%B6/" target="_self">
-          cuda-4-计时
+        <a href="/2024/09/08/scientific_research/cv_udsampler/modify_mmseg/" target="_self">
+          合并mmseg的backbone和encoder
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/28/cuda-4-%E8%AE%A1%E6%97%B6/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/09/08/scientific_research/cv_udsampler/modify_mmseg/" target="_self">
         <div>
-          写CUDA，追求的就是加速比，想要得到准确的时间，计时函数就是必不可少 计时通常分为两种情况：   直接得到接口函数的时间，一般用于得到加速比；可以使用CPU计时函数和GPU计时函数   获得接口函数内核函数、内存拷贝函数等所耗时间，一般用于优化代码时；可以使用nvprof工具    CPU计时函数 在利用CPU计时函数时，要考虑的一个问题是：核函数的执行是异步执行的，所以必须加上核函数同步函数，
+          合并mmseg的backbone和encoder  问题来源 ​	由于我的这段科研工作主要围绕上下采样同时建模（协同上下采样）来展开的，我在小模型上跑出了很好的效果，想在大模型大数据集上进一步验证他的有效性，我选择了 mask2former 模型作为分割任务的 baseline，我尝试从 mask2former 官方 repo 下载代码后在他上面修改，但是这个代码封装极其深而且工程化，这个仓库是
         </div>
       </a>
 
@@ -298,8 +298,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-04-28 16:30" pubdate>
-              2024-04-28
+            <time datetime="2024-09-08 16:44" pubdate>
+              2024-09-08
             </time>
           </div>
         
@@ -315,15 +315,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/04/27/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/cuda-3-%E9%94%99%E8%AF%AF/" target="_self">
-          cuda-3-错误
+        <a href="/2024/08/24/ai/Pytorch/torch-autograd-Function/" target="_self">
+          torch.autograd.Function
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/27/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/cuda-3-%E9%94%99%E8%AF%AF/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/08/24/ai/Pytorch/torch-autograd-Function/" target="_self">
         <div>
-          cuda  CUDA运行时API大多支持返回错误代码，返回值类型：cudaError_t 运行时API成功执行，返回值为cudaSuccess 运行时API返回的执行状态值是枚举变量，对应官方文档查看错误代码可以知道错误来源   捕捉主机函数错误： ​	CUDA代码在主机端（CPU）和设备端（GPU）的错误检测方法并不相同  在主机端（CPU）执行的CUDA代码主要包括对CUDA API函数的调
+          torch.autograd.Function解析 ​	pytorch的灵活性体现在它可以任意拓展我们所需要的内容，包括自定义模型（nn.Module）、自定义函数（nn.Function）、自定义损失函数（nn.Module）、自定义求导方式（torch.autograd.Function），本节内容介绍torch.autograd.Function自定义求导的使用方法 ​	为什么需要torc
         </div>
       </a>
 
@@ -331,8 +331,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-04-27 20:05" pubdate>
-              2024-04-27
+            <time datetime="2024-08-24 18:23" pubdate>
+              2024-08-24
             </time>
           </div>
         
@@ -348,15 +348,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/04/26/Java/Java-GUI/" target="_self">
-          Java GUI
+        <a href="/2024/08/12/ai/computer_vision/%E5%B7%AE%E5%88%86%E5%8D%B7%E7%A7%AF%E2%80%94%E2%80%94%E8%BE%B9%E7%BC%98%E6%A3%80%E6%B5%8B/" target="_self">
+          差分卷积——边缘检测
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/26/Java/Java-GUI/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/08/12/ai/computer_vision/%E5%B7%AE%E5%88%86%E5%8D%B7%E7%A7%AF%E2%80%94%E2%80%94%E8%BE%B9%E7%BC%98%E6%A3%80%E6%B5%8B/" target="_self">
         <div>
-          Java GUI——Java图形用户界面  Java GUI概述 早期，电脑向用户提供的是单调、枯燥、纯字符状态的“命令行界面（CLI），在今天，一个应用软件没有良好的GUI是无法让用户接受的。Java语言提供了一套可以轻松构建GUI的工具 AWT 是 Java最早的界面库（java.awt：Abstract Windows ToolKit（抽象窗口工具包），需要调用本地系统方法来实现功能，属重
+          差分卷积——边缘检测  参考论文：   Searching central difference convolutional networks for face anti-spoofing   Pixel Difference Networks for Efficient Edge Detection   ​	这两篇论文是同一个作者的工作，后面一篇论文是前面论文的延续和拓展工作，我们直接介绍后面
         </div>
       </a>
 
@@ -364,8 +364,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-04-26 11:10" pubdate>
-              2024-04-26
+            <time datetime="2024-08-12 10:32" pubdate>
+              2024-08-12
             </time>
           </div>
         
@@ -381,15 +381,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/04/24/ai/deep%20learning/Mamba-pytorch%E5%A4%8D%E7%8E%B0/" target="_self">
-          Mamba pytorch复现
+        <a href="/2024/07/29/ai/computer_vision/Guided-Filtering/" target="_self">
+          Guided Filtering
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/24/ai/deep%20learning/Mamba-pytorch%E5%A4%8D%E7%8E%B0/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/07/29/ai/computer_vision/Guided-Filtering/" target="_self">
         <div>
-          Mamba pytorch复现 ​	代码思路是：MambaBlock -&gt; ResidualBlock -&gt; Mamba ​	其中MambaBlock就是最基础的单个Mamba块，如下图最左侧的部分： ​	ResidualBlock就是Mamba块加上Normalize和残差连接的块，Mamba就是多个ResidualBlock叠加起来，再加上LLM最基本的Embedding等组成的
+          Guided Filtering ​	Guided Filtering是一种图像处理技术，它主要用于边缘保留平滑，即在去除噪声或细节的同时保持图像中的重要边缘，引导滤波（Guided Filtering）和双边滤波（BF）、最小二乘滤波（WLS）是三大边缘保持（Edge-perserving）滤波器。当然，引导滤波的功能不仅仅是边缘保持，只有当引导图是原图的时候，它就成了一个边缘保持滤波器
         </div>
       </a>
 
@@ -397,8 +397,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-04-24 21:00" pubdate>
-              2024-04-24
+            <time datetime="2024-07-29 11:29" pubdate>
+              2024-07-29
             </time>
           </div>
         
@@ -414,15 +414,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/04/23/ai/deep%20learning/Manba%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB/" target="_self">
-          Manba论文解读
+        <a href="/2024/07/24/ai/%E4%BB%A3%E7%A0%81%E6%AC%A3%E8%B5%8F/segformer/" target="_self">
+          Segformer
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/23/ai/deep%20learning/Manba%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/07/24/ai/%E4%BB%A3%E7%A0%81%E6%AC%A3%E8%B5%8F/segformer/" target="_self">
         <div>
-          Manba论文解读 ​	自 2017 年被提出以来，Transformer 已经成为 AI 大模型的主流架构，但随着模型规模的扩展和需要处理的序列不断变长，Transformer 的局限性也逐渐凸显。一个很明显的缺陷是：Transformer 模型中自注意力机制的计算量会随着上下文长度的增加呈平方级增长，比如上下文增加 32 倍时，计算量可能会增长 1000 倍，计算效率非常低。 ​	而就在最近
+          Segformer ​	代码来自 lucidrains/segformer-pytorch 这个仓库（Lucidrains 的代码写的太漂亮了，我的 VIT 代码也是抄他的） ​	本仓库是用于复现 Segformer 的，只写了模型部分，Segformer 的模型结构图如下：  ​	先不看赏析的代码，如果是自己写代码，那我们该如何优美地设计模块？  整个模型分为 Encoder 与 Decode
         </div>
       </a>
 
@@ -430,8 +430,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-04-23 18:49" pubdate>
-              2024-04-23
+            <time datetime="2024-07-24 17:06" pubdate>
+              2024-07-24
             </time>
           </div>
         
@@ -447,15 +447,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/04/20/ai/deep%20learning/%E6%A6%82%E7%8E%87%E8%AE%BA%E7%86%B5/" target="_self">
-          概率论熵
+        <a href="/2024/07/23/tortures/pytorch%E7%89%88%E6%9C%AC%E5%AF%B9%E5%BA%94/" target="_self">
+          环境踩坑日记1
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/20/ai/deep%20learning/%E6%A6%82%E7%8E%87%E8%AE%BA%E7%86%B5/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/07/23/tortures/pytorch%E7%89%88%E6%9C%AC%E5%AF%B9%E5%BA%94/" target="_self">
         <div>
-          概率论中的熵 我们直接给出定义：  信息量（Information Content） ​	信息量是指一个随机事件提供的信息量大小。越是出乎意料或发生概率越低的事件，一旦发生，则提供的信息量越大。信息量的定义是概率对数的相反数，即： I(X)=−log⁡b(p)I(X) = -\log_b(p) I(X)=−logb​(p) 其中 ppp 是事件发生的概率，bbb 代表信息量的单位（用什么衡量信息
+          配置环境踩坑日记（1） ​	本期的主角是Efficient-Segmentation-Networks: Lightweight models for real-time semantic segmentationon PyTorch这个仓库，我想使用这个仓库的 SegNet 在 CamVid 上跑的结果，于是想要复现这个仓库，下面分析这个仓库的 README 写的问题 ​	前情提要：原仓库说环
         </div>
       </a>
 
@@ -463,8 +463,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-04-20 18:27" pubdate>
-              2024-04-20
+            <time datetime="2024-07-23 14:20" pubdate>
+              2024-07-23
             </time>
           </div>
         
@@ -480,15 +480,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/04/19/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/2_frame/" target="_self">
-          cuda-2-程序框架
+        <a href="/2024/06/10/%E6%95%B0%E5%AD%A6/%E5%A4%96%E5%BE%AE%E5%88%86/" target="_self">
+          外微分
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/19/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/2_frame/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/06/10/%E6%95%B0%E5%AD%A6/%E5%A4%96%E5%BE%AE%E5%88%86/" target="_self">
         <div>
-          cuda 程序框架 12345678910111213头文件包含常量定义（或者宏定义）C++ 自定义函数和CUDA核函数的声明（原型）int main(void)&#123;    分配主机与设备内存    初始化主机中的数据    将某些数据从主机复制到设备    调用核函数在设备中进行计算    将某些数据从设备复制到主机    释放主机与设备内存&#125;C++自定义函数与CUDA核函数
+          外微分 ​	引入外微分的目的是将Stocks公式，Green公式和Gauss公式用一种方式描述，我们先从Green公式考虑： 对于一个第二型曲面积分： ∬Df(x,y)dxdy=∬D−f(x,y)dydx{\iint }_{D}f\left( {x,y}\right) {dxdy}  = {\iint }_{D} - f\left( {x,y}\right) {dydx} ∬D​f(x,y)dx
         </div>
       </a>
 
@@ -496,8 +496,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-04-19 21:11" pubdate>
-              2024-04-19
+            <time datetime="2024-06-10 16:17" pubdate>
+              2024-06-10
             </time>
           </div>
         
@@ -513,15 +513,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/04/19/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/1_compile/" target="_self">
-          cuda-1(兼容性)
+        <a href="/2024/06/07/reinforcement_learning/Actor-Critic%E7%AE%97%E6%B3%95/" target="_self">
+          Actor-Critic算法
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/19/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/1_compile/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/06/07/reinforcement_learning/Actor-Critic%E7%AE%97%E6%B3%95/" target="_self">
         <div>
-          cuda程序兼容性问题 先了解cuda程序编译的流程：先从C/C++代码编译为PTX，再从PTX编译为cudin代码   C/C++源码转化为PTX这一步骤与硬件无关   PTX指令转化为二进制cubin代码与具体的GPU架构有关    指定虚拟架构计算能力  C/C++源码编译为PTX时，可以指定虚拟架构的计算能力，用于确定代码中可以使用的CUDA功能 编译指令（指定虚拟架构计算能力）：  1
+          Actor-Critic ​	在 REINFORCE 算法中，每次需要根据一个策略采集一条完整的轨迹，并计算这条轨迹上的回报。由于采样方式的方差比较大，学习效率也比较低。我们可以借鉴时序差分学习的思想，使用动态规划方法来提高采样的效率，即从状态 sss 开始的总回报可以通过当前动作的即时奖励 r(s,a)r(s,a)r(s,a) 和下一个状态 s′s&#x27;s′ 的值函数来近似估计 演员-评
         </div>
       </a>
 
@@ -529,8 +529,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-04-19 20:26" pubdate>
-              2024-04-19
+            <time datetime="2024-06-07 20:15" pubdate>
+              2024-06-07
             </time>
           </div>
         
@@ -544,7 +544,7 @@
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/page/6/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/#board">5</a><a class="page-number" href="/page/6/#board">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/#board">8</a><a class="page-number" href="/page/9/#board">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/#board">12</a><a class="extend next" rel="next" href="/page/8/#board"><i class="iconfont icon-arrowright"></i></a>
+      <a class="extend prev" rel="prev" href="/page/6/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/#board">5</a><a class="page-number" href="/page/6/#board">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/#board">8</a><a class="page-number" href="/page/9/#board">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/#board">13</a><a class="extend next" rel="next" href="/page/8/#board"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
 

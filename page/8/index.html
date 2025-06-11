@@ -216,15 +216,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/04/13/Java/Java%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" target="_self">
-          Java面向对象细碎知识
+        <a href="/2024/05/25/reinforcement_learning/model-free/" target="_self">
+          model_free
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/13/Java/Java%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/05/25/reinforcement_learning/model-free/" target="_self">
         <div>
-          Java面向对象细碎知识  基础知识  引用变量： ​	引用类型变量（Reference Type Variable）是一种编程概念，主要存在于面向对象语言如Java、C#等中。引用类型变量并不直接存储对象的值，而是存储对该对象的引用或者说地址。这意味着它是一个指针或者句柄，指向内存中某个位置——存储了实际的对象数据 ​	在Java中，除了基本数据类型（如int、char、double等）以外，
+          model free reinforcement learning ​	Model-Free强化学习（MFRL）的核心在于不依赖环境动态模型的策略学习方法，最优策略的选择为 π(s)=arg⁡max⁡a∈A∑s′Psa(s′)V(s′)\pi(s) = \arg\max_{a \in \mathcal{A}} \sum_{s&#x27;}P_{sa}(s&#x27;)V(s&#x27;)π(s)
         </div>
       </a>
 
@@ -232,8 +232,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-04-13 11:23" pubdate>
-              2024-04-13
+            <time datetime="2024-05-25 21:37" pubdate>
+              2024-05-25
             </time>
           </div>
         
@@ -249,15 +249,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/04/12/Java/JDBC%E7%AE%80%E4%BB%8B/" target="_self">
-          JDBC简介
+        <a href="/2024/05/22/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/Gymnasium/Gymnasium-1/" target="_self">
+          Gymnasium-1
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/12/Java/JDBC%E7%AE%80%E4%BB%8B/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/05/22/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/Gymnasium/Gymnasium-1/" target="_self">
         <div>
-          JDBC简介  DBC是什么？ ​	由于数据库的厂商有很多，例如MySQL，Oracle等厂商，数据可能来自多个数据库或者我们需要切换数据库，DBC就是为了降低数据库与应用之间的耦合度而诞生的，下图是没有DBC的示意图：  ​	下图为有DBC（JDBC）的示意图，JDBC API相对于JDBC Driver Manager来说为更高级的模块：   JDBC的意义   ODBC（Open Data
+          Gymnasium入门 ​	Gymnasium 是一个为所有单代理强化学习环境提供 API 的项目，并包括常见环境的实现：cartpole、pendulum、mountain-car、mujoco、atari 等 ​	该 API 包含四个关键函数：make、reset、step 和 render。 Gymnasium 的核心是 Env，一个高级 Python 类，代表强化学习理论中的马尔可夫决策
         </div>
       </a>
 
@@ -265,8 +265,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-04-12 20:09" pubdate>
-              2024-04-12
+            <time datetime="2024-05-22 20:16" pubdate>
+              2024-05-22
             </time>
           </div>
         
@@ -282,15 +282,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/04/12/Java/Java%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/" target="_self">
-          Java异常处理
+        <a href="/2024/05/21/reinforcement_learning/DQN-2/" target="_self">
+          Policy Gradient
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/12/Java/Java%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/05/21/reinforcement_learning/DQN-2/" target="_self">
         <div>
-          Exception 的概念  Exception 是在程序运行时打断正常程序流程的异常的情况  为了保证程序的正常运行，Java 专门提供了异常处理机制    Error：很难恢复的严重错误，一般不由程序处理。   RuntimeException：程序设计或实现上的问题，如数组越界、空指针等。正常的策略是纠正错误。   其它异常：通常是由环境因素引起的，如文件不存在、无效URL等。 可以在异常处
+          Policy Gradient ​	策略梯度算法也算是参数化模型的一种方法，在前面一章中，我们对参数化值函数估计而非对策略本身参数化，实际上我们也可以直接对策略进行参数化估计，这一章我们默认策略为随机性策略。 ​	对于随机策略 πθ(a∣s)=P(a∣s;θ)\pi_\theta(a|s)=P(a|s; \theta)πθ​(a∣s)=P(a∣s;θ)，直觉上我们应该  降低带来较低价值/奖励的
         </div>
       </a>
 
@@ -298,8 +298,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-04-12 18:47" pubdate>
-              2024-04-12
+            <time datetime="2024-05-21 19:28" pubdate>
+              2024-05-21
             </time>
           </div>
         
@@ -315,15 +315,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/04/09/Java/Java%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7/" target="_self">
-          Java高级特性
+        <a href="/2024/05/18/reinforcement_learning/parameterize/" target="_self">
+          参数化值函数近似与 DQN
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/09/Java/Java%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/05/18/reinforcement_learning/parameterize/" target="_self">
         <div>
-          Java高级特性  Static关键字  静态变量（Static Variables）：  当 static 修饰一个成员变量时，这个变量就成为静态变量，也称为类变量。静态变量存储在Java方法区中，且仅有一个副本，供所有类的实例共享 静态变量在类加载时初始化，其生命周期贯穿整个程序执行过程，直到JVM停止运行（类似于全局变量） 可以通过类名直接访问静态变量，无需创建类的实例   静态方法（St
+          参数化值函数近似 ​	Q-learning 算法中，我们存储每个状态下所有动作的 QQQ 值的表格。表格动作价值 Q(s,a)Q(s, a)Q(s,a) 表示在状态 sss 下选择动作 aaa 然后继续遵循某一策略预期得到的期望回报。然而，这种用表格存储动作价值的做法只在环境的状态和动作都是离散的，并且空间都比较小的情况下适用 ​	当处理大规模 MDP 或者连续状态空间时，采用的方式往往是参数化
         </div>
       </a>
 
@@ -331,8 +331,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-04-09 14:53" pubdate>
-              2024-04-09
+            <time datetime="2024-05-18 15:11" pubdate>
+              2024-05-18
             </time>
           </div>
         
@@ -348,15 +348,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/04/06/ai/Pytorch/Wandb-3/" target="_self">
-          Wandb教程(3)
+        <a href="/2024/05/14/control%20theary/%E5%A5%88%E5%A5%8E%E6%96%AF%E7%89%B9%E5%88%A4%E6%8D%AE%E6%8E%A8%E5%AF%BC/" target="_self">
+          奈奎斯特判据推导
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/06/ai/Pytorch/Wandb-3/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/05/14/control%20theary/%E5%A5%88%E5%A5%8E%E6%96%AF%E7%89%B9%E5%88%A4%E6%8D%AE%E6%8E%A8%E5%AF%BC/" target="_self">
         <div>
-          Wandb教程(3) ​	本篇文章用于介绍Wandb如何进行网格超参数搜索，主要使用了Wandb中的Sweep功能：  Sweep配置：  定义 Sweeps 配置 ​	Wandb的配置文件支持YAML和Python等多种文件格式，关于如何配置Sweep可见[官方文档](Define sweep configuration for hyperparameter tuning. (wandb.ai
+          奈奎斯特判据推导 ​	对于线性定常系统，我们之前最初判断稳定性的方式是：判断闭环传递函数所有根（即所有闭环极点）的实部是否全部为负。奈奎斯特判据的目标是，通过一种共性映射将原复平面（记为 sss 平面）映射到新的平面（记为 FFF 平面），通过辐角原理在新的复平面上研究闭环极点的新位置反推原复平面内闭环极点的位置情况  辐角原理 ​	设复平面上的回路 Γs\Gamma_sΓs​ 的内部为 I(Γ
         </div>
       </a>
 
@@ -364,62 +364,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-04-06 19:27" pubdate>
-              2024-04-06
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/Pytorch%E5%AD%A6%E4%B9%A0/" class="category-chain-item">Pytorch学习</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/04/05/ai/computer_vision/%E5%B8%B8%E7%94%A8Neck%E7%BD%91%E7%BB%9C/" target="_self">
-          常用Neck网络-1
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/05/ai/computer_vision/%E5%B8%B8%E7%94%A8Neck%E7%BD%91%E7%BB%9C/" target="_self">
-        <div>
-          SPP(Spatial Pyramid Pooling)  Motivation： ​	SPP的提出就是为了解决CNN输入图像大小必须固定的问题，从而可以使得输入图像高宽比和大小任意  网络结构解析： ​	SPP-Neck网络结构如下：   首先是输入层(input image),其大小可以是任意的 中间的部分就是SPP-Neck层，SPP会在最后一层卷积层输出的特征图上进行操作，将其划分为多个
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-04-05 09:53" pubdate>
-              2024-04-05
+            <time datetime="2024-05-14 09:41" pubdate>
+              2024-05-14
             </time>
           </div>
         
@@ -435,15 +381,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/03/27/scientific_research/cv_udsampler/FeatUp/" target="_self">
-          FeatUp(1)
+        <a href="/2024/05/07/%E6%95%B0%E5%AD%A6/n%E7%BB%B4%E6%AC%A7%E6%8B%89%E5%85%AC%E5%BC%8F/" target="_self">
+          n维欧拉公式
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/27/scientific_research/cv_udsampler/FeatUp/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/05/07/%E6%95%B0%E5%AD%A6/n%E7%BB%B4%E6%AC%A7%E6%8B%89%E5%85%AC%E5%BC%8F/" target="_self">
         <div>
-          FeatUp ​	本文章通过借助图像重建的思路提出了一种新型上采样算子，这篇论文的idea可以用以下几点概括：  借助3D图像重建网络NeRF的想法：多个视角下的地分辨率信号可以指导采样高分辨率的特征图的“重建“过程，这里的“多个视角”指对原低分辨率特征图进行各种微调（jittered）之后的特征图，通过这些低分辨率的特征图可以有效地帮助重建高分辨率信号 以Joint Bilateral Ups
+          欧拉公式在n维的推广 ​	我们知道 ez=er(cosθ+sinθ)e^{z} = e^r(cos \theta + sin\theta)ez=er(cosθ+sinθ) 为最熟悉的欧拉公式形式，而复数的表示可以用二元的矩阵取代，因此我们可以将复数形式的欧拉公式改写为矩阵形式，因此很自然的一个想法是，这个公式是否能推广到 nnn 维欧式空间  欧拉公式的意义 ​	以一个线性微分方程组为例： {d
         </div>
       </a>
 
@@ -451,83 +397,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-03-27 18:14" pubdate>
-              2024-03-27
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/deep-learning/" class="category-chain-item">deep learning</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/deep-learning/computer-vision/" class="category-chain-item">computer vision</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/deep-learning/computer-vision/sampling-operation/" class="category-chain-item">sampling operation</a>
-  
-  
-
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/scientific-research/">#scientific research</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/03/19/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/%E8%AF%AD%E8%A8%80%E7%89%B9%E8%89%B2%E5%8F%8A%E5%86%85%E9%83%A8%E5%8C%85/Python%E5%AE%9E%E7%94%A8%E7%94%A8%E6%B3%95/" target="_self">
-          Python实用用法
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/19/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/%E8%AF%AD%E8%A8%80%E7%89%B9%E8%89%B2%E5%8F%8A%E5%86%85%E9%83%A8%E5%8C%85/Python%E5%AE%9E%E7%94%A8%E7%94%A8%E6%B3%95/" target="_self">
-        <div>
-          Python实用用法  路径操作： ​	Python中常用路径操作库包括os.path 和 pathlib.Path，都是 Python 中用于处理文件和目录路径的模块，但它们的设计哲学和使用方式存在显著区别：  os.path：  是一个基于字符串的操作库，提供了许多函数来处理路径名，如连接路径、拆分路径、判断是否为绝对路径、获取目录/文件名等 以过程式风格编写，所有操作返回的是字符串类型结果
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-03-19 20:14" pubdate>
-              2024-03-19
+            <time datetime="2024-05-07 19:24" pubdate>
+              2024-05-07
             </time>
           </div>
         
@@ -543,15 +414,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/03/19/ai/Pytorch/Wandb-2/" target="_self">
-          Wandb教程(2)
+        <a href="/2024/05/04/ai/deep%20learning/Rewrite-the-Stars%E8%AE%BA%E6%96%87%E7%B2%BE%E8%AF%BB/" target="_self">
+          Rewrite the Stars论文精读
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/19/ai/Pytorch/Wandb-2/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/05/04/ai/deep%20learning/Rewrite-the-Stars%E8%AE%BA%E6%96%87%E7%B2%BE%E8%AF%BB/" target="_self">
         <div>
-          Wandb教程(2)  Wand的推荐用法  Config：  config的配置方法：  直接赋值 ​	在初始化 wandb 之前或之后，可以创建一个字典或使用 wandb.config 的属性赋值方式来设置配置项。例如： 12345678910111213141516# 方法一：直接创建一个字典并赋值给 wandb.configconfig = &#123;    &quot;learnin
+          Why do element-wise mutiplication work? ​	我们常常注意到在神经网络中，element-wise multiplication 往往能够取得很好的效果。之前不同领域中文章往往也应用了这一点并且提出了各自的概念或解释（例如gating mechanism，high-order， modulation mechanism， visual-attention等等
         </div>
       </a>
 
@@ -559,8 +430,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-03-19 18:55" pubdate>
-              2024-03-19
+            <time datetime="2024-05-04 14:45" pubdate>
+              2024-05-04
             </time>
           </div>
         
@@ -576,15 +447,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/03/17/ai/Pytorch/Wandb-1/" target="_self">
-          Wandb教程(1)
+        <a href="/2024/04/28/cuda-4-%E8%AE%A1%E6%97%B6/" target="_self">
+          cuda-4-计时
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/17/ai/Pytorch/Wandb-1/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/28/cuda-4-%E8%AE%A1%E6%97%B6/" target="_self">
         <div>
-          Wandb教程(1) ​	Wandb（Weights &amp; Biases）是一个用于机器学习实验跟踪、可视化和管理的平台。它提供了一个强大的工具集，帮助研究人员和开发人员跟踪他们的模型训练过程、超参数、指标以及模型的版本。他就是Tensorboard的白富美版本：颜值高，气质好，可视化交互性强，支持所有深度学习框架。它内嵌在计算机中，不需要你写可视化代码（我之前每次可视化都要写一次把张量的
+          写CUDA，追求的就是加速比，想要得到准确的时间，计时函数就是必不可少 计时通常分为两种情况：   直接得到接口函数的时间，一般用于得到加速比；可以使用CPU计时函数和GPU计时函数   获得接口函数内核函数、内存拷贝函数等所耗时间，一般用于优化代码时；可以使用nvprof工具    CPU计时函数 在利用CPU计时函数时，要考虑的一个问题是：核函数的执行是异步执行的，所以必须加上核函数同步函数，
         </div>
       </a>
 
@@ -592,32 +463,77 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-03-17 18:15" pubdate>
-              2024-03-17
+            <time datetime="2024-04-28 16:30" pubdate>
+              2024-04-28
             </time>
           </div>
         
         
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
         
-  <a href="/categories/Pytorch%E5%AD%A6%E4%B9%A0/" class="category-chain-item">Pytorch学习</a>
-  
-  
+      </div>
+    </article>
+  </div>
 
-      </span>
+  <div class="row mx-auto index-card">
     
-  
-</span>
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/04/27/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/cuda-3-%E9%94%99%E8%AF%AF/" target="_self">
+          cuda-3-错误
+        </a>
+      </h2>
 
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/27/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/cuda-3-%E9%94%99%E8%AF%AF/" target="_self">
+        <div>
+          cuda  CUDA运行时API大多支持返回错误代码，返回值类型：cudaError_t 运行时API成功执行，返回值为cudaSuccess 运行时API返回的执行状态值是枚举变量，对应官方文档查看错误代码可以知道错误来源   捕捉主机函数错误： ​	CUDA代码在主机端（CPU）和设备端（GPU）的错误检测方法并不相同  在主机端（CPU）执行的CUDA代码主要包括对CUDA API函数的调
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-04-27 20:05" pubdate>
+              2024-04-27
+            </time>
           </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/04/26/Java/Java-GUI/" target="_self">
+          Java GUI
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/26/Java/Java-GUI/" target="_self">
+        <div>
+          Java GUI——Java图形用户界面  Java GUI概述 早期，电脑向用户提供的是单调、枯燥、纯字符状态的“命令行界面（CLI），在今天，一个应用软件没有良好的GUI是无法让用户接受的。Java语言提供了一套可以轻松构建GUI的工具 AWT 是 Java最早的界面库（java.awt：Abstract Windows ToolKit（抽象窗口工具包），需要调用本地系统方法来实现功能，属重
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-04-26 11:10" pubdate>
+              2024-04-26
+            </time>
+          </div>
+        
         
         
       </div>
@@ -628,7 +544,7 @@
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/page/7/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/#board">6</a><a class="page-number" href="/page/7/#board">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/#board">9</a><a class="page-number" href="/page/10/#board">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/#board">12</a><a class="extend next" rel="next" href="/page/9/#board"><i class="iconfont icon-arrowright"></i></a>
+      <a class="extend prev" rel="prev" href="/page/7/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/#board">6</a><a class="page-number" href="/page/7/#board">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/#board">9</a><a class="page-number" href="/page/10/#board">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/#board">13</a><a class="extend next" rel="next" href="/page/9/#board"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
 

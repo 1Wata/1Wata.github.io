@@ -216,15 +216,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2024/03/13/ai/Pytorch/TensorBoard-2/" target="_self">
-          TensorBoardX教程(2)
+        <a href="/2024/04/24/ai/deep%20learning/Mamba-pytorch%E5%A4%8D%E7%8E%B0/" target="_self">
+          Mamba pytorch复现
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/13/ai/Pytorch/TensorBoard-2/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/24/ai/deep%20learning/Mamba-pytorch%E5%A4%8D%E7%8E%B0/" target="_self">
         <div>
-          Tensorboard的示例应用  Tensorboard进行中间特征图可视化： ​	采用了注册钩子函数，再钩子函数中记录特征图，并将其可视化下来的方案，代码如下： 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849import torchimport torch.nn
+          Mamba pytorch复现 ​	代码思路是：MambaBlock -&gt; ResidualBlock -&gt; Mamba ​	其中MambaBlock就是最基础的单个Mamba块，如下图最左侧的部分： ​	ResidualBlock就是Mamba块加上Normalize和残差连接的块，Mamba就是多个ResidualBlock叠加起来，再加上LLM最基本的Embedding等组成的
         </div>
       </a>
 
@@ -232,8 +232,305 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-03-13 20:37" pubdate>
-              2024-03-13
+            <time datetime="2024-04-24 21:00" pubdate>
+              2024-04-24
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/04/23/ai/deep%20learning/Manba%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB/" target="_self">
+          Manba论文解读
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/23/ai/deep%20learning/Manba%E8%AE%BA%E6%96%87%E8%A7%A3%E8%AF%BB/" target="_self">
+        <div>
+          Manba论文解读 ​	自 2017 年被提出以来，Transformer 已经成为 AI 大模型的主流架构，但随着模型规模的扩展和需要处理的序列不断变长，Transformer 的局限性也逐渐凸显。一个很明显的缺陷是：Transformer 模型中自注意力机制的计算量会随着上下文长度的增加呈平方级增长，比如上下文增加 32 倍时，计算量可能会增长 1000 倍，计算效率非常低。 ​	而就在最近
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-04-23 18:49" pubdate>
+              2024-04-23
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/04/20/ai/deep%20learning/%E6%A6%82%E7%8E%87%E8%AE%BA%E7%86%B5/" target="_self">
+          概率论熵
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/20/ai/deep%20learning/%E6%A6%82%E7%8E%87%E8%AE%BA%E7%86%B5/" target="_self">
+        <div>
+          概率论中的熵 我们直接给出定义：  信息量（Information Content） ​	信息量是指一个随机事件提供的信息量大小。越是出乎意料或发生概率越低的事件，一旦发生，则提供的信息量越大。信息量的定义是概率对数的相反数，即： I(X)=−log⁡b(p)I(X) = -\log_b(p) I(X)=−logb​(p) 其中 ppp 是事件发生的概率，bbb 代表信息量的单位（用什么衡量信息
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-04-20 18:27" pubdate>
+              2024-04-20
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/04/19/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/2_frame/" target="_self">
+          cuda-2-程序框架
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/19/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/2_frame/" target="_self">
+        <div>
+          cuda 程序框架 12345678910111213头文件包含常量定义（或者宏定义）C++ 自定义函数和CUDA核函数的声明（原型）int main(void)&#123;    分配主机与设备内存    初始化主机中的数据    将某些数据从主机复制到设备    调用核函数在设备中进行计算    将某些数据从设备复制到主机    释放主机与设备内存&#125;C++自定义函数与CUDA核函数
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-04-19 21:11" pubdate>
+              2024-04-19
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/04/19/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/1_compile/" target="_self">
+          cuda-1(兼容性)
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/19/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/cuda/1_compile/" target="_self">
+        <div>
+          cuda程序兼容性问题 先了解cuda程序编译的流程：先从C/C++代码编译为PTX，再从PTX编译为cudin代码   C/C++源码转化为PTX这一步骤与硬件无关   PTX指令转化为二进制cubin代码与具体的GPU架构有关    指定虚拟架构计算能力  C/C++源码编译为PTX时，可以指定虚拟架构的计算能力，用于确定代码中可以使用的CUDA功能 编译指令（指定虚拟架构计算能力）：  1
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-04-19 20:26" pubdate>
+              2024-04-19
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/04/13/Java/Java%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" target="_self">
+          Java面向对象细碎知识
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/13/Java/Java%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" target="_self">
+        <div>
+          Java面向对象细碎知识  基础知识  引用变量： ​	引用类型变量（Reference Type Variable）是一种编程概念，主要存在于面向对象语言如Java、C#等中。引用类型变量并不直接存储对象的值，而是存储对该对象的引用或者说地址。这意味着它是一个指针或者句柄，指向内存中某个位置——存储了实际的对象数据 ​	在Java中，除了基本数据类型（如int、char、double等）以外，
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-04-13 11:23" pubdate>
+              2024-04-13
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/04/12/Java/JDBC%E7%AE%80%E4%BB%8B/" target="_self">
+          JDBC简介
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/12/Java/JDBC%E7%AE%80%E4%BB%8B/" target="_self">
+        <div>
+          JDBC简介  DBC是什么？ ​	由于数据库的厂商有很多，例如MySQL，Oracle等厂商，数据可能来自多个数据库或者我们需要切换数据库，DBC就是为了降低数据库与应用之间的耦合度而诞生的，下图是没有DBC的示意图：  ​	下图为有DBC（JDBC）的示意图，JDBC API相对于JDBC Driver Manager来说为更高级的模块：   JDBC的意义   ODBC（Open Data
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-04-12 20:09" pubdate>
+              2024-04-12
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/04/12/Java/Java%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/" target="_self">
+          Java异常处理
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/12/Java/Java%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/" target="_self">
+        <div>
+          Exception 的概念  Exception 是在程序运行时打断正常程序流程的异常的情况  为了保证程序的正常运行，Java 专门提供了异常处理机制    Error：很难恢复的严重错误，一般不由程序处理。   RuntimeException：程序设计或实现上的问题，如数组越界、空指针等。正常的策略是纠正错误。   其它异常：通常是由环境因素引起的，如文件不存在、无效URL等。 可以在异常处
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-04-12 18:47" pubdate>
+              2024-04-12
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/04/09/Java/Java%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7/" target="_self">
+          Java高级特性
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/09/Java/Java%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7/" target="_self">
+        <div>
+          Java高级特性  Static关键字  静态变量（Static Variables）：  当 static 修饰一个成员变量时，这个变量就成为静态变量，也称为类变量。静态变量存储在Java方法区中，且仅有一个副本，供所有类的实例共享 静态变量在类加载时初始化，其生命周期贯穿整个程序执行过程，直到JVM停止运行（类似于全局变量） 可以通过类名直接访问静态变量，无需创建类的实例   静态方法（St
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-04-09 14:53" pubdate>
+              2024-04-09
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/04/06/ai/Pytorch/Wandb-3/" target="_self">
+          Wandb教程(3)
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/06/ai/Pytorch/Wandb-3/" target="_self">
+        <div>
+          Wandb教程(3) ​	本篇文章用于介绍Wandb如何进行网格超参数搜索，主要使用了Wandb中的Sweep功能：  Sweep配置：  定义 Sweeps 配置 ​	Wandb的配置文件支持YAML和Python等多种文件格式，关于如何配置Sweep可见[官方文档](Define sweep configuration for hyperparameter tuning. (wandb.ai
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-04-06 19:27" pubdate>
+              2024-04-06
             </time>
           </div>
         
@@ -258,324 +555,6 @@
 </span>
 
           </div>
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/03/13/ai/Pytorch/TensorBoard-1/" target="_self">
-          TensorBoardX教程(1)
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/13/ai/Pytorch/TensorBoard-1/" target="_self">
-        <div>
-          TensorBoardX教程(1) TensorBoard 是一组用于数据可视化的工具。它包含在流行的开源机器学习库 Tensorflow 中。TensorBoard 的主要功能包括：  可视化模型的网络架构 跟踪模型指标，如损失和准确性等 检查机器学习工作流程中权重、偏差和其他组件的直方图 显示非表格数据，包括图像、文本和音频 将高维嵌入投影到低维空间   TensorBoardX的使用： ​
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-03-13 18:27" pubdate>
-              2024-03-13
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/Pytorch%E5%AD%A6%E4%B9%A0/" class="category-chain-item">Pytorch学习</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/03/12/reinforcement_learning/%E5%A4%9A%E8%87%82%E8%80%81%E8%99%8E%E6%9C%BA/" target="_self">
-          多臂老虎机
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/12/reinforcement_learning/%E5%A4%9A%E8%87%82%E8%80%81%E8%99%8E%E6%9C%BA/" target="_self">
-        <div>
-          多臂老虎机问题  题目描述： ​	有一个拥有 KKK 根拉杆的老虎机(multi-armed bandit)，拉动每一根拉杆都对应一个关于奖励的概率分布 R\mathcal{R}R。我们每次拉动其中一根拉杆，就可以从该拉杆对应的奖励概率分布中获得一个奖励 rrr。我们在各根拉杆的奖励概率分布未知的情况下，从头开始尝试，目标是在操作 TTT 次拉杆后获得尽可能高的累积奖励。由于奖励的概率分布是未知
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-03-12 18:03" pubdate>
-              2024-03-12
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/03/12/reinforcement_learning/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E5%85%A5%E9%97%A8/" target="_self">
-          intro
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/12/reinforcement_learning/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E5%85%A5%E9%97%A8/" target="_self">
-        <div>
-          什么是强化学习 ​	强化学习是机器通过与环境交互来实现目标的一种计算方法。机器和环境的一轮交互是指，机器在环境的一个状态下做一个动作决策，把这个动作作用到环境当中，这个环境发生相应的改变并且将相应的奖励反馈和下一轮状态传回机器（因此强化学习示意图很像RNN网络）。这种交互是迭代进行的，机器的目标是最大化在多轮交互过程中获得的累积奖励的期望。强化学习用智能体（agent）概念来表示做决策的机器。相
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-03-12 16:20" pubdate>
-              2024-03-12
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/03/05/ai/frameworks/mmcv/mmcv%E7%BB%84%E4%BB%B66/" target="_self">
-          mmcv组件6
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/05/ai/frameworks/mmcv/mmcv%E7%BB%84%E4%BB%B66/" target="_self">
-        <div>
-          MMCV核心组件Hook ​	MM的整个算法过程就像一个黑盒子：给定输入后（配置文件），黑盒子就会吐出算法结果。整个过程封装度非常高，几乎不需要手写什么代码，Hook机制的作用就是在算法执行过程中加入自定义操作呢 Hook就是一种一种触发器，可以在程序预定义的位置执行预定义的函数。MMCV根据算法的生命周期预定义了6个可以插入自定义函数的位点，用户可以在每个位点自由地插入任意数量的函数操作，如下
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-03-05 17:04" pubdate>
-              2024-03-05
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/03/05/ai/frameworks/mmcv/mmcv%E7%BB%84%E4%BB%B65/" target="_self">
-          mmcv组件5
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/05/ai/frameworks/mmcv/mmcv%E7%BB%84%E4%BB%B65/" target="_self">
-        <div>
-          MMCV核心组件Runner ​	在2.0.0版本以后，Runnner从mmcv中移至mmengine，大体用法不发生改变，调用方式发生如下改变： 12from mmcv.runner import Runner # &lt; 2.0.0from mmengine.runner import Runner # &gt;= 2.0.0  官方文档提示： 我们希望你在教程中更多地关注整体结构，而非具
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-03-05 16:32" pubdate>
-              2024-03-05
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/03/04/ai/frameworks/mmcv/mmcv%E7%BB%84%E4%BB%B64/" target="_self">
-          MMCV组件4
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/04/ai/frameworks/mmcv/mmcv%E7%BB%84%E4%BB%B64/" target="_self">
-        <div>
-          MMCV核心组件Config  配置文件读取 配置类提供了统一的接口 Config.fromfile()，来读取和解析配置文件。 合法的配置文件应该定义一系列键值对，这里举几个不同格式配置文件的例子。 Python 格式： 123test_int = 1test_list = [1, 2, 3]test_dict = dict(key1=&#x27;value1&#x27;, key2=0.1)
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-03-04 20:43" pubdate>
-              2024-03-04
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/03/04/ai/frameworks/mmcv/mmcv%E7%BB%84%E4%BB%B63/" target="_self">
-          MMCV组件3
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/04/ai/frameworks/mmcv/mmcv%E7%BB%84%E4%BB%B63/" target="_self">
-        <div>
-          MMCV核心组件Registry ​	从2.0.0版本开始，config 和 registry 机制移动到了 mmengine 里面，本文是以mmengine模块中的registry讲解的，其实老版本的registry也差不多，调用的时候从mmcv.utils里面调用就行 ​	OpenMMLab 的算法库支持了丰富的算法和数据集，因此实现了很多功能相近的模块。例如 ResNet 和 SE-Res
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-03-04 18:17" pubdate>
-              2024-03-04
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/03/03/ai/frameworks/mmcv/mmcv%E7%BB%84%E4%BB%B62/" target="_self">
-          MMCV组件2
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/03/ai/frameworks/mmcv/mmcv%E7%BB%84%E4%BB%B62/" target="_self">
-        <div>
-          MMCV核心组件学习FileClient  FileClient源码分析： ​	图片的读取一般包括两个步骤：  给定文件路径，读取文件内容（字节流） 对文件字节内容进行解码  ​	第2步文件解码非常简单，通过 mmcv.imfrombytes 函数即可实现，该函数会对不同图片格式进行相应解码。用户各种各样需求基本上都出现在第一步，例如：  给定图片名（或者图片路径），直接读取文件内容即可 利用
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-03-03 20:02" pubdate>
-              2024-03-03
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/03/03/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/%E8%AF%AD%E8%A8%80%E7%89%B9%E8%89%B2%E5%8F%8A%E5%86%85%E9%83%A8%E5%8C%85/%E7%BC%96%E7%A8%8B%E6%96%B9%E5%BC%8F%E5%AF%B9%E6%AF%94/" target="_self">
-          编程方式对比
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/03/ai/%E5%90%84%E7%A7%8D%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Python/%E8%AF%AD%E8%A8%80%E7%89%B9%E8%89%B2%E5%8F%8A%E5%86%85%E9%83%A8%E5%8C%85/%E7%BC%96%E7%A8%8B%E6%96%B9%E5%BC%8F%E5%AF%B9%E6%AF%94/" target="_self">
-        <div>
-          编程方式对比与面向接口编程介绍  面向对象编程 (OOP) 面向对象编程强调使用类和对象来封装数据和行为。在OOP中，对象是数据和操作这些数据的方法的集合。 123456789101112131415class Car:    def __init__(self, brand, model):        self.brand = brand        self.model = model
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-03-03 18:52" pubdate>
-              2024-03-03
-            </time>
-          </div>
-        
         
         
       </div>
@@ -586,7 +565,7 @@
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/page/8/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/#board">7</a><a class="page-number" href="/page/8/#board">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/#board">10</a><a class="page-number" href="/page/11/#board">11</a><a class="page-number" href="/page/12/#board">12</a><a class="extend next" rel="next" href="/page/10/#board"><i class="iconfont icon-arrowright"></i></a>
+      <a class="extend prev" rel="prev" href="/page/8/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/#board">7</a><a class="page-number" href="/page/8/#board">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/#board">10</a><a class="page-number" href="/page/11/#board">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/#board">13</a><a class="extend next" rel="next" href="/page/10/#board"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
 
